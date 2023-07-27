@@ -78,7 +78,11 @@ export class MultiMeasureRest extends Element {
     this.textFont.size = fontSize;
 
     this.numberOfMeasures = numberOfMeasures;
-    this.text = `${this.numberOfMeasures}`;
+    this.text = '';
+    const text = `${this.numberOfMeasures}`;
+    for (let i = 0; i < text.length; i++) {
+      this.text += String.fromCodePoint(0xe080 + text.charCodeAt(i) - '0'.charCodeAt(0)) /*timeSigN*/;
+    }
     this.measureText();
 
     // Keep track of whether these four options were provided.
@@ -221,7 +225,11 @@ export class MultiMeasureRest extends Element {
     }
 
     if (options.showNumber) {
-      this.renderText(ctx, left + (right - left) * 0.5 - this.width * 0.5, stave.getYForLine(options.numberLine - 1));
+      this.renderText(
+        ctx,
+        left + (right - left) * 0.5 - this.width * 0.5,
+        stave.getYForLine(options.numberLine) - this.height * 0.5
+      );
     }
   }
 }
