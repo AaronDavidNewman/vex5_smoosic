@@ -41,7 +41,6 @@ export const CommonMetrics: Record<string, any> = {
   },
 
   FretHandFinger: {
-    fontFamily: 'Arial, sans-serif',
     fontSize: 9,
     fontWeight: 'bold',
   },
@@ -662,7 +661,7 @@ const articulations: Record<string, ArticulationStruct> = {
 const ornaments: Record<string, { code: string }> = {
   mordent: { code: 'ornamentShortTrill' },
   mordentInverted: { code: 'ornamentMordent' },
-  mordent_inverted: { code: 'ornamentMordent' },
+  mordent_inverted: { code: 'ornamentMordent' }, // backwards-compatible to 4.x
   turn: { code: 'ornamentTurn' },
   turn_inverted: { code: 'ornamentTurnSlash' },
   turnInverted: { code: 'ornamentTurnSlash' },
