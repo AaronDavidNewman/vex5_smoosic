@@ -5,6 +5,9 @@
   "excludeProtected": true,
   "excludePrivate": true,
   "disableSources": true,
+  "declaration": true,
+  "declarationDir": "./types",
+  "declarationMap": true,  
   "hideGenerator": true,
   "intentionallyNotExported": ["OffscreenCanvas", "OffscreenCanvasRenderingContext2D"]
 }
