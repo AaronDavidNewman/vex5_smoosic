@@ -132,6 +132,8 @@ export class ChordSymbol extends Modifier {
     '/': '\ue87c' /*csymDiagonalArrangementSlash*/,
     over: '\ue87c' /*csymDiagonalArrangementSlash*/,
     '#': '\ued62' /*csymAccidentalSharp*/,
+    accidentalSharp: '\ued62' /*csymAccidentalSharp*/,
+    accidentalFlat: '\ued60' /*csymAccidentalFlat*/,
     b: '\ued60' /*csymAccidentalFlat*/,
   };
 
