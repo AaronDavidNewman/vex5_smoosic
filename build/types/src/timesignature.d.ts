@@ -1,8 +1,9 @@
-import { Glyph } from './glyph';
+import { Element } from './element';
+import { RenderContext } from './rendercontext';
+import { Stave } from './stave';
 import { StaveModifier } from './stavemodifier';
-import { TimeSignatureGlyph } from './timesigglyph';
 export interface TimeSignatureInfo {
-    glyph: Glyph;
+    glyph: string;
     line: number;
     num: boolean;
 }
@@ -13,35 +14,24 @@ export interface TimeSignatureInfo {
  */
 export declare class TimeSignature extends StaveModifier {
     static get CATEGORY(): string;
-    static get glyphs(): Record<string, {
-        code: string;
-        line: number;
-    }>;
-    point: number;
     bottomLine: number;
     topLine: number;
     protected timeSpec: string;
     protected line: number;
-    protected glyph: Glyph;
+    protected topText: Element;
+    protected botText: Element;
     protected isNumeric: boolean;
     protected validateArgs: boolean;
+    protected topStartX: number;
+    protected botStartX: number;
+    protected lineShift: number;
     constructor(timeSpec?: string, customPadding?: number, validateArgs?: boolean);
-    /**
-     * Return TimeSignatureInfo given a string, consisting of line (number),
-     * num (boolean: same as TimeSignature.getIsNumeric()), and glyph (a Glyph or
-     * TimeSignatureGlyph object).
-     */
-    parseTimeSpec(timeSpec: string): TimeSignatureInfo;
+    static getTimeSigCode(key: string, smallSig?: boolean): string;
     /**
      * Returns a new TimeSignatureGlyph (a Glyph subclass that knows how to draw both
      * top and bottom digits along with plus signs etc.)
      */
-    makeTimeSignatureGlyph(topDigits: string, botDigits: string): TimeSignatureGlyph;
-    /**
-     * Returns {line, num (=getIsNumeric), glyph} --
-     * but these can also be accessed directly w/ getters and setters.
-     */
-    getInfo(): TimeSignatureInfo;
+    makeTimeSignatureGlyph(topDigits: string, botDigits: string): void;
     /**
      * Set a new time signature specification without changing customPadding, etc.
      *
@@ -64,16 +54,6 @@ export declare class TimeSignature extends StaveModifier {
      */
     setLine(line: number): void;
     /**
-     * Get the Glyph object used to create the time signature.  Numeric time signatures
-     * such as 3/8 have a composite Glyph stored as a single Glyph object.
-     */
-    getGlyph(): Glyph;
-    /**
-     * Set the Glyph object used to draw the time signature, and update the width of the
-     * TimeSignature to match.  The Glyph must define width in its metrics.
-     */
-    setGlyph(glyph: Glyph): void;
-    /**
      * Return a boolean on whether this TimeSignature is drawn with one or more numbers
      * (such as 4/4) or not (as in cut time).
      */
@@ -87,4 +67,5 @@ export declare class TimeSignature extends StaveModifier {
      * and setContext must already be run.
      */
     draw(): void;
+    drawAt(ctx: RenderContext, stave: Stave, x: number): void;
 }

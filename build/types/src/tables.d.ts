@@ -61,10 +61,11 @@ export declare class Tables {
         code: string;
         parenRightPaddingAdjustment: number;
     }>;
-    static accidentalCodes(acc: string): {
+    static accidentalCodesOld(acc: string): {
         code: string;
         parenRightPaddingAdjustment: number;
     };
+    static accidentalCodes(acc: string): string;
     static accidentalColumnsTable: Record<number, {
         [name: string]: number[];
     }>;

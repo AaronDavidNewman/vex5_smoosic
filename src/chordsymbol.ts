@@ -113,12 +113,11 @@ export class ChordSymbol extends Modifier {
 
   // Glyph data
   static readonly glyphs: Record<string, string> = {
-    csymDiminished: '\ue870' /*csymDiminished*/,
+    diminished: '\ue870' /*csymDiminished*/,
     dim: '\ue870' /*csymDiminished*/,
-    csymHalfDiminished: '\ue871' /*csymHalfDiminished*/,
+    halfDiminished: '\ue871' /*csymHalfDiminished*/,
     '+': '\ue872' /*csymAugmented*/,
     augmented: '\ue872' /*csymAugmented*/,
-    csymAugmented: '\ue872' /*csymAugmented*/,
     majorSeventh: '\ue873' /*csymMajorSeventh*/,
     minor: '\ue874' /*csymMinor*/,
     '-': '\ue874' /*csymMinor*/,
@@ -130,18 +129,9 @@ export class ChordSymbol extends Modifier {
     rightBracket: '\ue878' /*csymBracketRightTall*/,
     leftParenTall: '\u0028' /*csymParensLeftVeryTall*/,
     rightParenTall: '\u0029' /*csymParensRightVeryTall*/,
-    csymParensRightTall: '\u0029' /*csymParensRightTall*/,
-    csymLeftBracket: '\ue877' /*csymBracketLeftTall*/,
-    csymRightBracket: '\ue878' /*csymBracketRightTall*/,
-    csymLeftParenTall: '\u0028' /*csymParensLeftVeryTall*/,
-    csymRightParenTall: '\u0029' /*csymParensRightVeryTall*/,
     '/': '\ue87c' /*csymDiagonalArrangementSlash*/,
     over: '\ue87c' /*csymDiagonalArrangementSlash*/,
     '#': '\ued62' /*csymAccidentalSharp*/,
-    accidentalSharp: '\ued62' /*csymAccidentalSharp*/,
-    accidentalFlat: '\ued60' /*csymAccidentalFlat*/,
-    csymAccidentalSharp: '\ued62' /*csymAccidentalSharp*/,
-    csymAccidentalFlat: '\ued60' /*csymAccidentalFlat*/,
     b: '\ued60' /*csymAccidentalFlat*/,
   };
 

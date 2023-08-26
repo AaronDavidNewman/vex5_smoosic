@@ -13,9 +13,7 @@ export declare class Bend extends Modifier {
     static get UP(): number;
     static get DOWN(): number;
     static format(bends: Bend[], state: ModifierContextState): boolean;
-    protected text: string;
     protected tap: string;
-    protected release: boolean;
     protected phrase: BendPhrase[];
     renderOptions: {
         lineWidth: number;
@@ -52,16 +50,11 @@ export declare class Bend extends Modifier {
      *     width: 8;
      *   }]
      * ```
-     * @param text text for bend ("Full", "Half", etc.) (DEPRECATED)
-     * @param release if true, render a release. (DEPRECATED)
-     * @param phrase if set, ignore "text" and "release", and use the more sophisticated phrase specified
      */
-    constructor(text: string, release?: boolean, phrase?: BendPhrase[]);
+    constructor(phrase: BendPhrase[]);
     /** Set horizontal shift in pixels. */
     setXShift(value: number): this;
     setTap(value: string): this;
-    /** Get text provided in the constructor. */
-    getText(): string;
     getTextHeight(): number;
     /** Recalculate width. */
     protected updateWidth(): this;

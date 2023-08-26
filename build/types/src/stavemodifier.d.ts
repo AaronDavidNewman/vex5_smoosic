@@ -1,5 +1,4 @@
 import { Element } from './element';
-import { Glyph } from './glyph';
 import { Stave } from './stave';
 export interface LayoutMetrics {
     xMin: number;
@@ -19,8 +18,6 @@ export declare enum StaveModifierPosition {
 export declare class StaveModifier extends Element {
     static get CATEGORY(): string;
     static get Position(): typeof StaveModifierPosition;
-    protected width: number;
-    protected x: number;
     protected padding: number;
     protected position: StaveModifierPosition;
     protected stave?: Stave;
@@ -31,20 +28,6 @@ export declare class StaveModifier extends Element {
     getStave(): Stave | undefined;
     checkStave(): Stave;
     setStave(stave: Stave): this;
-    getWidth(): number;
-    setWidth(width: number): this;
-    getX(): number;
-    setX(x: number): this;
-    /**
-     * Runs setYShift() for the Glyph object so that it matches the position of line for
-     * the Stave provided.  A `customShift` can also be given (measured in the same units
-     * as `setYShift` not in lines) and this will be added after all other positions are
-     * calculated from the Stave.
-     *
-     * Note that this routine only sets the yShift; it does not actually "place" (meaning
-     * draw) the Glyph on the Stave.  Call .draw() afterwards to do that.
-     */
-    placeGlyphOnLine(glyph: Glyph, stave: Stave, line?: number, customShift?: number): void;
     getPadding(index: number): number;
     setPadding(padding: number): this;
     setLayoutMetrics(layoutMetrics: LayoutMetrics): this;

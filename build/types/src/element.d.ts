@@ -77,6 +77,8 @@ export declare class Element {
     protected width: number;
     protected xShift: number;
     protected yShift: number;
+    protected x: number;
+    protected y: number;
     constructor(category?: string);
     /**
      * Adds a child Element to the Element, which lets it inherit the
@@ -220,6 +222,14 @@ export declare class Element {
     getWidth(): number;
     /** Set element width. */
     setWidth(width: number): this;
+    /** Set the X coordinate. */
+    setX(x: number): this;
+    /** Get the X coordinate. */
+    getX(): number;
+    /** Get the Y coordinate. */
+    getY(): number;
+    /** Set the Y coordinate. */
+    setY(y: number): this;
     /** Shift element down `yShift` pixels. Negative values shift up. */
     setYShift(yShift: number): this;
     /** Get shift element `yShift`. */

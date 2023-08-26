@@ -1,5 +1,3 @@
-import { BoundingBox } from './boundingbox';
-import { Glyph } from './glyph';
 import { Note, NoteStruct } from './note';
 export interface GlyphNoteOptions {
     ignoreTicks?: boolean;
@@ -8,13 +6,9 @@ export interface GlyphNoteOptions {
 export declare class GlyphNote extends Note {
     static get CATEGORY(): string;
     protected options: Required<GlyphNoteOptions>;
-    protected glyph: Glyph;
-    constructor(glyph: Glyph, noteStruct: NoteStruct, options?: GlyphNoteOptions);
-    setGlyph(glyph: Glyph): this;
-    getBoundingBox(): BoundingBox | undefined;
+    constructor(glyph: string, noteStruct: NoteStruct, options?: GlyphNoteOptions);
+    setGlyph(glyph: string): this;
     preFormat(): this;
     drawModifiers(): void;
-    /** Get the glyph width. */
-    getGlyphWidth(): number;
     draw(): void;
 }

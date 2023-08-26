@@ -26,10 +26,6 @@ export declare class Stave extends Element {
     protected endX: number;
     protected clef: string;
     protected endClef?: string;
-    protected x: number;
-    protected y: number;
-    protected width: number;
-    protected height: number;
     protected formatted: boolean;
     protected measure: number;
     protected bounds: Bounds;
@@ -49,16 +45,12 @@ export declare class Stave extends Element {
     getNoteEndX(): number;
     getTieStartX(): number;
     getTieEndX(): number;
-    getX(): number;
     getNumLines(): number;
     setNumLines(n: number): this;
-    setY(y: number): this;
-    getY(): number;
     getTopLineTopY(): number;
     getBottomLineBottomY(): number;
     setX(x: number): this;
     setWidth(width: number): this;
-    getWidth(): number;
     getStyle(): ElementStyle;
     /**
      * Set the measure number of this Stave.

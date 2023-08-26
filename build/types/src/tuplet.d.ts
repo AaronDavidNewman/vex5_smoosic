@@ -42,10 +42,8 @@
  * }
  */
 import { Element } from './element';
-import { Glyph } from './glyph';
 import { Note } from './note';
 export interface TupletOptions {
-    beatsOccupied?: number;
     bracketed?: boolean;
     location?: number;
     notesOccupied?: number;
@@ -68,20 +66,14 @@ export declare class Tuplet extends Element {
     notes: Note[];
     protected options: TupletOptions;
     protected numNotes: number;
-    protected point: number;
     protected bracketed: boolean;
-    protected yPos: number;
-    protected xPos: number;
-    protected width: number;
+    protected textElement: Element;
     protected location: number;
     protected notesOccupied: number;
     protected ratioed: boolean;
-    protected numeratorGlyphs: Glyph[];
-    protected denominatorGlyphs: Glyph[];
     static get LOCATION_TOP(): number;
     static get LOCATION_BOTTOM(): number;
     static get NESTING_OFFSET(): number;
-    static get metrics(): TupletMetrics;
     constructor(notes: Note[], options?: TupletOptions);
     attach(): void;
     detach(): void;
@@ -99,9 +91,6 @@ export declare class Tuplet extends Element {
     setTupletLocation(location: number): this;
     getNotes(): Note[];
     getNoteCount(): number;
-    beatsOccupiedDeprecationWarning(): void;
-    getBeatsOccupied(): number;
-    setBeatsOccupied(beats: number): void;
     getNotesOccupied(): number;
     setNotesOccupied(notes: number): void;
     resolveGlyphs(): void;

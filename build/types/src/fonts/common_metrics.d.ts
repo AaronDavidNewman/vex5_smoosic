@@ -87,7 +87,6 @@ export declare const CommonMetrics: {
             width: number;
         };
     };
-    pedalMarking: {};
     digits: {
         shiftLine: number;
         shiftY: number;
@@ -98,22 +97,6 @@ export declare const CommonMetrics: {
         };
         articStaccatissimoBelow: {
             padding: number;
-        };
-    };
-    tremolo: {
-        default: {
-            spacing: number;
-            offsetYStemUp: number;
-            offsetYStemDown: number;
-            offsetXStemUp: number;
-            offsetXStemDown: number;
-        };
-        grace: {
-            spacing: number;
-            offsetYStemUp: number;
-            offsetYStemDown: number;
-            offsetXStemUp: number;
-            offsetXStemDown: number;
         };
     };
     staveRepetition: {

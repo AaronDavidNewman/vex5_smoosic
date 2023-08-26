@@ -64,12 +64,6 @@ export class Stave extends Element {
   protected clef: string;
   protected endClef?: string;
 
-  protected x: number;
-  protected y: number;
-  protected width: number;
-  // Initialized by the constructor via this.resetLines().
-  protected height: number = 0;
-
   protected formatted: boolean;
   protected measure: number;
   protected bounds: Bounds;
@@ -80,14 +74,12 @@ export class Stave extends Element {
   // This is the sum of the padding that normally goes on left + right of a stave during
   // drawing. Used to size staves correctly with content width.
   static get defaultPadding(): number {
-    const musicFont = Tables.currentMusicFont();
-    return musicFont.lookupMetric('stave.padding') + musicFont.lookupMetric('stave.endPaddingMax');
+    return Tables.lookupMetric('Stave.padding') + Tables.lookupMetric('Stave.endPaddingMax');
   }
 
   // Right padding, used by system if startX is already determined.
   static get rightPadding(): number {
-    const musicFont = Tables.currentMusicFont();
-    return musicFont.lookupMetric('stave.endPaddingMax');
+    return Tables.lookupMetric('Stave.endPaddingMax');
   }
 
   constructor(x: number, y: number, width: number, options?: StaveOptions) {
@@ -179,10 +171,6 @@ export class Stave extends Element {
     return this.endX;
   }
 
-  getX(): number {
-    return this.x;
-  }
-
   getNumLines(): number {
     return this.options.numLines;
   }
@@ -191,15 +179,6 @@ export class Stave extends Element {
     this.options.numLines = n;
     this.resetLines();
     return this;
-  }
-
-  setY(y: number): this {
-    this.y = y;
-    return this;
-  }
-
-  getY(): number {
-    return this.y;
   }
 
   getTopLineTopY(): number {
@@ -231,10 +210,6 @@ export class Stave extends Element {
     // reset the x position of the end barline (TODO(0xfe): This makes no sense)
     // this.modifiers[1].setX(this.endX);
     return this;
-  }
-
-  getWidth(): number {
-    return this.width;
   }
 
   getStyle(): ElementStyle {

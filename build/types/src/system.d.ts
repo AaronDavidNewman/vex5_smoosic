@@ -75,11 +75,11 @@ export declare class System extends Element {
     /** Get origin X. */
     getX(): number;
     /** Set origin X. */
-    setX(x: number): void;
+    setX(x: number): this;
     /** Get origin y. */
     getY(): number;
     /** Set origin y. */
-    setY(y: number): void;
+    setY(y: number): this;
     /** Get associated staves. */
     getStaves(): Stave[];
     /** Get associated voices. */

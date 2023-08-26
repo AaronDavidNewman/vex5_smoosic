@@ -38,8 +38,6 @@ export declare class NoteHead extends Note {
     protected stemDownXOffset: number;
     protected displaced: boolean;
     protected stemDirection: number;
-    protected x: number;
-    protected y: number;
     protected line: number;
     protected index?: number;
     protected slashed: boolean;
@@ -48,12 +46,6 @@ export declare class NoteHead extends Note {
     getWidth(): number;
     /** Determine if the notehead is displaced. */
     isDisplaced(): boolean;
-    /** Set the X coordinate. */
-    setX(x: number): this;
-    /** Get the Y coordinate. */
-    getY(): number;
-    /** Set the Y coordinate. */
-    setY(y: number): this;
     /** Get the stave line the notehead is placed on. */
     getLine(): number;
     /** Set the stave line the notehead is placed on. */

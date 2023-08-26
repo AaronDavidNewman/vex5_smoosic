@@ -33,7 +33,6 @@ export declare class Annotation extends Modifier {
     static format(annotations: Annotation[], state: ModifierContextState): boolean;
     protected horizontalJustification: AnnotationHorizontalJustify;
     protected verticalJustification: AnnotationVerticalJustify;
-    protected text: string;
     /**
      * Annotations inherit from `Modifier` and is positioned correctly when
      * in a `ModifierContext`.

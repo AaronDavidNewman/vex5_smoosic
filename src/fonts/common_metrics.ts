@@ -92,8 +92,6 @@ export const CommonMetrics = {
     },
   },
 
-  pedalMarking: {},
-
   // These are for numeric digits, such as in time signatures
   digits: {
     // used by TimeSignature objects
@@ -109,23 +107,6 @@ export const CommonMetrics = {
     },
     articStaccatissimoBelow: {
       padding: 2,
-    },
-  },
-
-  tremolo: {
-    default: {
-      spacing: 7,
-      offsetYStemUp: -8,
-      offsetYStemDown: 8,
-      offsetXStemUp: 11,
-      offsetXStemDown: 1,
-    },
-    grace: {
-      spacing: (7 * 3) / 5,
-      offsetYStemUp: -(8 * 3) / 5,
-      offsetYStemDown: (8 * 3) / 5,
-      offsetXStemUp: 7,
-      offsetXStemDown: 1,
     },
   },
 

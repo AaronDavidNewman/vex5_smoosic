@@ -1,11 +1,10 @@
-import { Glyph } from './glyph';
+import { Element } from './element';
 import { Stave } from './stave';
 import { StaveModifier } from './stavemodifier';
 export declare class KeySignature extends StaveModifier {
     static get CATEGORY(): string;
     protected glyphFontScale: number;
-    protected glyphs: Glyph[];
-    protected xPositions: number[];
+    protected glyphs: Element[];
     protected paddingForced: boolean;
     protected formatted?: boolean;
     protected cancelKeySpec?: string;
@@ -15,10 +14,6 @@ export declare class KeySignature extends StaveModifier {
     }[];
     protected keySpec?: string;
     protected alterKeySpec?: string[];
-    static accidentalSpacing: Record<string, {
-        above: number;
-        below: number;
-    }>;
     constructor(keySpec: string, cancelKeySpec?: string, alterKeySpec?: string[]);
     convertToGlyph(acc: {
         type: string;
@@ -26,7 +21,7 @@ export declare class KeySignature extends StaveModifier {
     }, nextAcc: {
         type: string;
         line: number;
-    }): void;
+    }, stave: Stave): void;
     cancelKey(spec: string): this;
     convertToCancelAccList(spec: string): {
         type: string;
@@ -46,9 +41,5 @@ export declare class KeySignature extends StaveModifier {
     alterKey(alterKeySpec: string[]): this;
     convertToAlterAccList(alterKeySpec: string[]): void;
     format(): void;
-    /**
-     * Return the Glyph objects making up this KeySignature.
-     */
-    getGlyphs(): Glyph[];
     draw(): void;
 }

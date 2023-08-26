@@ -23,9 +23,7 @@ export declare class PedalMarking extends Element {
     };
     protected notes: StaveNote[];
     /** Glyph data */
-    static readonly GLYPHS: Record<string, {
-        code: string;
-    }>;
+    static readonly GLYPHS: Record<string, string>;
     /** Pedal type as number. */
     static readonly type: {
         TEXT: number;

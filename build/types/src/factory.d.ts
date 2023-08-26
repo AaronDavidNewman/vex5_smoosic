@@ -12,7 +12,6 @@ import { FontInfo } from './font';
 import { Formatter, FormatterOptions } from './formatter';
 import { FretHandFinger } from './frethandfinger';
 import { GhostNote } from './ghostnote';
-import { Glyph } from './glyph';
 import { GlyphNote, GlyphNoteOptions } from './glyphnote';
 import { GraceNote, GraceNoteStruct } from './gracenote';
 import { GraceNoteGroup } from './gracenotegroup';
@@ -108,7 +107,7 @@ export declare class Factory {
         options?: StaveOptions;
     }): TabStave;
     StaveNote(noteStruct: StaveNoteStruct): StaveNote;
-    GlyphNote(glyph: Glyph, noteStruct: NoteStruct, options?: GlyphNoteOptions): GlyphNote;
+    GlyphNote(glyph: string, noteStruct: NoteStruct, options?: GlyphNoteOptions): GlyphNote;
     RepeatNote(type: string, noteStruct?: NoteStruct, options?: GlyphNoteOptions): RepeatNote;
     GhostNote(noteStruct: string | NoteStruct): GhostNote;
     TextNote(noteStruct: TextNoteStruct): TextNote;
