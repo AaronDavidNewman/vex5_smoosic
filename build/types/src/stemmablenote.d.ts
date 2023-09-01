@@ -1,18 +1,19 @@
-import { Glyph, GlyphProps } from './glyph';
-import { Note, NoteStruct } from './note';
+import { Element, ElementStyle } from './element';
+import { GlyphProps, Note, NoteStruct } from './note';
 import { Stem, StemOptions } from './stem';
 export declare abstract class StemmableNote extends Note {
     static get CATEGORY(): string;
     stemDirection?: number;
     stem?: Stem;
-    protected flag?: Glyph;
+    protected flag: Element;
+    protected flagStyle: ElementStyle;
     protected stemExtensionOverride?: number;
     constructor(noteStruct: NoteStruct);
     getStem(): Stem | undefined;
     checkStem(): Stem;
     setStem(stem: Stem): this;
     buildStem(): this;
-    buildFlag(category?: string): void;
+    buildFlag(): void;
     getBaseCustomNoteHeadGlyphProps(): GlyphProps;
     getStemLength(): number;
     getBeamCount(): number;
@@ -21,6 +22,8 @@ export declare abstract class StemmableNote extends Note {
     setStemDirection(direction?: number): this;
     getStemX(): number;
     getCenterGlyphX(): number;
+    /** Primarily used as the scaling factor for grace notes, GraceNote will return the required scale. */
+    getStaveNoteScale(): number;
     getStemExtension(): number;
     setStemLength(height: number): this;
     getStemExtents(): {

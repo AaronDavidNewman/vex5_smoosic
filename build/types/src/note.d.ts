@@ -1,6 +1,5 @@
 import { Beam } from './beam';
 import { Fraction } from './fraction';
-import { GlyphProps } from './glyph';
 import { Modifier } from './modifier';
 import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
@@ -8,17 +7,20 @@ import { Stroke } from './strokes';
 import { Tickable } from './tickable';
 import { TickContext } from './tickcontext';
 import { Voice } from './voice';
+export interface GlyphProps {
+    codeHead: string;
+    stemBeamExtension: number;
+    stem: boolean;
+    codeFlagUp?: string;
+    beamCount: number;
+}
 export interface KeyProps {
-    stemDownXOffset?: number;
-    stemUpXOffset?: number;
     key: string;
     octave: number;
     line: number;
     intValue?: number;
-    accidental?: string;
+    accidental?: number;
     code?: string;
-    stroke: number;
-    shiftRight?: number;
     displaced: boolean;
 }
 export interface NoteMetrics {
@@ -73,6 +75,7 @@ export interface NoteStruct {
  */
 export declare abstract class Note extends Tickable {
     static get CATEGORY(): string;
+    static getGlyphProps(duration: string, type?: string): GlyphProps;
     /** Debug helper. Displays various note metrics for the given note. */
     static plotMetrics(ctx: RenderContext, note: Tickable, yPos: number): void;
     protected static parseDuration(durationString?: string): NoteDuration | undefined;
@@ -151,10 +154,6 @@ export declare abstract class Note extends Tickable {
     getLineNumber(isTopNote?: boolean): number;
     /** Get the stave line number for rest. */
     getLineForRest(): number;
-    /**
-     * @deprecated Use `getGlyphProps()` instead.
-     */
-    getGlyph(): any;
     /** Get the glyph associated with this note. */
     getGlyphProps(): GlyphProps;
     /** Get the glyph width. */

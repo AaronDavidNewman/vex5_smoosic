@@ -1,4 +1,4 @@
-import { GlyphProps } from './glyph';
+import { Element } from './element';
 import { Stave } from './stave';
 import { StaveNoteStruct } from './stavenote';
 import { StemmableNote } from './stemmablenote';
@@ -12,7 +12,7 @@ export interface TabNoteStruct extends StaveNoteStruct {
 export declare class TabNote extends StemmableNote {
     static get CATEGORY(): string;
     protected ghost: boolean;
-    protected glyphPropsArr: GlyphProps[];
+    protected fretElement: Element[];
     protected positions: TabNotePosition[];
     constructor(noteStruct: TabNoteStruct, drawStem?: boolean);
     greatestString: () => number;
@@ -21,6 +21,7 @@ export declare class TabNote extends StemmableNote {
     setGhost(ghost: boolean): this;
     hasStem(): boolean;
     getStemExtension(): number;
+    static tabToElement(fret: string, scale?: number): Element;
     updateWidth(): void;
     setStave(stave: Stave): this;
     getPositions(): TabNotePosition[];

@@ -1,11 +1,5 @@
 export declare const CommonMetrics: {
     smufl: boolean;
-    stave: {
-        padding: number;
-        endPaddingMax: number;
-        endPaddingMin: number;
-        unalignedNotePadding: number;
-    };
     accidental: {
         noteheadAccidentalPadding: number;
         leftPadding: number;
@@ -112,50 +106,6 @@ export declare const CommonMetrics: {
             offsetY: number;
         };
     };
-    noteHead: {
-        minPadding: number;
-    };
-    stem: {
-        heightAdjustmentForFlag: number;
-        noteHead: {
-            noteheadTriangleUpHalf: {
-                offsetYBaseStemUp: number;
-                offsetYBaseStemDown: number;
-            };
-            noteheadTriangleUpBlack: {
-                offsetYBaseStemUp: number;
-                offsetYBaseStemDown: number;
-            };
-            noteheadTriangleUpWhole: {
-                offsetYBaseStemUp: number;
-                offsetYBaseStemDown: number;
-            };
-            noteheadXHalf: {
-                offsetYBaseStemUp: number;
-                offsetYBaseStemDown: number;
-            };
-            noteheadXBlack: {
-                offsetYBaseStemUp: number;
-                offsetYBaseStemDown: number;
-            };
-            noteheadXWhole: {
-                offsetYBaseStemUp: number;
-                offsetYBaseStemDown: number;
-            };
-            noteheadHalf: {
-                offsetYBaseStemUp: number;
-                offsetYBaseStemDown: number;
-            };
-            noteheadBlack: {
-                offsetYBaseStemUp: number;
-                offsetYBaseStemDown: number;
-            };
-            noteheadSquareWhite: {
-                offsetYBaseStemDown: number;
-                offsetYBaseStemUp: number;
-            };
-        };
-    };
     stringNumber: {
         verticalPadding: number;
         stemPadding: number;
@@ -226,7 +176,6 @@ export declare const CommonMetrics: {
                 shiftX: number;
             };
         };
-        noteHead: {};
         chordSymbol: {
             scale: number;
         };

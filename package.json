@@ -1,6 +1,6 @@
 {
   "name": "vex5_smoosic",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "A JavaScript library for rendering music notation and guitar tablature.",
   "exports": {
     ".": {

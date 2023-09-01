@@ -1,8 +1,7 @@
 import { ArticulationStruct } from './articulation';
 import { Font, FontInfo } from './font';
 import { Fraction } from './fraction';
-import { GlyphProps } from './glyph';
-import { KeyProps } from './note';
+import { GlyphProps, KeyProps } from './note';
 export declare const CommonMetrics: Record<string, any>;
 export declare class Tables {
     static UNISON: boolean;
@@ -12,6 +11,7 @@ export declare class Tables {
     static STAVE_LINE_THICKNESS: number;
     static RENDER_PRECISION_PLACES: number;
     static RESOLUTION: number;
+    static durationCodes: Record<string, Partial<GlyphProps>>;
     /**
      * Customize this by calling Flow.setMusicFont(...fontNames);
      */
@@ -50,26 +50,25 @@ export declare class Tables {
      * @param params a struct with one option, `octaveShift` for clef ottavation (0 = default; 1 = 8va; -1 = 8vb, etc.).
      * @returns properties for the specified note.
      */
-    static keyProperties(keyOctaveGlyph: string, clef?: string, params?: {
+    static keyProperties(keyOctaveGlyph: string, clef?: string, type?: string, params?: {
         octaveShift?: number;
     }): KeyProps;
     static integerToNote(integer?: number): string;
-    static tabToGlyphProps(fret: string, scale?: number): GlyphProps;
     static textWidth(text: string): number;
     static articulationCodes(artic: string): ArticulationStruct;
     static accidentalMap: Record<string, {
         code: string;
         parenRightPaddingAdjustment: number;
     }>;
-    static accidentalCodesOld(acc: string): {
+    static accidentalCodesOld(accidental: string): {
         code: string;
         parenRightPaddingAdjustment: number;
     };
-    static accidentalCodes(acc: string): string;
+    static accidentalCodes(accidental: string): string;
     static accidentalColumnsTable: Record<number, {
         [name: string]: number[];
     }>;
-    static ornamentCodes(acc: string): {
+    static ornamentCodes(accidental: string): {
         code: string;
     };
     static keySignature(spec: string): {
@@ -77,7 +76,7 @@ export declare class Tables {
         line: number;
     }[];
     static getKeySignatures(): Record<string, {
-        acc?: string;
+        accidental?: string;
         num: number;
     }>;
     static hasKeySignature(spec: string): boolean;
@@ -103,7 +102,6 @@ export declare class Tables {
     static durationToNumber(duration: string): number;
     static durationToTicks(duration: string): number;
     static codeNoteHead(type: string, duration: string): string;
-    static getGlyphProps(duration: string, type?: string): GlyphProps;
     static validTypes: Record<string, {
         name: string;
     }>;

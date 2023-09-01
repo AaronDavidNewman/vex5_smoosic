@@ -1,4 +1,3 @@
-import { Glyph } from './glyph';
 import { Note } from './note';
 import { TextNoteStruct } from './textnote';
 /**
@@ -14,12 +13,8 @@ export declare class TextDynamics extends Note {
     static get CATEGORY(): string;
     protected sequence: string;
     protected line: number;
-    protected glyphs: Glyph[];
     /** The glyph data for each dynamics letter. */
-    static get GLYPHS(): Record<string, {
-        code: string;
-        width: number;
-    }>;
+    static get GLYPHS(): Record<string, string>;
     /**
      * Create the dynamics marking.
      *

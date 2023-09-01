@@ -35,8 +35,6 @@ export interface StaveNoteStruct extends NoteStruct {
     /** `Stem.UP` or `Stem.DOWN`. */
     stemDirection?: number;
     autoStem?: boolean;
-    stemDownXOffset?: number;
-    stemUpXOffset?: number;
     strokePx?: number;
     glyphFontScale?: number;
     octaveShift?: number;
@@ -46,14 +44,6 @@ export declare class StaveNote extends StemmableNote {
     #private;
     static DEBUG: boolean;
     static get CATEGORY(): string;
-    /**
-     * @deprecated Use Stem.UP.
-     */
-    static get STEM_UP(): number;
-    /**
-     * @deprecated Use Stem.DOWN.
-     */
-    static get STEM_DOWN(): number;
     static get LEDGER_LINE_OFFSET(): number;
     static get minNoteheadPadding(): number;
     /** Format notes inside a ModifierContext. */
@@ -106,6 +96,8 @@ export declare class StaveNote extends StemmableNote {
     getLedgerLineStyle(): ElementStyle;
     setFlagStyle(style: ElementStyle): void;
     getFlagStyle(): ElementStyle | undefined;
+    /** Get the glyph width. */
+    getGlyphWidth(): number;
     setKeyStyle(index: number, style: ElementStyle): this;
     setKeyLine(index: number, line: number): this;
     getKeyLine(index: number): number;

@@ -3,30 +3,6 @@ import { Element } from './element';
 import { Font, FontGlyph } from './font';
 import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
-export interface GlyphProps {
-    codeHead: string;
-    ledgerCodeHead?: string;
-    dotShiftY: number;
-    position: string;
-    rest: boolean;
-    lineBelow: number;
-    lineAbove: number;
-    stemBeamExtension: number;
-    stemUpExtension: number;
-    stemDownExtension: number;
-    stem: boolean;
-    code?: string;
-    codeFlagUpstem?: string;
-    codeFlagDownstem?: string;
-    flag?: boolean;
-    width?: number;
-    text?: string;
-    tabnoteStemDownExtension: number;
-    tabnoteStemUpExtension: number;
-    beamCount: number;
-    shiftY?: number;
-    getWidth(a?: number): number;
-}
 export interface GlyphOptions {
     category?: string;
 }

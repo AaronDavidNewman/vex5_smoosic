@@ -1,5 +1,5 @@
+import { Element } from './element';
 import { FontInfo } from './font';
-import { Glyph } from './glyph';
 import { Note, NoteStruct } from './note';
 export declare enum TextJustification {
     LEFT = 1,
@@ -25,13 +25,9 @@ export declare class TextNote extends Note {
     static get CATEGORY(): string;
     static readonly Justification: typeof TextJustification;
     /** Glyph data. */
-    static get GLYPHS(): Record<string, {
-        code: string;
-    }>;
-    protected text: string;
-    protected glyph?: Glyph;
-    protected superscript?: string;
-    protected subscript?: string;
+    static get GLYPHS(): Record<string, string>;
+    protected superscript?: Element;
+    protected subscript?: Element;
     protected smooth: boolean;
     protected justification: TextJustification;
     protected line: number;
@@ -42,8 +38,6 @@ export declare class TextNote extends Note {
     setLine(line: number): this;
     /** Return the Stave line on which the TextNote is placed. */
     getLine(): number;
-    /** Return the unformatted text of this TextNote. */
-    getText(): string;
     /** Pre-render formatting. */
     preFormat(): void;
     /**
