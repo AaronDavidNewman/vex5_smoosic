@@ -114,7 +114,7 @@ export class TimeSignature extends StaveModifier {
     for (let i = 0; i < topDigits.length; ++i) {
       const code = TimeSignature.getTimeSigCode(topDigits[i], botDigits.length > 0);
       txt += code;
-  }
+    }
     this.topText.setText(txt);
     this.topText.measureText();
     topWidth = this.topText.getWidth();

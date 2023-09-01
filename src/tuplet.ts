@@ -203,8 +203,8 @@ export class Tuplet extends Element {
       n = Math.floor(n / 10);
     }
     if (this.ratioed) {
-    n = this.notesOccupied;
-    while (n >= 1) {
+      n = this.notesOccupied;
+      while (n >= 1) {
         denominator = String.fromCharCode(0xe880 /* tuplet0 */ + (n % 10)) + denominator;
         n = Math.floor(n / 10);
       }

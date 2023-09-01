@@ -107,7 +107,7 @@ export class Bend extends Modifier {
       releaseWidth: 8,
     };
 
-      this.phrase = phrase;
+    this.phrase = phrase;
 
     this.updateWidth();
   }
