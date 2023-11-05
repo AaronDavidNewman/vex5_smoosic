@@ -22,13 +22,6 @@ export interface TimeSignatureInfo {
 const assertIsValidTimeSig = (timeSpec: string) => {
   const numbers = timeSpec.split('/');
 
-  if (numbers.length !== 2 && numbers[0] !== '+' && numbers[0] !== '-') {
-    throw new RuntimeError(
-      'BadTimeSignature',
-      `Invalid time spec: ${timeSpec}. Must be in the form "<numerator>/<denominator>"`
-    );
-  }
-
   numbers.forEach((number) => {
     // Characters consisting in number 0..9, '+', '-', '(' or ')'
     if (/^[0-9+\-()]+$/.test(number) === false) {
@@ -117,7 +110,6 @@ export class TimeSignature extends StaveModifier {
       txt += code;
     }
     this.topText.setText(txt);
-    this.topText.measureText();
     topWidth = this.topText.getWidth();
     height = this.topText.getHeight();
 
@@ -128,13 +120,12 @@ export class TimeSignature extends StaveModifier {
       txt += code;
     }
     this.botText.setText(txt);
-    this.botText.measureText();
     botWidth = this.botText.getWidth();
     height = Math.max(height, this.botText.getHeight());
 
-    // If the height of the digits is more than two staff spaces (20), shift to the next line
-    // in order to center the digits on lines 1 and 5 rather than 2 and 4.
-    this.lineShift = height > 22 ? 1 : 0;
+    // If the height of the digits is more than three staff spaces (30), shift half a line line
+    // in order to center the digits on lines 1.5 and 4.5 rather than 2 and 4.
+    this.lineShift = height > 30 ? 0.5 : 0;
 
     this.width = Math.max(topWidth, botWidth);
     this.topStartX = (this.width - topWidth) / 2.0;
@@ -152,7 +143,6 @@ export class TimeSignature extends StaveModifier {
       const code = TimeSignature.getTimeSigCode(timeSpec);
       this.line = 2;
       this.text = code;
-      this.measureText();
       this.isNumeric = false;
     } else {
       if (this.validateArgs) {

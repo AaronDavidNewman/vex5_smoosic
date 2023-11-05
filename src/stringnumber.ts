@@ -4,6 +4,7 @@
 // This file implements the `StringNumber` class which renders string
 // number annotations beside notes.
 
+import { Metrics } from './metrics';
 import { Modifier, ModifierPosition } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
@@ -211,12 +212,10 @@ export class StringNumber extends Modifier {
           const ys = note.getYs();
           dotY = ys.reduce((a, b) => (a < b ? a : b));
           if (note.hasStem() && stemDirection === Stem.UP) {
-            dotY = stemExt.topY + Tables.lookupMetric('StringNumber.stemPadding');
+            dotY = stemExt.topY + Metrics.get('StringNumber.stemPadding');
           }
           dotY -=
-            this.radius +
-            Tables.lookupMetric('StringNumber.verticalPadding') +
-            this.textLine * Tables.STAVE_LINE_DISTANCE;
+            this.radius + Metrics.get('StringNumber.verticalPadding') + this.textLine * Tables.STAVE_LINE_DISTANCE;
         }
         break;
       case Modifier.Position.BELOW:
@@ -224,19 +223,17 @@ export class StringNumber extends Modifier {
           const ys: number[] = note.getYs();
           dotY = ys.reduce((a, b) => (a > b ? a : b));
           if (note.hasStem() && stemDirection === Stem.DOWN) {
-            dotY = stemExt.topY - Tables.lookupMetric('StringNumber.stemPadding');
+            dotY = stemExt.topY - Metrics.get('StringNumber.stemPadding');
           }
           dotY +=
-            this.radius +
-            Tables.lookupMetric('StringNumber.verticalPadding') +
-            this.textLine * Tables.STAVE_LINE_DISTANCE;
+            this.radius + Metrics.get('StringNumber.verticalPadding') + this.textLine * Tables.STAVE_LINE_DISTANCE;
         }
         break;
       case Modifier.Position.LEFT:
-        dotX -= this.radius / 2 + Tables.lookupMetric('StringNumber.leftPadding');
+        dotX -= this.radius / 2 + Metrics.get('StringNumber.leftPadding');
         break;
       case Modifier.Position.RIGHT:
-        dotX += this.radius / 2 + Tables.lookupMetric('StringNumber.rightPadding');
+        dotX += this.radius / 2 + Metrics.get('StringNumber.rightPadding');
         break;
       default:
         throw new RuntimeError('InvalidPosition', `The position ${this.position} is invalid`);
@@ -249,7 +246,7 @@ export class StringNumber extends Modifier {
       ctx.setLineWidth(1.5);
       ctx.stroke();
     }
-    ctx.setFont(this.textFont);
+    ctx.setFont(this.fontInfo);
     const x = dotX - ctx.measureText(this.stringNumber).width / 2;
     ctx.fillText('' + this.stringNumber, x, dotY + 4.5);
 

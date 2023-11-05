@@ -18,7 +18,6 @@ export class KeySignature extends StaveModifier {
     return Category.KeySignature;
   }
 
-  protected glyphFontScale: number;
   protected glyphs: Element[];
   protected paddingForced: boolean;
   protected formatted?: boolean;
@@ -33,7 +32,6 @@ export class KeySignature extends StaveModifier {
 
     this.setKeySig(keySpec, cancelKeySpec, alterKeySpec);
     this.setPosition(StaveModifierPosition.BEGIN);
-    this.glyphFontScale = Tables.lookupMetric('fontSize');
     this.glyphs = [];
     this.paddingForced = false;
   }
@@ -45,7 +43,6 @@ export class KeySignature extends StaveModifier {
     const code = Tables.accidentalCodes(acc.type);
     const glyph = new Element(Category.KeySignature);
     glyph.setText(code);
-    glyph.measureText();
 
     // Determine spacing between current accidental and the next accidental
     const extraWidth = 1;
@@ -168,7 +165,7 @@ export class KeySignature extends StaveModifier {
   }
 
   getWidth(): number {
-    if (!this.formatted) this.format();
+    if (!this.formatted) this.calculateWidth();
 
     return this.width;
   }
@@ -230,6 +227,30 @@ export class KeySignature extends StaveModifier {
     }
 
     this.formatted = true;
+  }
+
+  protected calculateWidth(): void {
+    this.width = 0;
+    this.accList = Tables.keySignature(defined(this.keySpec));
+    if (this.cancelKeySpec) {
+      this.convertToCancelAccList(this.cancelKeySpec);
+    }
+    if (this.alterKeySpec) {
+      this.convertToAlterAccList(this.alterKeySpec);
+    }
+
+    if (this.accList.length > 0) {
+      for (let i = 0; i < this.accList.length; ++i) {
+        const code = Tables.accidentalCodes(this.accList[i].type);
+        const glyph = new Element(Category.KeySignature);
+        glyph.setText(code);
+        // Determine spacing between current accidental and the next accidental
+        const extraWidth = 1;
+
+        // Expand size of key signature
+        this.width += glyph.getWidth() + extraWidth;
+      }
+    }
   }
 
   draw(): void {

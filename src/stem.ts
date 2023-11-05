@@ -6,13 +6,14 @@
 
 import { BoundingBox } from './boundingbox';
 import { Element } from './element';
+import { Metrics } from './metrics';
 import { Tables } from './tables';
 import { Category } from './typeguard';
 import { log, RuntimeError } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (Stem.DEBUG) log('Vex.Flow.Stem', args);
+  if (Stem.DEBUG) log('VexFlow.Stem', args);
 }
 
 export interface StemOptions {
@@ -32,7 +33,7 @@ export interface StemOptions {
 }
 
 export class Stem extends Element {
-  /** To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`. */
+  /** To enable logging for this class. Set `VexFlow.Stem.DEBUG` to `true`. */
   static DEBUG: boolean = false;
 
   static get CATEGORY(): string {
@@ -171,7 +172,7 @@ export class Stem extends Element {
   }
 
   adjustHeightForFlag(): void {
-    this.renderHeightAdjustment = Tables.lookupMetric('Stem.heightAdjustmentForFlag', -3);
+    this.renderHeightAdjustment = Metrics.get('Stem.heightAdjustmentForFlag', -3);
   }
 
   adjustHeightForBeam(): void {

@@ -5,6 +5,7 @@ import { BoundingBox, Bounds } from './boundingbox';
 import { Clef } from './clef';
 import { Element, ElementStyle } from './element';
 import { KeySignature } from './keysignature';
+import { Metrics } from './metrics';
 import { Barline, BarlineType } from './stavebarline';
 import { StaveModifier, StaveModifierPosition } from './stavemodifier';
 import { Repetition } from './staverepetition';
@@ -74,12 +75,12 @@ export class Stave extends Element {
   // This is the sum of the padding that normally goes on left + right of a stave during
   // drawing. Used to size staves correctly with content width.
   static get defaultPadding(): number {
-    return Tables.lookupMetric('Stave.padding') + Tables.lookupMetric('Stave.endPaddingMax');
+    return Metrics.get('Stave.padding') + Metrics.get('Stave.endPaddingMax');
   }
 
   // Right padding, used by system if startX is already determined.
   static get rightPadding(): number {
-    return Tables.lookupMetric('Stave.endPaddingMax');
+    return Metrics.get('Stave.endPaddingMax');
   }
 
   constructor(x: number, y: number, width: number, options?: StaveOptions) {
@@ -282,7 +283,9 @@ export class Stave extends Element {
   // Section functions
   setSection(section: string, y: number, xOffset = 0, fontSize?: number, drawRect = true) {
     const staveSection = new StaveSection(section, this.x + xOffset, y, drawRect);
-    if (fontSize) staveSection.setFontSize(fontSize);
+    if (fontSize) {
+      staveSection.setFontSize(fontSize);
+    }
     this.modifiers.push(staveSection);
     return this;
   }
@@ -305,10 +308,6 @@ export class Stave extends Element {
   ): this {
     this.modifiers.push(new StaveText(text, position, options));
     return this;
-  }
-
-  getHeight(): number {
-    return this.height;
   }
 
   getSpacingBetweenLines(): number {
@@ -730,7 +729,7 @@ export class Stave extends Element {
     // Render measure numbers
     if (this.measure > 0) {
       ctx.save();
-      ctx.setFont(this.textFont);
+      ctx.setFont(this.fontInfo);
       const textWidth = ctx.measureText('' + this.measure).width;
       y = this.getYForTopText(0) + 3;
       ctx.fillText('' + this.measure, this.x - textWidth / 2, y);

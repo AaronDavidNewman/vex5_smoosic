@@ -3,6 +3,8 @@
 // This class implements multiple measure rests.
 
 import { Element } from './element';
+import { Glyphs } from './glyphs';
+import { Metrics } from './metrics';
 import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
 import { StaveModifierPosition } from './stavemodifier';
@@ -74,8 +76,8 @@ export class MultiMeasureRest extends Element {
    */
   constructor(numberOfMeasures: number, options: MultimeasureRestRenderOptions) {
     super();
-    const fontSize = options.numberGlyphPoint ?? Tables.lookupMetric('MultiMeasureRest.fontSize'); // same as TimeSignature.
-    this.textFont.size = fontSize;
+    const fontSize = options.numberGlyphPoint ?? Metrics.get('MultiMeasureRest.fontSize'); // same as TimeSignature.
+    this.fontInfo.size = fontSize;
 
     this.numberOfMeasures = numberOfMeasures;
     this.text = '';
@@ -84,7 +86,6 @@ export class MultiMeasureRest extends Element {
       // 0xe080 is timeSig0. We calculate the code point for timeSigN to assemble the digits via SMuFL glyphs.
       this.text += String.fromCodePoint(0xe080 + Number(digit));
     }
-    this.measureText();
 
     // Keep track of whether these four options were provided.
     this.#hasPaddingLeft = typeof options.paddingLeft === 'number';
@@ -100,7 +101,7 @@ export class MultiMeasureRest extends Element {
       line: 2,
       spacingBetweenLinesPx: Tables.STAVE_LINE_DISTANCE, // same as Stave.
       serifThickness: 2,
-      semibreveRestGlyphScale: Tables.lookupMetric('fontSize'), // same as NoteHead.
+      semibreveRestGlyphScale: Metrics.get('fontSize'), // same as NoteHead.
       paddingLeft: 0,
       paddingRight: 0,
       lineThickness: 5,
@@ -126,7 +127,7 @@ export class MultiMeasureRest extends Element {
     return defined(this.stave, 'NoStave', 'No stave attached to instance.');
   }
 
-  drawLine(stave: Stave, ctx: RenderContext, left: number, right: number, spacingBetweenLines: number): void {
+  drawLine(stave: Stave, ctx: RenderContext, left: number, right: number): void {
     const options = this.renderOptions;
 
     const y = stave.getYForLine(options.line);
@@ -136,7 +137,6 @@ export class MultiMeasureRest extends Element {
     let txt = '\ue4ef'; /*restHBarLeft*/
     const el = new Element();
     el.setText(txt);
-    el.measureText();
     // Add middle bars until the right padding is reached
     for (let i = 1; (i + 2) * el.getWidth() + left <= right; i++) {
       txt += '\ue4f0'; /*restHBarMiddle*/
@@ -144,11 +144,10 @@ export class MultiMeasureRest extends Element {
     txt += '\ue4f1'; /*restHBarRight*/
 
     el.setText(txt);
-    el.measureText();
     el.renderText(ctx, left + (right - left) * 0.5 - el.getWidth() * 0.5, y);
   }
 
-  drawSymbols(stave: Stave, ctx: RenderContext, left: number, right: number, spacingBetweenLines: number): void {
+  drawSymbols(stave: Stave, ctx: RenderContext, left: number, right: number): void {
     const n4 = Math.floor(this.numberOfMeasures / 4);
     const n = this.numberOfMeasures % 4;
     const n2 = Math.floor(n / 2);
@@ -159,20 +158,18 @@ export class MultiMeasureRest extends Element {
     const elMiddle = new Element();
     let txt = '';
     for (let i = 0; i < n4; ++i) {
-      txt += '\ue4e1' /*restLonga*/ + ' ';
+      txt += Glyphs.restLonga + ' ';
     }
     for (let i = 0; i < n2; ++i) {
-      txt += '\ue4e2' /*restDoubleWhole*/ + ' ';
+      txt += Glyphs.restDoubleWhole + ' ';
     }
     elMiddle.setText(txt);
-    elMiddle.measureText();
     const elTop = new Element();
     txt = '';
     for (let i = 0; i < n1; ++i) {
-      txt += '\ue4e3' /*restWhole*/ + ' ';
+      txt += Glyphs.restWhole + ' ';
     }
     elTop.setText(txt);
-    elTop.measureText();
 
     const width = elMiddle.getWidth() + elTop.getWidth();
     let x = left + (right - left) * 0.5 - width * 0.5;
@@ -215,11 +212,10 @@ export class MultiMeasureRest extends Element {
     this.xs.left = left;
     this.xs.right = right;
 
-    const spacingBetweenLines = options.spacingBetweenLinesPx;
     if (options.useSymbols) {
-      this.drawSymbols(stave, ctx, left, right, spacingBetweenLines);
+      this.drawSymbols(stave, ctx, left, right);
     } else {
-      this.drawLine(stave, ctx, left, right, spacingBetweenLines);
+      this.drawLine(stave, ctx, left, right);
     }
 
     if (options.showNumber) {

@@ -127,7 +127,6 @@ export class Bend extends Modifier {
   getTextHeight(): number {
     const element = new Element(Category.Bend);
     element.setText(this.phrase[0].text);
-    element.measureText();
     return element.getHeight();
   }
 
@@ -136,7 +135,6 @@ export class Bend extends Modifier {
     const measureText = (text: string) => {
       const element = new Element(Category.Bend);
       element.setText(text);
-      element.measureText();
       return element.getWidth();
     };
 
@@ -217,7 +215,7 @@ export class Bend extends Modifier {
 
     const renderText = (x: number, text: string) => {
       ctx.save();
-      ctx.setFont(this.textFont);
+      ctx.setFont(this.fontInfo);
       const renderX = x - ctx.measureText(text).width / 2;
       ctx.fillText(text, renderX, annotationY);
       ctx.restore();

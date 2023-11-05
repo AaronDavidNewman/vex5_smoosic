@@ -3,8 +3,8 @@
 
 import { Beam } from './beam';
 import { BoundingBox } from './boundingbox';
-import { Font } from './font';
 import { Fraction } from './fraction';
+import { Metrics } from './metrics';
 import { ModifierContext } from './modifiercontext';
 import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
@@ -118,7 +118,7 @@ function createContexts<T>(
 
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (Formatter.DEBUG) log('Vex.Flow.Formatter', args);
+  if (Formatter.DEBUG) log('VexFlow.Formatter', args);
 }
 
 /**
@@ -173,7 +173,7 @@ function getRestLineForNextNoteGroup(
  * here (`FormatAndDraw`, `FormatAndDrawTab`) also serve as useful usage examples.
  */
 export class Formatter {
-  // To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
+  // To enable logging for this class. Set `VexFlow.Formatter.DEBUG` to `true`.
   static DEBUG: boolean = false;
   protected hasMinTotalWidth: boolean;
   protected minTotalWidth: number;
@@ -216,7 +216,7 @@ export class Formatter {
     options?: { stavePadding: number }
   ): void {
     options = {
-      stavePadding: Tables.lookupMetric('Stave.padding'),
+      stavePadding: Metrics.get('Stave.padding'),
       ...options,
     };
 
@@ -232,7 +232,7 @@ export class Formatter {
     }
 
     ctx.save();
-    ctx.setFont(Font.SANS_SERIF, 8);
+    ctx.setFont(Metrics.get('fontFamily'), 8);
 
     contextGaps.gaps.forEach((gap) => {
       stroke(x + gap.x1, x + gap.x2, 'rgba(100,200,100,0.4)');
@@ -476,7 +476,7 @@ export class Formatter {
    * @returns the estimated width in pixels
    */
   preCalculateMinTotalWidth(voices: Voice[]): number {
-    const unalignedPadding = Tables.lookupMetric('Stave.unalignedNotePadding');
+    const unalignedPadding = Metrics.get('Stave.unalignedNotePadding');
     // Calculate additional padding based on 3 methods:
     // 1) unaligned beats in voices, 2) variance of width, 3) variance of durations
     let unalignedCtxCount = 0;
@@ -828,9 +828,9 @@ export class Formatter {
       lastContext.getMetrics().notePx -
       lastContext.getMetrics().totalRightPx -
       firstContext.getMetrics().totalLeftPx;
-    const configMinPadding = Tables.lookupMetric('Stave.endPaddingMin');
-    const configMaxPadding = Tables.lookupMetric('Stave.endPaddingMax');
-    const leftPadding = Tables.lookupMetric('Stave.padding');
+    const configMinPadding = Metrics.get('Stave.endPaddingMin');
+    const configMaxPadding = Metrics.get('Stave.endPaddingMax');
+    const leftPadding = Metrics.get('Stave.padding');
     let targetWidth = adjustedJustifyWidth;
     const distances = calculateIdealDistances(targetWidth);
     let actualWidth = shiftToIdealDistances(distances);

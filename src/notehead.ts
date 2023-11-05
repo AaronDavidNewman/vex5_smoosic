@@ -6,18 +6,16 @@ import { ElementStyle } from './element';
 import { Note, NoteStruct } from './note';
 import { Stave } from './stave';
 import { Stem } from './stem';
-import { Tables } from './tables';
 import { Category } from './typeguard';
 import { defined, log } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (NoteHead.DEBUG) log('Vex.Flow.NoteHead', args);
+  if (NoteHead.DEBUG) log('VexFlow.NoteHead', args);
 }
 
 export interface NoteHeadStruct extends NoteStruct {
   line?: number;
-  glyphFontScale?: number;
   slashed?: boolean;
   style?: ElementStyle;
   customGlyphCode?: string;
@@ -36,7 +34,7 @@ export interface NoteHeadStruct extends NoteStruct {
  * See `tests/notehead_tests.ts` for usage examples.
  */
 export class NoteHead extends Note {
-  /** To enable logging for this class. Set `Vex.Flow.NoteHead.DEBUG` to `true`. */
+  /** To enable logging for this class. Set `VexFlow.NoteHead.DEBUG` to `true`. */
   static DEBUG: boolean = false;
 
   static get CATEGORY(): string {
@@ -92,12 +90,7 @@ export class NoteHead extends Note {
 
     this.renderOptions = {
       ...this.renderOptions,
-      // font size for note heads
-      glyphFontScale: noteStruct.glyphFontScale || Tables.lookupMetric('fontSize'),
     };
-
-    this.textFont.size = this.renderOptions.glyphFontScale;
-    this.measureText();
   }
   /** Get the width of the notehead. */
   getWidth(): number {
@@ -160,7 +153,6 @@ export class NoteHead extends Note {
   preFormat(): this {
     if (this.preFormatted) return this;
 
-    this.measureText();
     this.preFormatted = true;
     return this;
   }

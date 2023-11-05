@@ -132,7 +132,7 @@ export class StaveHairpin extends Element {
   }
 
   setRenderOptions(options: StaveHairpinRenderOptions): this {
-      this.renderOptions = options;
+    this.renderOptions = options;
     return this;
   }
 

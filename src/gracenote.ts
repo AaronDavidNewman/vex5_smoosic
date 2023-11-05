@@ -19,16 +19,11 @@ export class GraceNote extends StaveNote {
     return 2;
   }
 
-  static get SCALE(): number {
-    return 0.66;
-  }
-
   protected slash: boolean;
   protected slur: boolean;
 
   constructor(noteStruct: GraceNoteStruct) {
     super({
-      glyphFontScale: Tables.lookupMetric('fontSize') * GraceNote.SCALE,
       strokePx: GraceNote.LEDGER_LINE_OFFSET,
       ...noteStruct,
     });
@@ -47,12 +42,8 @@ export class GraceNote extends StaveNote {
     }
 
     let ret = super.getStemExtension();
-    ret = Stem.HEIGHT * this.getStaveNoteScale() - Stem.HEIGHT + ret;
+    ret = Stem.HEIGHT * this.getFontScale() - Stem.HEIGHT + ret;
     return ret;
-  }
-
-  getStaveNoteScale(): number {
-    return 2 / 3;
   }
 
   draw(): void {
@@ -60,7 +51,7 @@ export class GraceNote extends StaveNote {
     this.setRendered();
     const stem = this.stem;
     if (this.slash && stem) {
-      const scale = this.getStaveNoteScale();
+      const scale = this.getFontScale();
 
       let slashBBox = undefined;
       const beam = this.beam;

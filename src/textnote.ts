@@ -3,8 +3,9 @@
 
 import { Element } from './element';
 import { Font, FontInfo } from './font';
+import { Glyphs } from './glyphs';
+import { Metrics } from './metrics';
 import { Note, NoteStruct } from './note';
-import { Tables } from './tables';
 import { Category } from './typeguard';
 
 export enum TextJustification {
@@ -39,25 +40,25 @@ export class TextNote extends Note {
   /** Glyph data. */
   static get GLYPHS(): Record<string, string> {
     return {
-      segno: '\uE047' /*segno*/,
-      tr: '\uE566' /*ornamentTrill*/,
-      mordent: '\uE56D' /*ornamentMordent*/,
-      mordentUpper: '\uE56C' /*ornamentShortTrill*/,
-      mordentLower: '\uE56D' /*ornamentMordent*/,
-      f: '\uE522' /*dynamicForte*/,
-      p: '\uE520' /*dynamicPiano*/,
-      m: '\uE521' /*dynamicMezzo*/,
-      s: '\uE524' /*dynamicSforzando*/,
-      z: '\uE525' /*dynamicZ*/,
-      coda: '\uE048' /*coda*/,
-      pedalOpen: '\uE650' /*keyboardPedalPed*/,
-      pedalClose: '\uE655' /*keyboardPedalUp*/,
-      caesuraStraight: '\uE4D1' /*caesura*/,
-      caesuraCurved: '\uE4D4' /*caesuraCurved*/,
-      breath: '\uE4CE' /*breathMarkComma*/,
-      tick: '\uE4CF' /*breathMarkTick*/,
-      turn: '\uE567' /*ornamentTurn*/,
-      turnInverted: '\uE569' /*ornamentTurnSlash*/,
+      segno: Glyphs.segno,
+      tr: Glyphs.ornamentTrill,
+      mordent: Glyphs.ornamentMordent,
+      mordentUpper: Glyphs.ornamentShortTrill,
+      mordentLower: Glyphs.ornamentMordent,
+      f: Glyphs.dynamicForte,
+      p: Glyphs.dynamicPiano,
+      m: Glyphs.dynamicMezzo,
+      s: Glyphs.dynamicSforzando,
+      z: Glyphs.dynamicZ,
+      coda: Glyphs.coda,
+      pedalOpen: Glyphs.keyboardPedalPed,
+      pedalClose: Glyphs.keyboardPedalUp,
+      caesuraStraight: Glyphs.caesura,
+      caesuraCurved: Glyphs.caesuraCurved,
+      breath: Glyphs.breathMarkComma,
+      tick: Glyphs.breathMarkTick,
+      turn: Glyphs.ornamentTurn,
+      turnInverted: Glyphs.ornamentTurnSlash,
     };
   }
 
@@ -77,12 +78,11 @@ export class TextNote extends Note {
     if (noteStruct.font) {
       this.setFont(noteStruct.font);
     } else if (noteStruct.glyph === undefined) {
-      this.setFont(Tables.lookupMetricFontInfo('TextNote.text.fontSize'));
-    } else {
-      this.measureText();
+      this.setFont(Metrics.getFontInfo('TextNote.text.fontSize'));
     }
+
     // Scale the font size by 1/1.3.
-    const smallerFontSize = Font.convertSizeToPointValue(this.textFont.size) * 0.769231;
+    const smallerFontSize = Font.convertSizeToPointValue(this.fontInfo.size) * 0.769231;
     if (noteStruct.superscript) {
       this.superscript = new Element('TexNote.subSuper');
       this.superscript.setText(noteStruct.superscript);

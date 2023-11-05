@@ -76,8 +76,6 @@ export class StaveLine extends Element {
     textJustification: number;
   };
 
-  protected text: string;
-
   // These five instance variables are all initialized by the constructor via this.setNotes(notes).
   protected notes!: StaveLineNotes;
   protected firstNote!: StaveNote;
@@ -177,19 +175,6 @@ export class StaveLine extends Element {
       ctx.setLineCap('round');
     } else {
       ctx.setLineCap('square');
-    }
-  }
-
-  // Apply the text styling to the context
-  applyFontStyle(): void {
-    const ctx = this.checkContext();
-    ctx.setFont(this.textFont);
-
-    const renderOptions = this.renderOptions;
-    const color = renderOptions.color;
-    if (color) {
-      ctx.setStrokeStyle(color);
-      ctx.setFillStyle(color);
     }
   }
 
@@ -325,7 +310,7 @@ export class StaveLine extends Element {
     ctx.restore();
 
     // Determine the x coordinate where to start the text
-    const textWidth = ctx.measureText(this.text).width;
+    const textWidth = this.width;
     const justification = renderOptions.textJustification;
     let x = 0;
     if (justification === StaveLine.TextJustification.LEFT) {
@@ -348,10 +333,10 @@ export class StaveLine extends Element {
     }
 
     // Draw the text
-    ctx.save();
-    this.applyFontStyle();
-    ctx.fillText(this.text, x, y);
-    ctx.restore();
+    const color = renderOptions.color;
+    this.applyStyle(ctx, { fillStyle: color, strokeStyle: color });
+    this.renderText(ctx, x, y);
+    this.restoreStyle(ctx);
 
     return this;
   }

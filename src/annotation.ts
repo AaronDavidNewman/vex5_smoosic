@@ -1,6 +1,7 @@
 // Copyright (c) 2023-present VexFlow contributors: https://github.com/vexflow/vexflow/graphs/contributors
 // MIT License
 import { Font } from './font';
+import { Metrics } from './metrics';
 import { Modifier, ModifierPosition } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Stave } from './stave';
@@ -12,7 +13,7 @@ import { log } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (Annotation.DEBUG) log('Vex.Flow.Annotation', args);
+  if (Annotation.DEBUG) log('VexFlow.Annotation', args);
 }
 
 export enum AnnotationHorizontalJustify {
@@ -36,7 +37,7 @@ export enum AnnotationVerticalJustify {
  * See `tests/annotation_tests.ts` for usage examples.
  */
 export class Annotation extends Modifier {
-  /** To enable logging for this class. Set `Vex.Flow.Annotation.DEBUG` to `true`. */
+  /** To enable logging for this class. Set `VexFlow.Annotation.DEBUG` to `true`. */
   static DEBUG: boolean = false;
 
   /** Annotations category string. */
@@ -68,7 +69,7 @@ export class Annotation extends Modifier {
   // Use the same padding for annotations as note head so the
   // words don't run into each other.
   static get minAnnotationPadding(): number {
-    return Tables.lookupMetric('NoteHead.minPadding');
+    return Metrics.get('NoteHead.minPadding');
   }
   /** Arrange annotations within a `ModifierContext` */
   static format(annotations: Annotation[], state: ModifierContextState): boolean {
@@ -80,7 +81,7 @@ export class Annotation extends Modifier {
     for (let i = 0; i < annotations.length; ++i) {
       const annotation = annotations[i];
       // Text height is expressed in fractional stave spaces.
-      const textLines = (2 + Font.convertSizeToPixelValue(annotation.textFont.size)) / Tables.STAVE_LINE_DISTANCE;
+      const textLines = (2 + Font.convertSizeToPixelValue(annotation.fontInfo.size)) / Tables.STAVE_LINE_DISTANCE;
       let verticalSpaceNeeded = textLines;
 
       const note = annotation.checkAttachedNote();
@@ -188,8 +189,6 @@ export class Annotation extends Modifier {
     // warning: the default in the constructor is TOP, but in the factory the default is BOTTOM.
     // this is to support legacy application that may expect this.
     this.verticalJustification = AnnotationVerticalJustify.TOP;
-
-    this.measureText();
   }
 
   /**
@@ -233,7 +232,7 @@ export class Annotation extends Modifier {
     ctx.openGroup('annotation', this.getAttribute('id'));
 
     const textWidth = this.getWidth();
-    const textHeight = Font.convertSizeToPixelValue(this.textFont.size);
+    const textHeight = Font.convertSizeToPixelValue(this.fontInfo.size);
     let x;
     let y;
 

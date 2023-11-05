@@ -3,13 +3,14 @@
 //
 // Articulation Tests
 
+import { VexFlow } from '../src/vexflow';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 import { Articulation } from '../src/articulation';
 import { Beam } from '../src/beam';
-import { Flow } from '../src/flow';
-import { Font } from '../src/font';
 import { Formatter } from '../src/formatter';
+import { Glyphs } from '../src/glyphs';
+import { Metrics } from '../src/metrics';
 import { ModifierPosition } from '../src/modifier';
 import { ContextBuilder } from '../src/renderer';
 import { Stave } from '../src/stave';
@@ -250,59 +251,53 @@ function verticalPlacement2(options: TestOptions, contextBuilder: ContextBuilder
 
   const notes = [
     staveNote({ keys: ['f/4'], duration: 'q' })
-      .addModifier(new Articulation('\ue4c1' /*fermataBelow*/), 0)
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.BELOW), 0)
-      .addModifier(new Articulation('\ue4a5' /*articTenutoBelow*/), 0),
+      .addModifier(new Articulation(Glyphs.fermataBelow), 0)
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoBelow), 0),
     staveNote({ keys: ['g/4'], duration: 'q', stemDirection: Stem.DOWN })
-      .addModifier(new Articulation('\ue4c5' /*fermataShortBelow*/), 0)
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.BELOW), 0)
-      .addModifier(new Articulation('\ue4a5' /*articTenutoBelow*/), 0),
+      .addModifier(new Articulation(Glyphs.fermataShortBelow), 0)
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoBelow), 0),
     staveNote({ keys: ['c/5'], duration: 'q' })
-      .addModifier(new Articulation('\ue4c7' /*fermataLongBelow*/), 0)
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.BELOW), 0)
-      .addModifier(new Articulation('\ue4a5' /*articTenutoBelow*/), 0),
+      .addModifier(new Articulation(Glyphs.fermataLongBelow), 0)
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoBelow), 0),
     staveNote({ keys: ['f/4'], duration: 'q' })
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.BELOW), 0)
-      .addModifier(new Articulation('\ue4a5' /*articTenutoBelow*/), 0)
-      .addModifier(new Articulation('\ue4c3' /*fermataVeryShortBelow*/), 0),
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoBelow), 0)
+      .addModifier(new Articulation(Glyphs.fermataVeryShortBelow), 0),
     staveNote({ keys: ['g/4'], duration: 'q', stemDirection: Stem.DOWN })
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.BELOW), 0)
-      .addModifier(new Articulation('\ue4a5' /*articTenutoBelow*/), 0)
-      .addModifier(new Articulation('\ue4c9' /*fermataVeryLongBelow*/), 0),
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoBelow), 0)
+      .addModifier(new Articulation(Glyphs.fermataVeryLongBelow), 0),
     staveNote({ keys: ['c/5'], duration: 'q' })
-      .addModifier(
-        new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.BELOW).setBetweenLines(),
-        0
-      )
-      .addModifier(new Articulation('\ue4a5' /*articTenutoBelow*/).setBetweenLines(), 0)
-      .addModifier(new Articulation('\ue4c1' /*fermataBelow*/), 0),
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.BELOW).setBetweenLines(), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoBelow).setBetweenLines(), 0)
+      .addModifier(new Articulation(Glyphs.fermataBelow), 0),
     staveNote({ keys: ['a/5'], duration: 'q', stemDirection: Stem.DOWN })
-      .addModifier(new Articulation('\ue4c0' /*fermataAbove*/), 0)
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.ABOVE), 0)
-      .addModifier(new Articulation('\ue4a4' /*articTenutoAbove*/), 0),
+      .addModifier(new Articulation(Glyphs.fermataAbove), 0)
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoAbove), 0),
     staveNote({ keys: ['f/5'], duration: 'q' })
-      .addModifier(new Articulation('\ue4c4' /*fermataShortAbove*/), 0)
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.ABOVE), 0)
-      .addModifier(new Articulation('\ue4a4' /*articTenutoAbove*/), 0),
+      .addModifier(new Articulation(Glyphs.fermataShortAbove), 0)
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoAbove), 0),
     staveNote({ keys: ['b/4'], duration: 'q', stemDirection: Stem.DOWN })
-      .addModifier(new Articulation('\ue4c6' /*fermataLongAbove*/), 0)
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.ABOVE), 0)
-      .addModifier(new Articulation('\ue4a4' /*articTenutoAbove*/), 0),
+      .addModifier(new Articulation(Glyphs.fermataLongAbove), 0)
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoAbove), 0),
     staveNote({ keys: ['a/5'], duration: 'q', stemDirection: Stem.DOWN })
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.ABOVE), 0)
-      .addModifier(new Articulation('\ue4a4' /*articTenutoAbove*/), 0)
-      .addModifier(new Articulation('\ue4c2' /*fermataVeryShortAbove*/), 0),
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoAbove), 0)
+      .addModifier(new Articulation(Glyphs.fermataVeryShortAbove), 0),
     staveNote({ keys: ['f/5'], duration: 'q' })
-      .addModifier(new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.ABOVE), 0)
-      .addModifier(new Articulation('\ue4a4' /*articTenutoAbove*/), 0)
-      .addModifier(new Articulation('\ue4c8' /*fermataVeryLongAbove*/), 0),
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoAbove), 0)
+      .addModifier(new Articulation(Glyphs.fermataVeryLongAbove), 0),
     staveNote({ keys: ['b/4'], duration: 'q', stemDirection: Stem.DOWN })
-      .addModifier(
-        new Articulation('\ue1e7' /*augmentationDot*/).setPosition(ModifierPosition.ABOVE).setBetweenLines(),
-        0
-      )
-      .addModifier(new Articulation('\ue4a4' /*articTenutoAbove*/).setBetweenLines(), 0)
-      .addModifier(new Articulation('\ue4c0' /*fermataAbove*/), 0),
+      .addModifier(new Articulation(Glyphs.augmentationDot).setPosition(ModifierPosition.ABOVE).setBetweenLines(), 0)
+      .addModifier(new Articulation(Glyphs.articTenutoAbove).setBetweenLines(), 0)
+      .addModifier(new Articulation(Glyphs.fermataAbove), 0),
   ];
 
   Formatter.FormatAndDraw(ctx, stave, notes);
@@ -419,7 +414,7 @@ function drawArticulations2(options: TestOptions): void {
 
 function tabNotes(options: TestOptions, contextBuilder: ContextBuilder): void {
   const ctx = contextBuilder(options.elementId, 600, 200);
-  ctx.font = '10pt ' + Font.SANS_SERIF;
+  ctx.font = '10pt ' + Metrics.get('fontFamily');
   const stave = new TabStave(10, 10, 550);
   stave.setContext(ctx);
   stave.draw();
@@ -485,7 +480,7 @@ function tabNotes(options: TestOptions, contextBuilder: ContextBuilder): void {
   notes3[2].addModifier(new Articulation('a.').setPosition(3), 0);
   notes3[3].addModifier(new Articulation('a.').setPosition(4), 0);
 
-  const voice = new Voice(Flow.TIME4_4).setMode(Voice.Mode.SOFT);
+  const voice = new Voice(VexFlow.TIME4_4).setMode(Voice.Mode.SOFT);
 
   voice.addTickables(notes1);
   voice.addTickables(notes2);

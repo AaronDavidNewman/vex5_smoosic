@@ -1,183 +1,12 @@
 // Copyright (c) 2023-present VexFlow contributors: https://github.com/vexflow/vexflow/graphs/contributors
 
 import { ArticulationStruct } from './articulation';
-import { Font, FontInfo } from './font';
 import { Fraction } from './fraction';
 import { Glyphs } from './glyphs';
 import { GlyphProps, KeyProps } from './note';
 import { RuntimeError } from './util';
 
 const RESOLUTION = 16384;
-
-// eslint-disable-next-line
-export const CommonMetrics: Record<string, any> = {
-  fontFamily: 'Bravura',
-  fontSize: 30,
-  fontWeight: 'normal',
-  fontStyle: 'normal',
-
-  Accidental: {
-    cautionary: {
-      fontSize: 20,
-    },
-    grace: {
-      fontSize: 25,
-    },
-    noteheadAccidentalPadding: 1,
-    leftPadding: 2,
-    accidentalSpacing: 3,
-  },
-
-  Annotation: {
-    fontSize: 10,
-  },
-
-  Bend: {
-    fontSize: 10,
-  },
-
-  ChordSymbol: {
-    fontSize: 12,
-    spacing: 0.05,
-    subscriptOffset: 0.2,
-    superscriptOffset: -0.4,
-    superSubRatio: 0.6,
-  },
-
-  FretHandFinger: {
-    fontSize: 9,
-    fontWeight: 'bold',
-  },
-
-  NoteHead: {
-    minPadding: 2,
-  },
-
-  PedalMarking: {
-    text: {
-      fontSize: 12,
-      fontStyle: 'italic',
-    },
-  },
-
-  Repetition: {
-    text: {
-      fontSize: 12,
-    fontWeight: 'bold',
-      offsetX: 12,
-      offsetY: 25,
-      spacing: 5,
-    },
-    coda: {
-      offsetY: 25,
-    },
-    segno: {
-      offsetY: 10,
-    },
-  },
-
-  Stave: {
-    fontFamily: 'Arial, sans-serif',
-    fontSize: 8,
-    padding: 12,
-    endPaddingMax: 10,
-    endPaddingMin: 5,
-    unalignedNotePadding: 10,
-  },
-
-  StaveConnector: {
-    text: {
-    fontSize: 16,
-  },
-  },
-
-  StaveLine: {
-    fontFamily: 'Arial, sans-serif',
-    fontSize: 10,
-  },
-
-  StaveSection: {
-    fontFamily: 'Arial, sans-serif',
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-
-  StaveTempo: {
-    fontSize: 14,
-    glyph: {
-      fontSize: 25,
-    },
-    name: {
-      fontWeight: 'bold',
-    },
-  },
-
-  StaveText: {
-    fontSize: 16,
-  },
-
-  StaveTie: {
-    fontFamily: 'Arial, sans-serif',
-    fontSize: 10,
-  },
-
-  StringNumber: {
-    fontFamily: 'Arial, sans-serif',
-    fontSize: 10,
-    fontWeight: 'bold',
-    verticalPadding: 8,
-    stemPadding: 2,
-    leftPadding: 5,
-    rightPadding: 6,
-  },
-
-  Stroke: {
-    text: {
-      fontSize: 10,
-      fontStyle: 'italic',
-      fontWeight: 'bold',
-    },
-  },
-
-  TabNote: {
-    text: {
-      fontSize: 9,
-    },
-  },
-
-  TabSlide: {
-    fontFamily: 'Times New Roman, serif',
-    fontSize: 10,
-    fontStyle: 'italic',
-    fontWeight: 'bold',
-  },
-
-  TabTie: {
-    fontFamily: 'Arial, sans-serif',
-    fontSize: 10,
-  },
-
-  TextBracket: {
-    fontFamily: 'Times New Roman, serif',
-    fontSize: 15,
-    fontStyle: 'italic',
-  },
-
-  TextNote: {
-    text: {
-      fontSize: 12,
-    },
-  },
-
-  Tremolo: {
-    spacing: 7,
-  },
-
-  Volta: {
-    fontSize: 9,
-    fontWeight: 'bold',
-  },
-};
 
 /**
  * Map duration numbers to 'ticks', the unit of duration used throughout VexFlow.
@@ -259,51 +88,50 @@ const notesInfo: Record<
   {
     index: number;
     intVal?: number;
-    accidental?: number;
   }
 > = {
   C: { index: 0, intVal: 0 },
-  CN: { index: 0, intVal: 0, accidental: 0xe261 /*accidentalNatural*/ },
-  'C#': { index: 0, intVal: 1, accidental: 0xe262 /*accidentalSharp*/ },
-  'C##': { index: 0, intVal: 2, accidental: 0xe263 /*accidentalDoubleSharp*/ },
-  CB: { index: 0, intVal: 11, accidental: 0xe260 /*accidentalFlat*/ },
-  CBB: { index: 0, intVal: 10, accidental: 0xe264 /*accidentalDoubleFlat*/ },
+  CN: { index: 0, intVal: 0 },
+  'C#': { index: 0, intVal: 1 },
+  'C##': { index: 0, intVal: 2 },
+  CB: { index: 0, intVal: 11 },
+  CBB: { index: 0, intVal: 10 },
   D: { index: 1, intVal: 2 },
-  DN: { index: 1, intVal: 2, accidental: 0xe261 /*accidentalNatural*/ },
-  'D#': { index: 1, intVal: 3, accidental: 0xe262 /*accidentalSharp*/ },
-  'D##': { index: 1, intVal: 4, accidental: 0xe263 /*accidentalDoubleSharp*/ },
-  DB: { index: 1, intVal: 1, accidental: 0xe260 /*accidentalFlat*/ },
-  DBB: { index: 1, intVal: 0, accidental: 0xe264 /*accidentalDoubleFlat*/ },
+  DN: { index: 1, intVal: 2 },
+  'D#': { index: 1, intVal: 3 },
+  'D##': { index: 1, intVal: 4 },
+  DB: { index: 1, intVal: 1 },
+  DBB: { index: 1, intVal: 0 },
   E: { index: 2, intVal: 4 },
-  EN: { index: 2, intVal: 4, accidental: 0xe261 /*accidentalNatural*/ },
-  'E#': { index: 2, intVal: 5, accidental: 0xe262 /*accidentalSharp*/ },
-  'E##': { index: 2, intVal: 6, accidental: 0xe263 /*accidentalDoubleSharp*/ },
-  EB: { index: 2, intVal: 3, accidental: 0xe260 /*accidentalFlat*/ },
-  EBB: { index: 2, intVal: 2, accidental: 0xe264 /*accidentalDoubleFlat*/ },
+  EN: { index: 2, intVal: 4 },
+  'E#': { index: 2, intVal: 5 },
+  'E##': { index: 2, intVal: 6 },
+  EB: { index: 2, intVal: 3 },
+  EBB: { index: 2, intVal: 2 },
   F: { index: 3, intVal: 5 },
-  FN: { index: 3, intVal: 5, accidental: 0xe261 /*accidentalNatural*/ },
-  'F#': { index: 3, intVal: 6, accidental: 0xe262 /*accidentalSharp*/ },
-  'F##': { index: 3, intVal: 7, accidental: 0xe263 /*accidentalDoubleSharp*/ },
-  FB: { index: 3, intVal: 4, accidental: 0xe260 /*accidentalFlat*/ },
-  FBB: { index: 3, intVal: 3, accidental: 0xe264 /*accidentalDoubleFlat*/ },
+  FN: { index: 3, intVal: 5 },
+  'F#': { index: 3, intVal: 6 },
+  'F##': { index: 3, intVal: 7 },
+  FB: { index: 3, intVal: 4 },
+  FBB: { index: 3, intVal: 3 },
   G: { index: 4, intVal: 7 },
-  GN: { index: 4, intVal: 7, accidental: 0xe261 /*accidentalNatural*/ },
-  'G#': { index: 4, intVal: 8, accidental: 0xe262 /*accidentalSharp*/ },
-  'G##': { index: 4, intVal: 9, accidental: 0xe263 /*accidentalDoubleSharp*/ },
-  GB: { index: 4, intVal: 6, accidental: 0xe260 /*accidentalFlat*/ },
-  GBB: { index: 4, intVal: 5, accidental: 0xe264 /*accidentalDoubleFlat*/ },
+  GN: { index: 4, intVal: 7 },
+  'G#': { index: 4, intVal: 8 },
+  'G##': { index: 4, intVal: 9 },
+  GB: { index: 4, intVal: 6 },
+  GBB: { index: 4, intVal: 5 },
   A: { index: 5, intVal: 9 },
-  AN: { index: 5, intVal: 9, accidental: 0xe261 /*accidentalNatural*/ },
-  'A#': { index: 5, intVal: 10, accidental: 0xe262 /*accidentalSharp*/ },
-  'A##': { index: 5, intVal: 11, accidental: 0xe263 /*accidentalDoubleSharp*/ },
-  AB: { index: 5, intVal: 8, accidental: 0xe260 /*accidentalFlat*/ },
-  ABB: { index: 5, intVal: 7, accidental: 0xe264 /*accidentalDoubleFlat*/ },
+  AN: { index: 5, intVal: 9 },
+  'A#': { index: 5, intVal: 10 },
+  'A##': { index: 5, intVal: 11 },
+  AB: { index: 5, intVal: 8 },
+  ABB: { index: 5, intVal: 7 },
   B: { index: 6, intVal: 11 },
-  BN: { index: 6, intVal: 11, accidental: 0xe261 /*accidentalNatural*/ },
-  'B#': { index: 6, intVal: 12, accidental: 0xe262 /*accidentalSharp*/ },
-  'B##': { index: 6, intVal: 13, accidental: 0xe263 /*accidentalDoubleSharp*/ },
-  BB: { index: 6, intVal: 10, accidental: 0xe260 /*accidentalFlat*/ },
-  BBB: { index: 6, intVal: 9, accidental: 0xe264 /*accidentalDoubleFlat*/ },
+  BN: { index: 6, intVal: 11 },
+  'B#': { index: 6, intVal: 12 },
+  'B##': { index: 6, intVal: 13 },
+  BB: { index: 6, intVal: 10 },
+  BBB: { index: 6, intVal: 9 },
   R: { index: 6 }, // Rest
   X: { index: 6 },
 };
@@ -327,26 +155,26 @@ const validNoteTypes: Record<string, { name: string }> = {
 };
 
 const accidentals: Record<string, string> = {
-  '#': '\ue262' /*accidentalSharp*/,
-  '##': '\ue263' /*accidentalDoubleSharp*/,
-  b: '\ue260' /*accidentalFlat*/,
-  bb: '\ue264' /*accidentalDoubleFlat*/,
-  n: '\ue261' /*accidentalNatural*/,
-  '{': '\ue26a' /*accidentalParensLeft*/,
-  '}': '\ue26b' /*accidentalParensRight*/,
-  db: '\ue281' /*accidentalThreeQuarterTonesFlatZimmermann*/,
-  d: '\ue280' /*accidentalQuarterToneFlatStein*/,
-  '++': '\ue283' /*accidentalThreeQuarterTonesSharpStein*/,
-  '+': '\ue282' /*accidentalQuarterToneSharpStein*/,
-  '+-': '\ue446' /*accidentalKucukMucennebSharp*/,
-  bs: '\ue442' /*accidentalBakiyeFlat*/,
-  bss: '\ue440' /*accidentalBuyukMucennebFlat*/,
-  o: '\ue461' /*accidentalSori*/,
-  k: '\ue460' /*accidentalKoron*/,
-  bbs: '\ue447' /*accidentalBuyukMucennebSharp*/,
-  '++-': '\ue447' /*accidentalBuyukMucennebSharp*/,
-  ashs: '\ue447' /*accidentalBuyukMucennebSharp*/,
-  afhf: '\ue447' /*accidentalBuyukMucennebSharp*/,
+  '#': Glyphs.accidentalSharp,
+  '##': Glyphs.accidentalDoubleSharp,
+  b: Glyphs.accidentalFlat,
+  bb: Glyphs.accidentalDoubleFlat,
+  n: Glyphs.accidentalNatural,
+  '{': Glyphs.accidentalParensLeft,
+  '}': Glyphs.accidentalParensRight,
+  db: Glyphs.accidentalThreeQuarterTonesFlatZimmermann,
+  d: Glyphs.accidentalQuarterToneFlatStein,
+  '++': Glyphs.accidentalThreeQuarterTonesSharpStein,
+  '+': Glyphs.accidentalQuarterToneSharpStein,
+  '+-': Glyphs.accidentalKucukMucennebSharp,
+  bs: Glyphs.accidentalBakiyeFlat,
+  bss: Glyphs.accidentalBuyukMucennebFlat,
+  o: Glyphs.accidentalSori,
+  k: Glyphs.accidentalKoron,
+  bbs: Glyphs.accidentalBuyukMucennebSharp,
+  '++-': Glyphs.accidentalBuyukMucennebSharp,
+  ashs: Glyphs.accidentalBuyukMucennebSharp,
+  afhf: Glyphs.accidentalBuyukMucennebSharp,
 };
 
 // Helps determine the layout of accidentals.
@@ -383,80 +211,80 @@ const accidentalColumns: Record<number, { [name: string]: number[] }> = {
 };
 
 const articulations: Record<string, ArticulationStruct> = {
-  'a.': { code: '\ue1e7' /*augmentationDot*/, betweenLines: true }, // Staccato
+  'a.': { code: Glyphs.augmentationDot, betweenLines: true }, // Staccato
   av: {
-    aboveCode: '\ue4a6' /*articStaccatissimoAbove*/,
-    belowCode: '\ue4a7' /*articStaccatissimoBelow*/,
+    aboveCode: Glyphs.articStaccatissimoAbove,
+    belowCode: Glyphs.articStaccatissimoBelow,
     betweenLines: true,
   }, // Staccatissimo
   'a>': {
-    aboveCode: '\ue4a0' /*articAccentAbove*/,
-    belowCode: '\ue4a1' /*articAccentBelow*/,
+    aboveCode: Glyphs.articAccentAbove,
+    belowCode: Glyphs.articAccentBelow,
     betweenLines: true,
   }, // Accent
   'a-': {
-    aboveCode: '\ue4a4' /*articTenutoAbove*/,
-    belowCode: '\ue4a5' /*articTenutoBelow*/,
+    aboveCode: Glyphs.articTenutoAbove,
+    belowCode: Glyphs.articTenutoBelow,
     betweenLines: true,
   }, // Tenuto
   'a^': {
-    aboveCode: '\ue4ac' /*articMarcatoAbove*/,
-    belowCode: '\ue4ad' /*articMarcatoBelow*/,
+    aboveCode: Glyphs.articMarcatoAbove,
+    belowCode: Glyphs.articMarcatoBelow,
     betweenLines: false,
   }, // Marcato
-  'a+': { code: '\ue633' /*pluckedLeftHandPizzicato*/, betweenLines: false }, // Left hand pizzicato
+  'a+': { code: Glyphs.pluckedLeftHandPizzicato, betweenLines: false }, // Left hand pizzicato
   ao: {
-    aboveCode: '\ue631' /*pluckedSnapPizzicatoAbove*/,
-    belowCode: '\ue630' /*pluckedSnapPizzicatoBelow*/,
+    aboveCode: Glyphs.pluckedSnapPizzicatoAbove,
+    belowCode: Glyphs.pluckedSnapPizzicatoBelow,
     betweenLines: false,
   }, // Snap pizzicato
-  ah: { code: '\ue614' /*stringsHarmonic*/, betweenLines: false }, // Natural harmonic or open note
-  'a@': { aboveCode: '\ue4c0' /*fermataAbove*/, belowCode: '\ue4c1' /*fermataBelow*/, betweenLines: false }, // Fermata
-  'a@a': { code: '\ue4c0' /*fermataAbove*/, betweenLines: false }, // Fermata above staff
-  'a@u': { code: '\ue4c1' /*fermataBelow*/, betweenLines: false }, // Fermata below staff
-  'a@s': { aboveCode: '\ue4c4' /*fermataShortAbove*/, belowCode: '\ue4c5' /*fermataShortBelow*/, betweenLines: false }, // Fermata short
-  'a@as': { code: '\ue4c4' /*fermataShortAbove*/, betweenLines: false }, // Fermata short above staff
-  'a@us': { code: '\ue4c5' /*fermataShortBelow*/, betweenLines: false }, // Fermata short below staff
-  'a@l': { aboveCode: '\ue4c6' /*fermataLongAbove*/, belowCode: '\ue4c7' /*fermataLongBelow*/, betweenLines: false }, // Fermata long
-  'a@al': { code: '\ue4c6' /*fermataLongAbove*/, betweenLines: false }, // Fermata long above staff
-  'a@ul': { code: '\ue4c7' /*fermataLongBelow*/, betweenLines: false }, // Fermata long below staff
+  ah: { code: Glyphs.stringsHarmonic, betweenLines: false }, // Natural harmonic or open note
+  'a@': { aboveCode: Glyphs.fermataAbove, belowCode: Glyphs.fermataBelow, betweenLines: false }, // Fermata
+  'a@a': { code: Glyphs.fermataAbove, betweenLines: false }, // Fermata above staff
+  'a@u': { code: Glyphs.fermataBelow, betweenLines: false }, // Fermata below staff
+  'a@s': { aboveCode: Glyphs.fermataShortAbove, belowCode: Glyphs.fermataShortBelow, betweenLines: false }, // Fermata short
+  'a@as': { code: Glyphs.fermataShortAbove, betweenLines: false }, // Fermata short above staff
+  'a@us': { code: Glyphs.fermataShortBelow, betweenLines: false }, // Fermata short below staff
+  'a@l': { aboveCode: Glyphs.fermataLongAbove, belowCode: Glyphs.fermataLongBelow, betweenLines: false }, // Fermata long
+  'a@al': { code: Glyphs.fermataLongAbove, betweenLines: false }, // Fermata long above staff
+  'a@ul': { code: Glyphs.fermataLongBelow, betweenLines: false }, // Fermata long below staff
   'a@vl': {
-    aboveCode: '\ue4c8' /*fermataVeryLongAbove*/,
-    belowCode: '\ue4c9' /*fermataVeryLongBelow*/,
+    aboveCode: Glyphs.fermataVeryLongAbove,
+    belowCode: Glyphs.fermataVeryLongBelow,
     betweenLines: false,
   }, // Fermata very long
-  'a@avl': { code: '\ue4c8' /*fermataVeryLongAbove*/, betweenLines: false }, // Fermata very long above staff
-  'a@uvl': { code: '\ue4c9' /*fermataVeryLongBelow*/, betweenLines: false }, // Fermata very long below staff
-  'a|': { code: '\ue612' /*stringsUpBow*/, betweenLines: false }, // Bow up - up stroke
-  am: { code: '\ue610' /*stringsDownBow*/, betweenLines: false }, // Bow down - down stroke
-  'a,': { code: '\ue805' /*pictChokeCymbal*/, betweenLines: false }, // Choked
+  'a@avl': { code: Glyphs.fermataVeryLongAbove, betweenLines: false }, // Fermata very long above staff
+  'a@uvl': { code: Glyphs.fermataVeryLongBelow, betweenLines: false }, // Fermata very long below staff
+  'a|': { code: Glyphs.stringsUpBow, betweenLines: false }, // Bow up - up stroke
+  am: { code: Glyphs.stringsDownBow, betweenLines: false }, // Bow down - down stroke
+  'a,': { code: Glyphs.pictChokeCymbal, betweenLines: false }, // Choked
 };
 
 const ornaments: Record<string, string> = {
-  mordent: '\ue56c' /*ornamentShortTrill*/,
-  mordentInverted: '\ue56d' /*ornamentMordent*/,
-  turn: '\ue567' /*ornamentTurn*/,
-  turnInverted: '\ue569' /*ornamentTurnSlash*/,
-  tr: '\ue566' /*ornamentTrill*/,
-  upprall: '\ue5b5' /*ornamentPrecompSlideTrillDAnglebert*/,
-  downprall: '\ue5c3' /*ornamentPrecompDoubleCadenceUpperPrefix*/,
-  prallup: '\ue5bb' /*ornamentPrecompTrillSuffixDandrieu*/,
-  pralldown: '\ue5c8' /*ornamentPrecompTrillLowerSuffix*/,
-  upmordent: '\ue5b8' /*ornamentPrecompSlideTrillBach*/,
-  downmordent: '\ue5c4' /*ornamentPrecompDoubleCadenceUpperPrefixTurn*/,
-  lineprall: '\ue5b2' /*ornamentPrecompAppoggTrill*/,
-  prallprall: '\ue56e' /*ornamentTremblement*/,
-  scoop: '\ue5d0' /*brassScoop*/,
-  doit: '\ue5d5' /*brassDoitMedium*/,
-  fall: '\ue5d7' /*brassFallLipShort*/,
-  doitLong: '\ue5d2' /*brassLiftMedium*/,
-  fallLong: '\ue5de' /*brassFallRoughMedium*/,
-  bend: '\ue5e3' /*brassBend*/,
-  plungerClosed: '\ue5e5' /*brassMuteClosed*/,
-  plungerOpen: '\ue5e7' /*brassMuteOpen*/,
-  flip: '\ue5e1' /*brassFlip*/,
-  jazzTurn: '\ue5e4' /*brassJazzTurn*/,
-  smear: '\ue5e2' /*brassSmear*/,
+  mordent: Glyphs.ornamentShortTrill,
+  mordentInverted: Glyphs.ornamentMordent,
+  turn: Glyphs.ornamentTurn,
+  turnInverted: Glyphs.ornamentTurnSlash,
+  tr: Glyphs.ornamentTrill,
+  upprall: Glyphs.ornamentPrecompSlideTrillDAnglebert,
+  downprall: Glyphs.ornamentPrecompDoubleCadenceUpperPrefix,
+  prallup: Glyphs.ornamentPrecompTrillSuffixDandrieu,
+  pralldown: Glyphs.ornamentPrecompTrillLowerSuffix,
+  upmordent: Glyphs.ornamentPrecompSlideTrillBach,
+  downmordent: Glyphs.ornamentPrecompDoubleCadenceUpperPrefixTurn,
+  lineprall: Glyphs.ornamentPrecompAppoggTrill,
+  prallprall: Glyphs.ornamentTremblement,
+  scoop: Glyphs.brassScoop,
+  doit: Glyphs.brassDoitMedium,
+  fall: Glyphs.brassFallLipShort,
+  doitLong: Glyphs.brassLiftMedium,
+  fallLong: Glyphs.brassFallRoughMedium,
+  bend: Glyphs.brassBend,
+  plungerClosed: Glyphs.brassMuteClosed,
+  plungerOpen: Glyphs.brassMuteOpen,
+  flip: Glyphs.brassFlip,
+  jazzTurn: Glyphs.brassJazzTurn,
+  smear: Glyphs.brassSmear,
 };
 
 export class Tables {
@@ -493,56 +321,37 @@ export class Tables {
       stem: true,
       beamCount: 1,
       stemBeamExtension: 0,
-      codeFlagUp: '\ue240' /*flag8thUp*/,
+      codeFlagUp: Glyphs.flag8thUp,
     },
 
     16: {
       beamCount: 2,
       stemBeamExtension: 0,
       stem: true,
-      codeFlagUp: '\ue242' /*flag16thUp*/,
+      codeFlagUp: Glyphs.flag16thUp,
     },
 
     32: {
       beamCount: 3,
       stemBeamExtension: 7.5,
       stem: true,
-      codeFlagUp: '\ue244' /*flag32ndUp*/,
+      codeFlagUp: Glyphs.flag32ndUp,
     },
 
     64: {
       beamCount: 4,
       stemBeamExtension: 15,
       stem: true,
-      codeFlagUp: '\ue246' /*flag64thUp*/,
+      codeFlagUp: Glyphs.flag64thUp,
     },
 
     128: {
       beamCount: 5,
       stemBeamExtension: 22.5,
       stem: true,
-      codeFlagUp: '\ue248' /*flag128thUp*/,
+      codeFlagUp: Glyphs.flag128thUp,
     },
   };
-
-  /**
-   * Customize this by calling Flow.setMusicFont(...fontNames);
-   */
-  static MUSIC_FONT_STACK: Font[] = [];
-
-  /**
-   * @returns the `Font` object at the head of the music font stack.
-   */
-  static currentMusicFont(): Font {
-    if (Tables.MUSIC_FONT_STACK.length === 0) {
-      throw new RuntimeError(
-        'NoFonts',
-        'The font stack is empty. See: await Flow.fetchMusicFont(...); Flow.setMusicFont(...).'
-      );
-    } else {
-      return Tables.MUSIC_FONT_STACK[0];
-    }
-  }
 
   static NOTATION_FONT_SCALE = 39;
   static TABLATURE_FONT_SCALE = 39;
@@ -562,52 +371,6 @@ export class Tables {
   static clefProperties(clef: string): { lineShift: number } {
     if (!clef || !(clef in clefs)) throw new RuntimeError('BadArgument', 'Invalid clef: ' + clef);
     return clefs[clef];
-  }
-
-  /** Use the provided key to look up a FontInfo in CommonMetrics. **/
-  static lookupMetricFontInfo(key: string): Required<FontInfo> {
-    return {
-      family: Tables.lookupMetric(`${key}.fontFamily`),
-      size: Tables.lookupMetric(`${key}.fontSize`),
-      weight: Tables.lookupMetric(`${key}.fontWeight`),
-      style: Tables.lookupMetric(`${key}.fontStyle`),
-    };
-  }
-
-  /**
-   * Use the provided key to look up a value in CommonMetrics.
-   *
-   * @param key is a string separated by periods (e.g., `Stroke.text.fontFamily`).
-   * @param defaultValue is returned if the lookup fails.
-   * @returns the retrieved value (or `defaultValue` if the lookup fails).
-   *
-   * For the key `Stroke.text.fontFamily`, check all of the following in order:
-   *   1) CommonMetrics.fontFamily
-   *   2) CommonMetrics.Stroke.fontFamily
-   *   3) CommonMetrics.Stroke.text.fontFamily
-   * Retrieve the value from the most specific key (i.e., prefer #3 over #2 over #1 in the above example).
-   */
-  // eslint-disable-next-line
-  static lookupMetric(key: string, defaultValue?: any): any {
-    const keyParts = key.split('.');
-    const lastKeyPart = keyParts.pop()!; // Use ! because keyParts is not empty, since ''.split('.') still returns [''].
-
-    // Start from root of CommonMetrics and go down as far as possible.
-    let curr = CommonMetrics;
-    let retVal = defaultValue;
-
-    while (curr) {
-      // Update retVal whenever we find a value assigned to a more specific key.
-      retVal = curr[lastKeyPart] ?? retVal;
-      const keyPart = keyParts.shift();
-      if (keyPart) {
-        curr = curr[keyPart]; // Go down one level.
-      } else {
-        break;
-      }
-    }
-
-    return retVal;
   }
 
   /**
@@ -644,7 +407,7 @@ export class Tables {
     let octave = parseInt(pieces[1], 10);
 
     // .octaveShift is the shift to compensate for clef 8va/8vb.
-    octave += -1 * options.octaveShift;
+    octave -= options.octaveShift;
 
     const baseIndex = octave * 7 - 4 * 7;
     let line = (baseIndex + value.index) / 2;
@@ -668,7 +431,6 @@ export class Tables {
       octave,
       line,
       intValue,
-      accidental: value.accidental,
       code,
       displaced: false,
     };
@@ -757,6 +519,7 @@ export class Tables {
     return spec in keySignatures;
   }
 
+  // TODO: Should these be moved to glyphs.ts? We could have a non-SMuFL section....
   static unicode = {
     // ♯ accidental sharp
     sharp: '\u266f',
@@ -815,207 +578,207 @@ export class Tables {
     switch (type) {
       /* Diamond */
       case 'D0':
-        return '\ue0d8' /*noteheadDiamondWhole*/;
+        return Glyphs.noteheadDiamondWhole;
       case 'D1':
-        return '\ue0d9' /*noteheadDiamondHalf*/;
+        return Glyphs.noteheadDiamondHalf;
       case 'D2':
-        return '\ue0db' /*noteheadDiamondBlack*/;
+        return Glyphs.noteheadDiamondBlack;
       case 'D3':
-        return '\ue0db' /*noteheadDiamondBlack*/;
+        return Glyphs.noteheadDiamondBlack;
 
       /* Triangle */
       case 'T0':
-        return '\ue0bb' /*noteheadTriangleUpWhole*/;
+        return Glyphs.noteheadTriangleUpWhole;
       case 'T1':
-        return '\ue0bc' /*noteheadTriangleUpHalf*/;
+        return Glyphs.noteheadTriangleUpHalf;
       case 'T2':
-        return '\ue0be' /*noteheadTriangleUpBlack*/;
+        return Glyphs.noteheadTriangleUpBlack;
       case 'T3':
-        return '\ue0be' /*noteheadTriangleUpBlack*/;
+        return Glyphs.noteheadTriangleUpBlack;
 
       /* Cross */
       case 'X0':
-        return '\ue0a7' /*noteheadXWhole*/;
+        return Glyphs.noteheadXWhole;
       case 'X1':
-        return '\ue0a8' /*noteheadXHalf*/;
+        return Glyphs.noteheadXHalf;
       case 'X2':
-        return '\ue0a9' /*noteheadXBlack*/;
+        return Glyphs.noteheadXBlack;
       case 'X3':
-        return '\ue0b3' /*noteheadCircleX*/;
+        return Glyphs.noteheadCircleX;
 
       /* Square */
       case 'S1':
-        return '\ue0b8' /*noteheadSquareWhite*/;
+        return Glyphs.noteheadSquareWhite;
       case 'S2':
-        return '\ue0b9' /*noteheadSquareBlack*/;
+        return Glyphs.noteheadSquareBlack;
 
       /* Rectangle */
       case 'R1':
-        return '\ue0b8' /*noteheadSquareWhite*/; // no smufl code
+        return Glyphs.noteheadSquareWhite; // no smufl code
       case 'R2':
-        return '\ue0b8' /*noteheadSquareWhite*/; // no smufl code
+        return Glyphs.noteheadSquareWhite; // no smufl code
 
       case 'DO':
-        return '\ue0be' /*noteheadTriangleUpBlack*/;
+        return Glyphs.noteheadTriangleUpBlack;
       case 'RE':
-        return '\ue0cb' /*noteheadMoonBlack*/;
+        return Glyphs.noteheadMoonBlack;
       case 'MI':
-        return '\ue0db' /*noteheadDiamondBlack*/;
+        return Glyphs.noteheadDiamondBlack;
       case 'FA':
-        return '\ue0c0' /*noteheadTriangleLeftBlack*/;
+        return Glyphs.noteheadTriangleLeftBlack;
       case 'FAUP':
-        return '\ue0c2' /*noteheadTriangleRightBlack*/;
+        return Glyphs.noteheadTriangleRightBlack;
       case 'SO':
-        return '\ue0a4' /*noteheadBlack*/;
+        return Glyphs.noteheadBlack;
       case 'LA':
-        return '\ue0b9' /*noteheadSquareBlack*/;
+        return Glyphs.noteheadSquareBlack;
       case 'TI':
-        return '\ue0cd' /*noteheadTriangleRoundDownBlack*/;
+        return Glyphs.noteheadTriangleRoundDownBlack;
 
       case 'DI': // Diamond
       case 'H': // Harmonics
         switch (duration) {
           case '1/2':
-            return '\ue0d7' /*noteheadDiamondDoubleWhole*/;
+            return Glyphs.noteheadDiamondDoubleWhole;
           case '1':
-            return '\ue0d8' /*noteheadDiamondWhole*/;
+            return Glyphs.noteheadDiamondWhole;
           case '2':
-            return '\ue0d9' /*noteheadDiamondHalf*/;
+            return Glyphs.noteheadDiamondHalf;
           default:
-            return '\ue0db' /*noteheadDiamondBlack*/;
+            return Glyphs.noteheadDiamondBlack;
         }
       case 'X':
       case 'M': // Muted
         switch (duration) {
           case '1/2':
-            return '\ue0a6' /*noteheadXDoubleWhole*/;
+            return Glyphs.noteheadXDoubleWhole;
           case '1':
-            return '\ue0a7' /*noteheadXWhole*/;
+            return Glyphs.noteheadXWhole;
           case '2':
-            return '\ue0a8' /*noteheadXHalf*/;
+            return Glyphs.noteheadXHalf;
           default:
-            return '\ue0a9' /*noteheadXBlack*/;
+            return Glyphs.noteheadXBlack;
         }
       case 'CX':
         switch (duration) {
           case '1/2':
-            return '\ue0b0' /*noteheadCircleXDoubleWhole*/;
+            return Glyphs.noteheadCircleXDoubleWhole;
           case '1':
-            return '\ue0b1' /*noteheadCircleXWhole*/;
+            return Glyphs.noteheadCircleXWhole;
           case '2':
-            return '\ue0b2' /*noteheadCircleXHalf*/;
+            return Glyphs.noteheadCircleXHalf;
           default:
-            return '\ue0b3' /*noteheadCircleX*/;
+            return Glyphs.noteheadCircleX;
         }
       case 'CI':
         switch (duration) {
           case '1/2':
-            return '\ue0e7' /*noteheadCircledDoubleWhole*/;
+            return Glyphs.noteheadCircledDoubleWhole;
           case '1':
-            return '\ue0e6' /*noteheadCircledWhole*/;
+            return Glyphs.noteheadCircledWhole;
           case '2':
-            return '\ue0e5' /*noteheadCircledHalf*/;
+            return Glyphs.noteheadCircledHalf;
           default:
-            return '\ue0e4' /*noteheadCircledBlack*/;
+            return Glyphs.noteheadCircledBlack;
         }
       case 'SQ':
         switch (duration) {
           case '1/2':
-            return '\ue0a1' /*noteheadDoubleWholeSquare*/;
+            return Glyphs.noteheadDoubleWholeSquare;
           case '1':
-            return '\ue0b8' /*noteheadSquareWhite*/;
+            return Glyphs.noteheadSquareWhite;
           case '2':
-            return '\ue0b8' /*noteheadSquareWhite*/;
+            return Glyphs.noteheadSquareWhite;
           default:
-            return '\ue0b9' /*noteheadSquareBlack*/;
+            return Glyphs.noteheadSquareBlack;
         }
       case 'TU':
         switch (duration) {
           case '1/2':
-            return '\ue0ba' /*noteheadTriangleUpDoubleWhole*/;
+            return Glyphs.noteheadTriangleUpDoubleWhole;
           case '1':
-            return '\ue0bb' /*noteheadTriangleUpWhole*/;
+            return Glyphs.noteheadTriangleUpWhole;
           case '2':
-            return '\ue0bc' /*noteheadTriangleUpHalf*/;
+            return Glyphs.noteheadTriangleUpHalf;
           default:
-            return '\ue0be' /*noteheadTriangleUpBlack*/;
+            return Glyphs.noteheadTriangleUpBlack;
         }
       case 'TD':
         switch (duration) {
           case '1/2':
-            return '\ue0c3' /*noteheadTriangleDownDoubleWhole*/;
+            return Glyphs.noteheadTriangleDownDoubleWhole;
           case '1':
-            return '\ue0c4' /*noteheadTriangleDownWhole*/;
+            return Glyphs.noteheadTriangleDownWhole;
           case '2':
-            return '\ue0c5' /*noteheadTriangleDownHalf*/;
+            return Glyphs.noteheadTriangleDownHalf;
           default:
-            return '\ue0c7' /*noteheadTriangleDownBlack*/;
+            return Glyphs.noteheadTriangleDownBlack;
         }
       case 'SF':
         switch (duration) {
           case '1/2':
-            return '\ue0d5' /*noteheadSlashedDoubleWhole1*/;
+            return Glyphs.noteheadSlashedDoubleWhole1;
           case '1':
-            return '\ue0d3' /*noteheadSlashedWhole1*/;
+            return Glyphs.noteheadSlashedWhole1;
           case '2':
-            return '\ue0d1' /*noteheadSlashedHalf1*/;
+            return Glyphs.noteheadSlashedHalf1;
           default:
-            return '\ue0cf' /*noteheadSlashedBlack1*/;
+            return Glyphs.noteheadSlashedBlack1;
         }
       case 'SB':
         switch (duration) {
           case '1/2':
-            return '\ue0d6' /*noteheadSlashedDoubleWhole2*/;
+            return Glyphs.noteheadSlashedDoubleWhole2;
           case '1':
-            return '\ue0d4' /*noteheadSlashedWhole2*/;
+            return Glyphs.noteheadSlashedWhole2;
           case '2':
-            return '\ue0d2' /*noteheadSlashedHalf2*/;
+            return Glyphs.noteheadSlashedHalf2;
           default:
-            return '\ue0d0' /*noteheadSlashedBlack2*/;
+            return Glyphs.noteheadSlashedBlack2;
         }
       case 'R':
         switch (duration) {
           case '1/2':
-            return '\ue4e2' /*restDoubleWhole*/;
+            return Glyphs.restDoubleWhole;
           case '1':
-            return '\ue4e3' /*restWhole*/;
+            return Glyphs.restWhole;
           case '2':
-            return '\ue4e4' /*restHalf*/;
+            return Glyphs.restHalf;
           case '4':
-            return '\ue4e5' /*restQuarter*/;
+            return Glyphs.restQuarter;
           case '8':
-            return '\ue4e6' /*rest8th*/;
+            return Glyphs.rest8th;
           case '16':
-            return '\ue4e7' /*rest16th*/;
+            return Glyphs.rest16th;
           case '32':
-            return '\ue4e8' /*rest32nd*/;
+            return Glyphs.rest32nd;
           case '64':
-            return '\ue4e9' /*rest64th*/;
+            return Glyphs.rest64th;
           case '128':
-            return '\ue4ea' /*rest128th*/;
+            return Glyphs.rest128th;
         }
         break;
       case 'S':
         switch (duration) {
           case '1/2':
-            return '\ue10a' /*noteheadSlashWhiteDoubleWhole*/;
+            return Glyphs.noteheadSlashWhiteDoubleWhole;
           case '1':
-            return '\ue102' /*noteheadSlashWhiteWhole*/;
+            return Glyphs.noteheadSlashWhiteWhole;
           case '2':
-            return '\ue103' /*noteheadSlashWhiteHalf*/;
+            return Glyphs.noteheadSlashWhiteHalf;
           default:
-            return '\ue100' /*noteheadSlashVerticalEnds*/;
+            return Glyphs.noteheadSlashVerticalEnds;
         }
       default:
         switch (duration) {
           case '1/2':
-            return '\ue0a0' /*noteheadDoubleWhole*/;
+            return Glyphs.noteheadDoubleWhole;
           case '1':
-            return '\ue0a2' /*noteheadWhole*/;
+            return Glyphs.noteheadWhole;
           case '2':
-            return '\ue0a3' /*noteheadHalf*/;
+            return Glyphs.noteheadHalf;
           default:
-            return '\ue0a4' /*noteheadBlack*/;
+            return Glyphs.noteheadBlack;
         }
     }
     return Glyphs.null;

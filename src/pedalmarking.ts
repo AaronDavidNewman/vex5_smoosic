@@ -2,6 +2,8 @@
 // MIT License
 
 import { Element } from './element';
+import { Glyphs } from './glyphs';
+import { Metrics } from './metrics';
 import { RenderContext } from './rendercontext';
 import { StaveNote } from './stavenote';
 import { Tables } from './tables';
@@ -10,7 +12,7 @@ import { log, RuntimeError } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (PedalMarking.DEBUG) log('Vex.Flow.PedalMarking', args);
+  if (PedalMarking.DEBUG) log('VexFlow.PedalMarking', args);
 }
 
 /**
@@ -21,7 +23,6 @@ function L(...args: any[]) {
 function drawPedalGlyph(name: string, ctx: RenderContext, x: number, y: number): void {
   const glyph = new Element(PedalMarking.CATEGORY);
   glyph.setText(PedalMarking.GLYPHS[name] ?? name);
-  glyph.measureText();
   glyph.renderText(ctx, x - (glyph.getWidth() - Tables.STAVE_LINE_DISTANCE) / 2, y);
 }
 
@@ -33,7 +34,7 @@ function drawPedalGlyph(name: string, ctx: RenderContext, x: number, y: number):
  * custom text for the release/depress pedal markings.
  */
 export class PedalMarking extends Element {
-  /** To enable logging for this class. Set `Vex.Flow.PedalMarking.DEBUG` to `true`. */
+  /** To enable logging for this class. Set `VexFlow.PedalMarking.DEBUG` to `true`. */
   static DEBUG: boolean = false;
 
   static get CATEGORY(): string {
@@ -54,9 +55,9 @@ export class PedalMarking extends Element {
   protected notes: StaveNote[];
 
   /** Glyph data */
-  static readonly GLYPHS: Record<string, string > = {
-    pedalDepress: '\uE650' /*keyboardPedalPed*/,
-    pedalRelease: '\uE655' /*keyboardPedalUp*/,
+  static readonly GLYPHS: Record<string, string> = {
+    pedalDepress: Glyphs.keyboardPedalPed,
+    pedalRelease: Glyphs.keyboardPedalUp,
   };
 
   /** Pedal type as number. */
@@ -257,7 +258,7 @@ export class PedalMarking extends Element {
     ctx.save();
     ctx.setStrokeStyle(this.renderOptions.color);
     ctx.setFillStyle(this.renderOptions.color);
-    ctx.setFont(Tables.lookupMetricFontInfo('PedalMarking.text'));
+    ctx.setFont(Metrics.getFontInfo('PedalMarking.text'));
     L('Rendering Pedal Marking');
 
     if (this.type === PedalMarking.type.BRACKET || this.type === PedalMarking.type.MIXED) {

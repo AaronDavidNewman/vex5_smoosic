@@ -2,13 +2,14 @@
 // @author Larry Kuhns
 //
 // This file implements the `Stroke` class which renders chord strokes
-// that can be arpeggiated, brushed, rasquedo, etc.
+// that can be arpeggiated, brushed, rasgueado, etc.
 
 import { Element } from './element';
+import { Glyphs } from './glyphs';
+import { Metrics } from './metrics';
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
-import { Tables } from './tables';
 import { Category, isNote, isStaveNote, isTabNote } from './typeguard';
 import { RuntimeError } from './util';
 
@@ -22,8 +23,8 @@ export class Stroke extends Modifier {
     BRUSH_UP: 2,
     ROLL_DOWN: 3, // Arpeggiated chord
     ROLL_UP: 4, // Arpeggiated chord
-    RASQUEDO_DOWN: 5,
-    RASQUEDO_UP: 6,
+    RASGUEADO_DOWN: 5,
+    RASGUEADO_UP: 6,
     ARPEGGIO_DIRECTIONLESS: 7, // Arpeggiated chord without upwards or downwards arrow
   };
 
@@ -85,7 +86,7 @@ export class Stroke extends Modifier {
     this.position = Modifier.Position.LEFT;
 
     this.renderOptions = {
-      fontScale: Tables.lookupMetric('Stroke.fontSize'),
+      fontScale: Metrics.get('Stroke.fontSize'),
     };
 
     this.setXShift(0);
@@ -136,16 +137,16 @@ export class Stroke extends Modifier {
     switch (this.type) {
       case Stroke.Type.BRUSH_DOWN:
       case Stroke.Type.ROLL_DOWN:
-      case Stroke.Type.RASQUEDO_DOWN:
-        arrow = '\ueb78' /*arrowheadBlackUp*/;
+      case Stroke.Type.RASGUEADO_DOWN:
+        arrow = Glyphs.arrowheadBlackUp;
         arrowY = topY;
         topY -= lineSpace / 2;
         botY += lineSpace / 2;
         break;
       case Stroke.Type.BRUSH_UP:
       case Stroke.Type.ROLL_UP:
-      case Stroke.Type.RASQUEDO_UP:
-        arrow = '\ueb7c' /*arrowheadBlackDown*/;
+      case Stroke.Type.RASGUEADO_UP:
+        arrow = Glyphs.arrowheadBlackDown;
         arrowY = botY + lineSpace;
         topY -= lineSpace / 2;
         break;
@@ -162,18 +163,16 @@ export class Stroke extends Modifier {
       ctx.fillRect(x + this.xShift, topY, 1, botY - topY);
     } else {
       // Select the wiggle glyph depending on the arrow direction
-      const lineGlyph =
-        arrow === '\ueb7c' /*arrowheadBlackDown*/ ? '\ueaaa' /*wiggleArpeggiatoDown*/ : '\ueaa9'; /*wiggleArpeggiatoUp*/
+      const lineGlyph = arrow === Glyphs.arrowheadBlackDown ? Glyphs.wiggleArpeggiatoDown : Glyphs.wiggleArpeggiatoUp;
       let txt = '';
       const el = new Element();
       // add glyphs until the required length is achieved
       while (el.getWidth() < botY - topY) {
         txt += lineGlyph;
         el.setText(txt);
-        el.measureText();
-        }
+      }
       if (
-        this.type === Stroke.Type.RASQUEDO_DOWN ||
+        this.type === Stroke.Type.RASGUEADO_DOWN ||
         this.type === Stroke.Type.ROLL_DOWN ||
         this.type === Stroke.Type.ARPEGGIO_DIRECTIONLESS
       ) {
@@ -193,7 +192,6 @@ export class Stroke extends Modifier {
     if (arrowY !== 0) {
       const el = new Element();
       el.setText(arrow);
-      el.measureText();
       el.renderText(
         ctx,
         // Center the arrow head substracting its width / 2
@@ -202,15 +200,14 @@ export class Stroke extends Modifier {
       );
     }
 
-    // Draw the rasquedo "R"
-    if (this.type === Stroke.Type.RASQUEDO_DOWN || this.type === Stroke.Type.RASQUEDO_UP) {
+    // Draw the rasgueado "R"
+    if (this.type === Stroke.Type.RASGUEADO_DOWN || this.type === Stroke.Type.RASGUEADO_UP) {
       const el = new Element('Stroke.text');
       el.setText('R');
-      el.measureText();
       el.renderText(
         ctx,
         x + this.xShift - el.getWidth() / 2,
-        textY + (this.type === Stroke.Type.RASQUEDO_DOWN ? el.getHeight() : 0)
+        textY + (this.type === Stroke.Type.RASGUEADO_DOWN ? el.getHeight() : 0)
       );
     }
   }

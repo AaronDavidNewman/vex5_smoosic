@@ -22,10 +22,10 @@ export interface TextBracketParams {
   position?: number | string;
 }
 
-// To enable logging for this class. Set `Vex.Flow.TextBracket.DEBUG` to `true`.
+// To enable logging for this class. Set `VexFlow.TextBracket.DEBUG` to `true`.
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (TextBracket.DEBUG) log('Vex.Flow.TextBracket', args);
+  if (TextBracket.DEBUG) log('VexFlow.TextBracket', args);
 }
 
 export enum TextBracketPosition {
@@ -50,8 +50,8 @@ export class TextBracket extends Element {
     bracketHeight: number;
   };
 
-  protected readonly text: string;
-  protected readonly superscript: string;
+  protected textElement: Element;
+  protected superscriptElement: Element;
 
   protected line: number;
 
@@ -70,30 +70,18 @@ export class TextBracket extends Element {
     };
   }
 
-  /**
-   * @deprecated Use `TextBracket.Position` instead.
-   */
-  static get Positions(): typeof TextBracketPosition {
-    L('Positions is deprecated, use TextBracketPosition instead.');
-    return TextBracketPosition;
-  }
-
-  /**
-   * @deprecated Use `TextBracket.PositionString` instead.
-   */
-  static get PositionsString(): Record<string, number> {
-    L('PositionsString is deprecated, use PositionString instead.');
-    return TextBracket.PositionString;
-  }
-
   constructor({ start, stop, text = '', superscript = '', position = TextBracketPosition.TOP }: TextBracketParams) {
     super();
 
     this.start = start;
     this.stop = stop;
 
-    this.text = text;
-    this.superscript = superscript;
+    this.textElement = new Element('TextBracket');
+    this.textElement.setText(text);
+    this.superscriptElement = new Element('TextBracket');
+    this.superscriptElement.setText(superscript);
+    const smallerFontSize = Font.scaleSize(this.fontInfo.size, 0.714286);
+    this.superscriptElement.setFontSize(smallerFontSize);
 
     this.position = typeof position === 'string' ? TextBracket.PositionString[position] : position;
 
@@ -119,7 +107,13 @@ export class TextBracket extends Element {
    * @returns this
    */
   applyStyle(ctx: RenderContext): this {
-    ctx.setFont(this.font);
+    this.textElement.setFont(this.fontInfo);
+    // We called this.resetFont() in the constructor, so we know this.textFont is available.
+    const { family, size, weight, style } = this.fontInfo;
+    // To draw the superscript, we scale the font size by 1/1.4.
+    const smallerFontSize = Font.scaleSize(size, 0.714286);
+    this.superscriptElement.setFont(family, smallerFontSize, weight, style);
+
     const options = this.renderOptions;
     ctx.setStrokeStyle(options.color);
     ctx.setFillStyle(options.color);
@@ -171,28 +165,21 @@ export class TextBracket extends Element {
     this.applyStyle(ctx);
 
     // Draw text
-    ctx.fillText(this.text, start.x, start.y);
+    this.textElement.renderText(ctx, start.x, start.y);
 
     // Get the width and height for the octave number
-    const mainMeasure = ctx.measureText(this.text);
-    const mainWidth = mainMeasure.width;
-    const mainHeight = mainMeasure.height;
+    const mainWidth = this.textElement.getWidth();
+    const mainHeight = this.textElement.getHeight();
 
     // Calculate the y position for the super script
     const superY = start.y - mainHeight / 2.5;
 
-    // We called this.resetFont() in the constructor, so we know this.textFont is available.
-    // eslint-disable-next-line
-    const { family, size, weight, style } = this.textFont!;
     // To draw the superscript, we scale the font size by 1/1.4.
-    const smallerFontSize = Font.scaleSize(size, 0.714286);
-    ctx.setFont(family, smallerFontSize, weight, style);
-    ctx.fillText(this.superscript, start.x + mainWidth + 1, superY);
+    this.superscriptElement.renderText(ctx, start.x + mainWidth + 1, superY);
 
     // Determine width and height of the superscript
-    const superMeasure = ctx.measureText(this.superscript);
-    const superWidth = superMeasure.width;
-    const superHeight = superMeasure.height;
+    const superWidth = this.superscriptElement.getWidth();
+    const superHeight = this.superscriptElement.getHeight();
 
     // Setup initial coordinates for the bracket line
     let startX = start.x;

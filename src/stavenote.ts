@@ -11,6 +11,8 @@
 import { Beam } from './beam';
 import { BoundingBox } from './boundingbox';
 import { ElementStyle } from './element';
+import { Glyphs } from './glyphs';
+import { Metrics } from './metrics';
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { KeyProps, Note, NoteStruct } from './note';
@@ -53,15 +55,14 @@ export interface StaveNoteStruct extends NoteStruct {
   stemDirection?: number;
   autoStem?: boolean;
   strokePx?: number;
-  glyphFontScale?: number;
   octaveShift?: number;
   clef?: string;
 }
 
-// To enable logging for this class. Set `Vex.Flow.StaveNote.DEBUG` to `true`.
+// To enable logging for this class. Set `VexFlow.StaveNote.DEBUG` to `true`.
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (StaveNote.DEBUG) log('Vex.Flow.StaveNote', args);
+  if (StaveNote.DEBUG) log('VexFlow.StaveNote', args);
 }
 
 const isInnerNoteIndex = (note: StaveNote, index: number) =>
@@ -98,7 +99,7 @@ export class StaveNote extends StemmableNote {
   }
 
   static get minNoteheadPadding(): number {
-    return Tables.lookupMetric('NoteHead.minPadding');
+    return Metrics.get('NoteHead.minPadding');
   }
 
   /** Format notes inside a ModifierContext. */
@@ -408,8 +409,6 @@ export class StaveNote extends StemmableNote {
 
     this.renderOptions = {
       ...this.renderOptions,
-      // font size for note heads and rests
-      glyphFontScale: noteStruct.glyphFontScale || Tables.lookupMetric('fontSize'),
       // number of stroke px to the left and right of head
       strokePx: noteStruct.strokePx || StaveNote.LEDGER_LINE_OFFSET,
     };
@@ -463,7 +462,7 @@ export class StaveNote extends StemmableNote {
   }
 
   // Builds a `NoteHead` for each key in the note
-  buildNoteHeads(): void {
+  buildNoteHeads(): NoteHead[] {
     this.#noteHeads = [];
     const stemDirection = this.getStemDirection();
     const keys = this.getKeys();
@@ -514,13 +513,15 @@ export class StaveNote extends StemmableNote {
         displaced,
         stemDirection,
         customGlyphCode: noteProps.code,
-        glyphFontScale: this.renderOptions.glyphFontScale,
         line: noteProps.line,
       });
+
+      notehead.fontInfo = this.fontInfo;
 
       this.addChildElement(notehead);
       this.#noteHeads[this.#sortedKeyProps[i].index] = notehead;
     }
+    return this.#noteHeads;
   }
 
   // Automatically sets the stem direction based on the keys in the note
@@ -593,9 +594,9 @@ export class StaveNote extends StemmableNote {
 
   // Get the `BoundingBox` for the entire note
   getBoundingBox(): BoundingBox {
-    this.boundingBox = new BoundingBox(this.getAbsoluteX(), this.ys[0], 0, 0);
+    const boundingBox = new BoundingBox(this.getAbsoluteX(), this.ys[0], 0, 0);
     this.#noteHeads.forEach((notehead) => {
-      this.boundingBox?.mergeWith(notehead.getBoundingBox());
+      boundingBox.mergeWith(notehead.getBoundingBox());
     });
     const { yTop, yBottom } = this.getNoteHeadBounds();
     // eslint-disable-next-line
@@ -607,13 +608,13 @@ export class StaveNote extends StemmableNote {
         : yBottom - noteStemHeight + this.flag.getTextMetrics().actualBoundingBoxAscent;
 
     if (!this.isRest() && this.hasStem()) {
-      this.boundingBox?.mergeWith(new BoundingBox(this.getAbsoluteX(), flagY, 0, 0));
+      boundingBox.mergeWith(new BoundingBox(this.getAbsoluteX(), flagY, 0, 0));
     }
-    const bbFlag = this.flag.getBoundingBox();
-    if (!this.isRest() && bbFlag) {
-      this.boundingBox?.mergeWith(bbFlag.move(flagX, flagY));
+    if (this.hasFlag()) {
+      const bbFlag = this.flag.getBoundingBox();
+      boundingBox.mergeWith(bbFlag.move(flagX, flagY));
     }
-    return this.boundingBox;
+    return boundingBox;
   }
 
   // Gets the line number of the bottom note in the chord.
@@ -784,21 +785,21 @@ export class StaveNote extends StemmableNote {
     // addtional y shifts for rests
     let restShift = 0;
     switch (this.#noteHeads[index].getText()) {
-      case '\ue4e2' /*restDoubleWhole*/:
-      case '\ue4e3' /*restWhole*/:
+      case Glyphs.restDoubleWhole:
+      case Glyphs.restWhole:
         restShift += 0.5;
         break;
-      case '\ue4e4' /*restHalf*/:
-      case '\ue4e5' /*restQuarter*/:
-      case '\ue4e6' /*rest8th*/:
-      case '\ue4e7' /*rest16th*/:
+      case Glyphs.restHalf:
+      case Glyphs.restQuarter:
+      case Glyphs.rest8th:
+      case Glyphs.rest16th:
         restShift -= 0.5;
         break;
-      case '\ue4e8' /*rest32nd*/:
-      case '\ue4e9' /*rest64th*/:
+      case Glyphs.rest32nd:
+      case Glyphs.rest64th:
         restShift -= 1.5;
         break;
-      case '\ue4ea' /*rest128th*/:
+      case Glyphs.rest128th:
         restShift -= 2.5;
         break;
     }
@@ -1144,11 +1145,6 @@ export class StaveNote extends StemmableNote {
     if (this.stem) {
       this.stem.setContext(ctx).draw();
     }
-  }
-
-  /** Primarily used as the scaling factor for grace notes, GraceNote will return the required scale. */
-  getStaveNoteScale(): number {
-    return 1.0;
   }
 
   /**

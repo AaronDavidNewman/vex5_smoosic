@@ -8,7 +8,7 @@
  * values, then options.numNotes must be set.
  *
  * @constructor
- * @param {Array.<Vex.Flow.StaveNote>} A set of notes: staveNotes,
+ * @param {Array.<VexFlow.StaveNote>} A set of notes: staveNotes,
  *   notes, etc... any class that inherits stemmableNote at some
  *   point in its prototype chain.
  * @param options: object {
@@ -46,6 +46,7 @@
 
 import { Element } from './element';
 import { Formatter } from './formatter';
+import { Glyphs } from './glyphs';
 import { Note } from './note';
 import { Stem } from './stem';
 import { StemmableNote } from './stemmablenote';
@@ -208,10 +209,9 @@ export class Tuplet extends Element {
         denominator = String.fromCharCode(0xe880 /* tuplet0 */ + (n % 10)) + denominator;
         n = Math.floor(n / 10);
       }
-      denominator = '\uE88A' /* tupletColon */ + denominator;
+      denominator = Glyphs.tupletColon + denominator;
     }
     this.textElement.setText(numerator + denominator);
-    this.textElement.measureText();
   }
 
   // determine how many tuplets are nested within this tuplet

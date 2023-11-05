@@ -8,13 +8,13 @@
 // See `tests/tabnote_tests.ts` for usage examples.
 
 import { Element } from './element';
+import { Glyphs } from './glyphs';
 import { Modifier } from './modifier';
 import { Note } from './note';
 import { Stave } from './stave';
 import { StaveNoteStruct } from './stavenote';
 import { Stem } from './stem';
 import { StemmableNote } from './stemmablenote';
-import { Tables } from './tables';
 import { Category, isDot } from './typeguard';
 import { defined, RuntimeError } from './util';
 
@@ -147,8 +147,6 @@ export class TabNote extends StemmableNote {
     // Render Options
     this.renderOptions = {
       ...this.renderOptions,
-      // font size for note heads and rests
-      glyphFontScale: Tables.lookupMetric('TabNote.fontSize'),
       // Flag to draw a stem
       drawStem,
       // Flag to draw dot modifiers
@@ -157,10 +155,6 @@ export class TabNote extends StemmableNote {
       drawStemThroughStave: false,
       // vertical shift from stave line
       yShift: 0,
-      // normal glyph scale
-      scale: 1.0,
-      // default tablature font
-      font: Tables.lookupMetric('fontFamily'),
     };
 
     this.glyphProps = Note.getGlyphProps(this.duration, this.noteType);
@@ -220,17 +214,15 @@ export class TabNote extends StemmableNote {
     return this.flag.getHeight() > Stem.HEIGHT ? this.flag.getHeight() - Stem.HEIGHT : 0;
   }
 
-  static tabToElement(fret: string, scale: number = 1.0): Element {
+  static tabToElement(fret: string): Element {
     let el: Element;
 
     if (fret.toUpperCase() === 'X') {
       el = new Element('TabNote');
-      el.setText('\ue263' /*accidentalDoubleSharp*/);
-      el.measureText();
+      el.setText(Glyphs.accidentalDoubleSharp);
     } else {
       el = new Element('TabNote.text');
       el.setText(fret);
-      el.measureText();
       el.setYShift(el.getHeight() / 2);
     }
 
@@ -244,7 +236,7 @@ export class TabNote extends StemmableNote {
     for (let i = 0; i < this.positions.length; ++i) {
       let fret = this.positions[i].fret;
       if (this.ghost) fret = '(' + fret + ')';
-      const el = TabNote.tabToElement(fret.toString(), this.renderOptions.scale);
+      const el = TabNote.tabToElement(fret.toString());
       this.fretElement.push(el);
       this.width = Math.max(el.getWidth(), this.width);
     }

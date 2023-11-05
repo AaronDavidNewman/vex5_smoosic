@@ -3,12 +3,12 @@
 //
 // Font Tests
 
+import { VexFlow } from '../src/vexflow';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 import { Accidental } from '../src/accidental';
 import { Bend } from '../src/bend';
 import { CanvasContext } from '../src/canvascontext';
-import { Flow } from '../src/flow';
 import { Font, FontStyle, FontWeight } from '../src/font';
 import { PedalMarking } from '../src/pedalmarking';
 import { StaveNote } from '../src/stavenote';
@@ -52,17 +52,17 @@ function setFont(assert: Assert): void {
   const flat = new Accidental('b');
   // Add italic to the default font as defined in Element.TEXT_FONT (since Accidental does not override TEXT_FONT).
   flat.setFont(undefined, undefined, undefined, 'italic');
-  assert.equal(flat.getFont(), 'italic 30pt Bravura,Roboto Slab');
+  assert.equal(flat.getFont(), 'italic 30pt Bravura,Academico');
   // Anything that is not set will be reset to the defaults.
   flat.setFont(undefined, undefined, 'bold', undefined);
-  assert.equal(flat.getFont(), 'bold 30pt Bravura,Roboto Slab');
+  assert.equal(flat.getFont(), 'bold 30pt Bravura,Academico');
   flat.setFont(undefined, undefined, 'bold', 'italic');
-  assert.equal(flat.getFont(), 'italic bold 30pt Bravura,Roboto Slab');
+  assert.equal(flat.getFont(), 'italic bold 30pt Bravura,Academico');
   flat.setFont(undefined, undefined, 'bold', 'oblique');
-  assert.equal(flat.getFont(), 'oblique bold 30pt Bravura,Roboto Slab');
+  assert.equal(flat.getFont(), 'oblique bold 30pt Bravura,Academico');
   // '' is equivalent to 'normal'. Neither will be included in the CSS font string.
   flat.setFont(undefined, undefined, 'normal', '');
-  assert.equal(flat.getFont(), '30pt Bravura,Roboto Slab');
+  assert.equal(flat.getFont(), '30pt Bravura,Academico');
 }
 
 function fontParsing(assert: Assert): void {
@@ -72,8 +72,8 @@ function fontParsing(assert: Assert): void {
   ]);
   const bFont = b.fontInfo;
   // Check the default font.
-  assert.equal(bFont?.family, 'Bravura,Roboto Slab');
-  assert.equal(bFont?.size, Font.SIZE);
+  assert.equal(bFont?.family, 'Bravura,Academico');
+  assert.equal(bFont?.size, 10);
   assert.equal(bFont?.weight, FontWeight.NORMAL);
   assert.equal(bFont?.style, FontStyle.NORMAL);
 
@@ -109,7 +109,7 @@ function fontSizes(assert: Assert): void {
 
   {
     const pedal = new PedalMarking([]);
-    assert.equal(pedal.getFont(), '30pt Bravura,Roboto Slab');
+    assert.equal(pedal.getFont(), '30pt Bravura,Academico');
     assert.equal(pedal.fontSizeInPoints, 30);
     assert.equal(pedal.fontSizeInPixels, 40);
     const doubledSizePx = pedal.fontSizeInPixels * 2; // Double the font size.
@@ -154,7 +154,7 @@ function setTextFontToGeorgia(options: TestOptions): void {
   options.assert.ok(true);
 }
 function setMusicFontToPetaluma(options: TestOptions): void {
-  Flow.setMusicFont('Petaluma');
+  VexFlow.setFonts('Petaluma');
 
   const factory = VexFlowTests.makeFactory(options, 400, 200);
   const stave = factory.Stave({ y: 40 });

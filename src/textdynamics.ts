@@ -1,15 +1,15 @@
 // Copyright (c) 2023-present VexFlow contributors: https://github.com/vexflow/vexflow/graphs/contributors
 // MIT License
 
+import { Glyphs } from './glyphs';
 import { Note } from './note';
-import { Tables } from './tables';
 import { TextNoteStruct } from './textnote';
 import { Category } from './typeguard';
-import { defined, log, RuntimeError } from './util';
+import { log, RuntimeError } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (TextDynamics.DEBUG) log('Vex.Flow.TextDynamics', args);
+  if (TextDynamics.DEBUG) log('VexFlow.TextDynamics', args);
 }
 
 /**
@@ -20,7 +20,7 @@ function L(...args: any[]) {
  * the following letters:  P, M, F, Z, R, S
  */
 export class TextDynamics extends Note {
-  /** To enable logging for this class. Set `Vex.Flow.TextDynamics.DEBUG` to `true`. */
+  /** To enable logging for this class. Set `VexFlow.TextDynamics.DEBUG` to `true`. */
   static DEBUG: boolean = false;
 
   static get CATEGORY(): string {
@@ -34,12 +34,12 @@ export class TextDynamics extends Note {
   /** The glyph data for each dynamics letter. */
   static get GLYPHS(): Record<string, string> {
     return {
-      f: '\uE522' /*dynamicForte*/,
-      p: '\uE520' /*dynamicPiano*/,
-      m: '\uE521' /*dynamicMezzo*/,
-      s: '\uE524' /*dynamicSforzando*/,
-      z: '\uE525' /*dynamicZ*/,
-      r: '\uE523' /*dynamicRinforzando*/,
+      f: Glyphs.dynamicForte,
+      p: Glyphs.dynamicPiano,
+      m: Glyphs.dynamicMezzo,
+      s: Glyphs.dynamicSforzando,
+      z: Glyphs.dynamicZ,
+      r: Glyphs.dynamicRinforzando,
     };
   }
 
@@ -59,8 +59,6 @@ export class TextDynamics extends Note {
     this.line = noteStruct.line ?? 0;
     this.text = '';
 
-    this.renderOptions = { glyphFontSize: Tables.lookupMetric('fontSize'), ...this.renderOptions };
-    this.textFont.size = defined(this.renderOptions.glyphFontSize) * this.renderOptions.glyphFontScale;
     L('New Dynamics Text: ', this.sequence);
   }
 
@@ -86,8 +84,6 @@ export class TextDynamics extends Note {
       this.text += glyph;
     });
 
-    // Store the width of the text
-    this.measureText();
     this.preFormatted = true;
     return this;
   }
