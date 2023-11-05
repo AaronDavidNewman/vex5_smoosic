@@ -52,7 +52,7 @@ export declare class Beam extends Element {
      *
      * ```
      * config = {
-     *   groups: [new Vex.Flow.Fraction(2, 8)],
+     *   groups: [new VexFlow.Fraction(2, 8)],
      *   stemDirection: -1,
      *   beamRests: true,
      *   beamMiddleOnly: true,

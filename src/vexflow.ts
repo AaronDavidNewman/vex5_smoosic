@@ -119,8 +119,7 @@ export class VexFlow {
   static FretHandFinger = FretHandFinger;
   static GhostNote = GhostNote;
   static GlyphNote = GlyphNote;
-  static Glyphs = Glyphs;
-  static GraceNote = GraceNote;
+    static GraceNote = GraceNote;
   static GraceNoteGroup = GraceNoteGroup;
   static GraceTabNote = GraceTabNote;
   static KeyManager = KeyManager;
@@ -347,6 +346,7 @@ export class VexFlow {
   static get TIME4_4(): VoiceTime {
     return Tables.TIME4_4;
   }
+
   static get unicode(): Record<string, string> {
     return Tables.unicode;
   }

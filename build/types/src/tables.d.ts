@@ -1,8 +1,6 @@
 import { ArticulationStruct } from './articulation';
-import { Font, FontInfo } from './font';
 import { Fraction } from './fraction';
 import { GlyphProps, KeyProps } from './note';
-export declare const CommonMetrics: Record<string, any>;
 export declare class Tables {
     static UNISON: boolean;
     static SOFTMAX_FACTOR: number;
@@ -12,14 +10,6 @@ export declare class Tables {
     static RENDER_PRECISION_PLACES: number;
     static RESOLUTION: number;
     static durationCodes: Record<string, Partial<GlyphProps>>;
-    /**
-     * Customize this by calling Flow.setMusicFont(...fontNames);
-     */
-    static MUSIC_FONT_STACK: Font[];
-    /**
-     * @returns the `Font` object at the head of the music font stack.
-     */
-    static currentMusicFont(): Font;
     static NOTATION_FONT_SCALE: number;
     static TABLATURE_FONT_SCALE: number;
     static SLASH_NOTEHEAD_WIDTH: number;
@@ -28,22 +18,6 @@ export declare class Tables {
     static clefProperties(clef: string): {
         lineShift: number;
     };
-    /** Use the provided key to look up a FontInfo in CommonMetrics. **/
-    static lookupMetricFontInfo(key: string): Required<FontInfo>;
-    /**
-     * Use the provided key to look up a value in CommonMetrics.
-     *
-     * @param key is a string separated by periods (e.g., `Stroke.text.fontFamily`).
-     * @param defaultValue is returned if the lookup fails.
-     * @returns the retrieved value (or `defaultValue` if the lookup fails).
-     *
-     * For the key `Stroke.text.fontFamily`, check all of the following in order:
-     *   1) CommonMetrics.fontFamily
-     *   2) CommonMetrics.Stroke.fontFamily
-     *   3) CommonMetrics.Stroke.text.fontFamily
-     * Retrieve the value from the most specific key (i.e., prefer #3 over #2 over #1 in the above example).
-     */
-    static lookupMetric(key: string, defaultValue?: any): any;
     /**
      * @param keyOctaveGlyph a string in the format "key/octave" (e.g., "c/5") or "key/octave/custom-note-head-code" (e.g., "g/5/t3").
      * @param clef

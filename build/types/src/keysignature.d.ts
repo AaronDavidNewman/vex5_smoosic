@@ -3,7 +3,6 @@ import { Stave } from './stave';
 import { StaveModifier } from './stavemodifier';
 export declare class KeySignature extends StaveModifier {
     static get CATEGORY(): string;
-    protected glyphFontScale: number;
     protected glyphs: Element[];
     protected paddingForced: boolean;
     protected formatted?: boolean;
@@ -41,5 +40,6 @@ export declare class KeySignature extends StaveModifier {
     alterKey(alterKeySpec: string[]): this;
     convertToAlterAccList(alterKeySpec: string[]): void;
     format(): void;
+    protected calculateWidth(): void;
     draw(): void;
 }

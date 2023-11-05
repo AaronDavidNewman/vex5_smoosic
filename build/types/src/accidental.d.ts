@@ -13,7 +13,7 @@ export declare class Accidental extends Modifier {
     #private;
     /** Accidental code provided to the constructor. */
     readonly type: string;
-    /** To enable logging for this class. Set `Vex.Flow.Accidental.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.Accidental.DEBUG` to `true`. */
     static DEBUG: boolean;
     protected cautionary: boolean;
     /** Accidentals category string. */
@@ -28,7 +28,7 @@ export declare class Accidental extends Modifier {
     static applyAccidentals(voices: Voice[], keySignature: string): void;
     /**
      * Create accidental.
-     * @param type value from `Vex.Flow.accidentalCodes.accidentals` table in `tables.ts`.
+     * @param type value from `VexFlow.accidentalCodes.accidentals` table in `tables.ts`.
      * For example: `#`, `##`, `b`, `n`, etc.
      */
     constructor(type: string);

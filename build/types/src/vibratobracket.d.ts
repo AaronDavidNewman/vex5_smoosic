@@ -3,7 +3,7 @@ import { Note } from './note';
 import { Vibrato } from './vibrato';
 /** `VibratoBracket` renders vibrato effect between two notes. */
 export declare class VibratoBracket extends Element {
-    /** To enable logging for this class. Set `Vex.Flow.VibratoBracket.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.VibratoBracket.DEBUG` to `true`. */
     static DEBUG: boolean;
     static get CATEGORY(): string;
     protected line: number;

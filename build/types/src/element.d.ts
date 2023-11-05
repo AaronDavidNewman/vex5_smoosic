@@ -66,15 +66,11 @@ export declare class Element {
     protected children: Element[];
     protected static ID: number;
     protected static newID(): string;
+    static setTextMeasurementCanvas(canvas: HTMLCanvasElement | OffscreenCanvas): void;
+    static getTextMeasurementCanvas(): HTMLCanvasElement | OffscreenCanvas | undefined;
     protected rendered: boolean;
     protected style?: ElementStyle;
-    protected boundingBox?: BoundingBox;
     protected registry?: Registry;
-    protected textFont: Required<FontInfo>;
-    protected text: string;
-    protected textMetrics: TextMetrics;
-    protected height: number;
-    protected width: number;
     protected xShift: number;
     protected yShift: number;
     protected x: number;
@@ -150,7 +146,7 @@ export declare class Element {
     /** Set an attribute such as 'id', 'class', or 'type'. */
     setAttribute(name: string, value: string | undefined): this;
     /** Get the boundingBox. */
-    getBoundingBox(): BoundingBox | undefined;
+    getBoundingBox(): BoundingBox;
     /** Return the context, such as an SVGContext or CanvasContext object. */
     getContext(): RenderContext | undefined;
     /** Set the context to an SVGContext or CanvasContext object */
@@ -196,6 +192,7 @@ export declare class Element {
      * See Element.fontSizeInPixels or Element.fontSizeInPoints if you need to get a number for calculation purposes.
      */
     getFontSize(): string;
+    getFontScale(): number;
     /**
      * The size is 1) a string of the form '10pt' or '16px', compatible with the CSS font-size property.
      *          or 2) a number, which is interpreted as a point size (i.e. 12 == '12pt').
@@ -220,8 +217,10 @@ export declare class Element {
     set fontWeight(weight: string | number);
     /** Get element width. */
     getWidth(): number;
+    get width(): number;
     /** Set element width. */
     setWidth(width: number): this;
+    set width(width: number);
     /** Set the X coordinate. */
     setX(x: number): this;
     /** Get the X coordinate. */
@@ -240,16 +239,23 @@ export declare class Element {
     getXShift(): number;
     /** Set element text. */
     setText(text: string): this;
+    set text(text: string);
     /** Get element text. */
     getText(): string;
+    get text(): string;
     /** Render the element text. */
     renderText(ctx: RenderContext, xPos: number, yPos: number): void;
     /** Measure the text using the textFont. */
     measureText(): TextMetrics;
+    /** Measure the text using the FontInfo related with key. */
+    static measureWidth(text: string, key?: string): number;
     /** Get the text metrics. */
     getTextMetrics(): TextMetrics;
+    get textMetrics(): TextMetrics;
     /** Get the text height. */
     getHeight(): number;
+    get height(): number;
+    set height(height: number);
     setOriginX(x: number): void;
     setOriginY(y: number): void;
     setOrigin(x: number, y: number): void;

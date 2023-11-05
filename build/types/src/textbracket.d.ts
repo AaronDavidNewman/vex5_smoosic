@@ -24,22 +24,14 @@ export declare class TextBracket extends Element {
         dash: number[];
         bracketHeight: number;
     };
-    protected readonly text: string;
-    protected readonly superscript: string;
+    protected textElement: Element;
+    protected superscriptElement: Element;
     protected line: number;
     readonly position: TextBracketPosition;
     readonly start: Note;
     readonly stop: Note;
     static get Position(): typeof TextBracketPosition;
     static get PositionString(): Record<string, number>;
-    /**
-     * @deprecated Use `TextBracket.Position` instead.
-     */
-    static get Positions(): typeof TextBracketPosition;
-    /**
-     * @deprecated Use `TextBracket.PositionString` instead.
-     */
-    static get PositionsString(): Record<string, number>;
     constructor({ start, stop, text, superscript, position }: TextBracketParams);
     /**
      * Apply the text backet styling to the provided context.

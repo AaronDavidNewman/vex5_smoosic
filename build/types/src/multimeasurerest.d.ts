@@ -52,7 +52,7 @@ export declare class MultiMeasureRest extends Element {
     setStave(stave: Stave): this;
     getStave(): Stave | undefined;
     checkStave(): Stave;
-    drawLine(stave: Stave, ctx: RenderContext, left: number, right: number, spacingBetweenLines: number): void;
-    drawSymbols(stave: Stave, ctx: RenderContext, left: number, right: number, spacingBetweenLines: number): void;
+    drawLine(stave: Stave, ctx: RenderContext, left: number, right: number): void;
+    drawSymbols(stave: Stave, ctx: RenderContext, left: number, right: number): void;
     draw(): void;
 }

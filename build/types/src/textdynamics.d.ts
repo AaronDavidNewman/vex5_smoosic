@@ -8,7 +8,7 @@ import { TextNoteStruct } from './textnote';
  * the following letters:  P, M, F, Z, R, S
  */
 export declare class TextDynamics extends Note {
-    /** To enable logging for this class. Set `Vex.Flow.TextDynamics.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.TextDynamics.DEBUG` to `true`. */
     static DEBUG: boolean;
     static get CATEGORY(): string;
     protected sequence: string;

@@ -5,7 +5,6 @@ import { BarNote } from './barnote';
 import { Beam } from './beam';
 import { Bend } from './bend';
 import { BoundingBox } from './boundingbox';
-import { BoundingBoxComputation } from './boundingboxcomputation';
 import { CanvasContext } from './canvascontext';
 import { ChordSymbol, ChordSymbolHorizontalJustify, ChordSymbolVerticalJustify, SymbolModifiers } from './chordsymbol';
 import { Clef } from './clef';
@@ -16,12 +15,11 @@ import { Dot } from './dot';
 import { EasyScore } from './easyscore';
 import { Element } from './element';
 import { Factory } from './factory';
-import { Font, FontModule, FontStyle, FontWeight } from './font';
+import { Font, FontStyle, FontWeight } from './font';
 import { Formatter } from './formatter';
 import { Fraction } from './fraction';
 import { FretHandFinger } from './frethandfinger';
 import { GhostNote } from './ghostnote';
-import { Glyph } from './glyph';
 import { GlyphNote } from './glyphnote';
 import { Glyphs } from './glyphs';
 import { GraceNote } from './gracenote';
@@ -75,17 +73,16 @@ import { TimeSigNote } from './timesignote';
 import { Tremolo } from './tremolo';
 import { Tuning } from './tuning';
 import { Tuplet } from './tuplet';
+import { RuntimeError } from './util';
 import { Vibrato } from './vibrato';
 import { VibratoBracket } from './vibratobracket';
 import { Voice, VoiceMode, VoiceTime } from './voice';
-export declare class Flow {
-    static get BUILD(): {
-        /** version number. */
+export declare class VexFlow {
+    static BUILD: {
         VERSION: string;
-        /** git commit ID that this library was built from. */
         ID: string;
-        /** The date when this library was compiled. */
         DATE: string;
+        INFO: string;
     };
     static Accidental: typeof Accidental;
     static Annotation: typeof Annotation;
@@ -95,7 +92,6 @@ export declare class Flow {
     static Beam: typeof Beam;
     static Bend: typeof Bend;
     static BoundingBox: typeof BoundingBox;
-    static BoundingBoxComputation: typeof BoundingBoxComputation;
     static CanvasContext: typeof CanvasContext;
     static ChordSymbol: typeof ChordSymbol;
     static Clef: typeof Clef;
@@ -111,9 +107,7 @@ export declare class Flow {
     static Fraction: typeof Fraction;
     static FretHandFinger: typeof FretHandFinger;
     static GhostNote: typeof GhostNote;
-    static Glyph: typeof Glyph;
     static GlyphNote: typeof GlyphNote;
-    static Glyphs: typeof Glyphs;
     static GraceNote: typeof GraceNote;
     static GraceNoteGroup: typeof GraceNoteGroup;
     static GraceTabNote: typeof GraceTabNote;
@@ -167,6 +161,8 @@ export declare class Flow {
     static VibratoBracket: typeof VibratoBracket;
     static Voice: typeof Voice;
     static Volta: typeof Volta;
+    static RuntimeError: typeof RuntimeError;
+    static Test: undefined;
     static AnnotationHorizontalJustify: typeof AnnotationHorizontalJustify;
     static AnnotationVerticalJustify: typeof AnnotationVerticalJustify;
     static ChordSymbolHorizontalJustify: typeof ChordSymbolHorizontalJustify;
@@ -175,6 +171,7 @@ export declare class Flow {
     static CurvePosition: typeof CurvePosition;
     static FontWeight: typeof FontWeight;
     static FontStyle: typeof FontStyle;
+    static Glyphs: typeof Glyphs;
     static ModifierPosition: typeof ModifierPosition;
     static RendererBackends: typeof RendererBackends;
     static RendererLineEndType: typeof RendererLineEndType;
@@ -185,42 +182,49 @@ export declare class Flow {
     static TextJustification: typeof TextJustification;
     static VoiceMode: typeof VoiceMode;
     /**
-     * Examples:
-     * ```
-     * Vex.Flow.setMusicFont('Petaluma');
-     * Vex.Flow.setMusicFont('Bravura', 'Gonville');
-     * ```
+     * Load the fonts that are used by your app.
      *
-     * **CASE 1**: You are using `vexflow.js`, which includes all music fonts (Bravura, Gonville, Petaluma, Custom).
-     * In this case, calling this method is optional, since VexFlow already defaults to a music font stack of:
-     * 'Bravura', 'Gonville', 'Custom'.
+     * Call this if you are using `vexflow-core.js` to take advantage of lazy loading for fonts.
      *
-     * **CASE 2**: You are using `vexflow-bravura.js` or `vexflow-petaluma.js` or `vexflow-gonville.js`,
-     * which includes a single music font. Calling this method is unnecessary.
+     * If you are using `vexflow.js` or `vexflow-bravura.js`, this method is unnecessary, since
+     * they already call loadFonts(...) and setFonts(...) for you.
      *
-     * **CASE 3**: You are using the light weight `vexflow-core.js` to take advantage of lazy loading for fonts.
-     * In this case, the default music font stack is empty.
+     * If `fontNames` is undefined, all fonts in Font.FILES will be loaded.
+     * This is useful for debugging, but not recommended for production because it will load lots of fonts.
+     *
+     * For example, on the `flow.html` test page, you could call:
+     *   `await VexFlow.loadFonts();`
+     *
+     * Alternatively, you may load web fonts with a stylesheet link (e.g., from Google Fonts),
+     * and a @font-face { font-family: ... } rule in your CSS.
+     *
+     * Customize `Font.HOST_URL` and `Font.FILES` to load different fonts for your app.
+     */
+    static loadFonts(...fontNames: string[]): Promise<void>;
+    /**
+     * Call this if you are using `vexflow-core.js` to take advantage of lazy loading for fonts.
+     *
+     * `vexflow.js` and `vexflow-bravura.js` already call setFonts('Bravura', 'Academico'), so you only
+     * need to call this when switching fonts.
+     *
      * Example:
      * ```
-     * await Vex.Flow.fetchMusicFont('Petaluma');
-     * Vex.Flow.setMusicFont('Petaluma');
-     * ... (do VexFlow stuff) ...
+     * await VexFlow.loadFonts('Bravura', 'Academico', 'Petaluma', 'Petaluma Script');
+     * VexFlow.setFonts('Bravura', 'Academico');
+     * ... render a score in Bravura ...
+     * VexFlow.setFonts('Petaluma', 'Petaluma Script');
+     * ... render a score in Petaluma...
      * ```
      * See `demos/fonts/` for more examples.
-     *
-     * @returns an array of Font objects corresponding to the provided `fontNames`.
      */
-    static setMusicFont(...fontNames: string[]): Font[];
-    /**
-     * Used with vexflow-core which supports dynamic font loading.
-     */
-    static fetchMusicFont(fontName: string, fontModuleOrPath?: string | FontModule): Promise<void>;
-    static getMusicFont(): string[];
-    static getMusicFontStack(): Font[];
+    static setFonts(...fontNames: string[]): void;
+    static getFonts(): string[];
     static get RENDER_PRECISION_PLACES(): number;
     static set RENDER_PRECISION_PLACES(precision: number);
     static get SOFTMAX_FACTOR(): number;
     static set SOFTMAX_FACTOR(factor: number);
+    static get UNISON(): boolean;
+    static set UNISON(unison: boolean);
     static get NOTATION_FONT_SCALE(): number;
     static set NOTATION_FONT_SCALE(value: number);
     static get TABLATURE_FONT_SCALE(): number;

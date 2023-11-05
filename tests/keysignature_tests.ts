@@ -4,10 +4,11 @@
 // Key Signature Tests
 //
 
+import { VexFlow } from '../src/vexflow';
 import { MAJOR_KEYS, MINOR_KEYS, TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 import { Element } from '../src/element';
-import { Flow } from '../src/flow';
+import { Glyphs } from '../src/glyphs';
 import { KeySignature } from '../src/keysignature';
 import { ContextBuilder } from '../src/renderer';
 import { Stave } from '../src/stave';
@@ -29,18 +30,11 @@ const KeySignatureTests = {
   },
 };
 
-function getWidth(code: string) {
-  const el = new Element();
-  el.setText(code);
-  el.measureText();
-  return el.getWidth();
-}
-
 const fontWidths = () => {
-  const sharpWidth = getWidth('\ue262' /*accidentalSharp*/) + 1;
-  const flatWidth = getWidth('\ue260' /*accidentalFlat*/) + 1;
-  const naturalWidth = getWidth('\ue261' /*accidentalNatural*/) + 2;
-  const clefWidth = getWidth('\ue050' /*gClef*/) * 2; // widest clef
+  const sharpWidth = Element.measureWidth(Glyphs.accidentalSharp) + 1;
+  const flatWidth = Element.measureWidth(Glyphs.accidentalFlat) + 1;
+  const naturalWidth = Element.measureWidth(Glyphs.accidentalNatural) + 2;
+  const clefWidth = Element.measureWidth(Glyphs.gClef) * 2; // widest clef
   return { sharpWidth, flatWidth, naturalWidth, clefWidth };
 };
 
@@ -48,7 +42,7 @@ function parser(assert: Assert): void {
   assert.expect(11);
 
   function catchError(spec: string): void {
-    assert.throws(() => Flow.keySignature(spec), /BadKeySignature/);
+    assert.throws(() => VexFlow.keySignature(spec), /BadKeySignature/);
   }
 
   catchError('asdf');
@@ -62,13 +56,13 @@ function parser(assert: Assert): void {
   catchError('Dbm');
   catchError('B#m');
 
-  Flow.keySignature('B');
-  Flow.keySignature('C');
-  Flow.keySignature('Fm');
-  Flow.keySignature('Ab');
-  Flow.keySignature('Abm');
-  Flow.keySignature('F#');
-  Flow.keySignature('G#m');
+  VexFlow.keySignature('B');
+  VexFlow.keySignature('C');
+  VexFlow.keySignature('Fm');
+  VexFlow.keySignature('Ab');
+  VexFlow.keySignature('Abm');
+  VexFlow.keySignature('F#');
+  VexFlow.keySignature('G#m');
 
   assert.ok(true, 'all pass');
 }

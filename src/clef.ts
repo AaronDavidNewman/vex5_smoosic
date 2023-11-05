@@ -3,15 +3,15 @@
 // Co-author: Benjamin W. Bohl
 
 import { Glyphs } from './glyphs';
+import { Metrics } from './metrics';
 import { Stave } from './stave';
 import { StaveModifier, StaveModifierPosition } from './stavemodifier';
-import { Tables } from './tables';
 import { Category } from './typeguard';
 import { log } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (Clef.DEBUG) log('Vex.Flow.Clef', args);
+  if (Clef.DEBUG) log('VexFlow.Clef', args);
 }
 
 /**
@@ -20,7 +20,7 @@ function L(...args: any[]) {
  * See `tests/clef_tests.ts` for usage examples.
  */
 export class Clef extends StaveModifier {
-  /** To enable logging for this class, set `Vex.Flow.Clef.DEBUG` to `true`. */
+  /** To enable logging for this class, set `VexFlow.Clef.DEBUG` to `true`. */
   static DEBUG: boolean = false;
 
   static get CATEGORY(): string {
@@ -130,16 +130,15 @@ export class Clef extends StaveModifier {
       }
     }
     this.text = this.code;
-    this.textFont.size = Math.floor(Clef.getPoint(this.size));
-    this.measureText();
-
+    this.fontInfo.size = Math.floor(Clef.getPoint(this.size));
+    
     return this;
   }
 
   /** Get point for clefs. */
   static getPoint(size?: string): number {
     // for sizes other than 'default', clef is 2/3 of the default value
-    return size === 'default' ? Tables.lookupMetric('fontSize') : (Tables.lookupMetric('fontSize') * 2) / 3;
+    return size === 'default' ? Metrics.get('fontSize') : (Metrics.get('fontSize') * 2) / 3;
   }
 
   /** Set associated stave. */

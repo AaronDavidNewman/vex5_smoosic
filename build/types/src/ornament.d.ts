@@ -5,12 +5,12 @@ import { Note } from './note';
 /**
  * Ornament implements ornaments as modifiers that can be
  * attached to notes. The complete list of ornaments is available in
- * `tables.ts` under `Vex.Flow.ornamentCodes`.
+ * `tables.ts` under `VexFlow.ornamentCodes`.
  *
  * See `tests/ornament_tests.ts` for usage examples.
  */
 export declare class Ornament extends Modifier {
-    /** To enable logging for this class. Set `Vex.Flow.Ornament.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.Ornament.DEBUG` to `true`. */
     static DEBUG: boolean;
     /** Ornaments category string. */
     static get CATEGORY(): string;
@@ -55,7 +55,7 @@ export declare class Ornament extends Modifier {
     static get ornamentArticulation(): string[];
     /**
      * Create a new ornament of type `type`, which is an entry in
-     * `Vex.Flow.ornamentCodes` in `tables.ts`.
+     * `VexFlow.ornamentCodes` in `tables.ts`.
      */
     constructor(type: string);
     /** Set note attached to ornament. */

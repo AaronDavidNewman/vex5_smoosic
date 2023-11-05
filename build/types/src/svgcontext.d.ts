@@ -1,3 +1,4 @@
+import { Element } from './element';
 import { FontInfo } from './font';
 import { GroupAttributes, RenderContext, TextMeasure } from './rendercontext';
 export type Attributes = {
@@ -15,18 +16,12 @@ export interface State {
     shadowAttributes: Attributes;
     lineWidth: number;
 }
-declare class MeasureTextCache {
-    protected txt?: SVGTextElement;
-    protected cache: Record<string, Record<string, TextMeasure>>;
-    lookup(text: string, svg: SVGSVGElement, attributes: Attributes): TextMeasure;
-    measureImpl(text: string, svg: SVGSVGElement, attributes: Attributes): TextMeasure;
-}
 /**
  * SVG rendering context with an API similar to CanvasRenderingContext2D.
  */
 export declare class SVGContext extends RenderContext {
     #private;
-    protected static measureTextCache: MeasureTextCache;
+    protected static measureTextElement: Element;
     element: HTMLElement;
     svg: SVGSVGElement;
     width: number;
@@ -141,4 +136,3 @@ export declare class SVGContext extends RenderContext {
     /** Return a string of the form `'italic bold 15pt Arial'` */
     getFont(): string;
 }
-export {};

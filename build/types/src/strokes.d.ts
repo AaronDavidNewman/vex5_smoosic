@@ -8,8 +8,8 @@ export declare class Stroke extends Modifier {
         BRUSH_UP: number;
         ROLL_DOWN: number;
         ROLL_UP: number;
-        RASQUEDO_DOWN: number;
-        RASQUEDO_UP: number;
+        RASGUEADO_DOWN: number;
+        RASGUEADO_UP: number;
         ARPEGGIO_DIRECTIONLESS: number;
     };
     static format(strokes: Stroke[], state: ModifierContextState): boolean;

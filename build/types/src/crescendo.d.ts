@@ -11,7 +11,6 @@ export declare class Crescendo extends Note {
     /** Crescendo category string. */
     static get CATEGORY(): string;
     protected decrescendo: boolean;
-    protected height: number;
     protected line: number;
     protected options: {
         extendLeft: number;

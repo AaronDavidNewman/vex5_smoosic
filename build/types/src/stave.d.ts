@@ -77,7 +77,6 @@ export declare class Stave extends Element {
         shiftY?: number;
         justification?: number;
     }): this;
-    getHeight(): number;
     getSpacingBetweenLines(): number;
     getBoundingBox(): BoundingBox;
     getBottomY(): number;

@@ -21,7 +21,7 @@ export declare class TabNote extends StemmableNote {
     setGhost(ghost: boolean): this;
     hasStem(): boolean;
     getStemExtension(): number;
-    static tabToElement(fret: string, scale?: number): Element;
+    static tabToElement(fret: string): Element;
     updateWidth(): void;
     setStave(stave: Stave): this;
     getPositions(): TabNotePosition[];

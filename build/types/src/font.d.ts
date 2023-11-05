@@ -1,4 +1,3 @@
-import { TupletMetrics } from './tuplet';
 export interface FontInfo {
     /** CSS font-family, e.g., 'Arial', 'Helvetica Neue, Arial, sans-serif', 'Times, serif' */
     family?: string;
@@ -12,50 +11,6 @@ export interface FontInfo {
     /** `italic` as inspired by CSS font-style. */
     style?: string;
 }
-export type FontModule = {
-    data: FontData;
-    metrics: FontMetrics;
-};
-export interface FontData {
-    glyphs: Record<string, FontGlyph>;
-    fontFamily?: string;
-    resolution: number;
-    generatedOn?: string;
-}
-/** Specified in the `xxx_metrics.ts` files. */
-export interface FontMetrics extends Record<string, any> {
-    smufl: boolean;
-    stave?: Record<string, number>;
-    accidental?: Record<string, number>;
-    pedalMarking?: Record<string, Record<string, number>>;
-    digits?: Record<string, number>;
-    articulation?: Record<string, Record<string, number>>;
-    tremolo?: Record<string, Record<string, number>>;
-    tuplet?: TupletMetrics;
-    glyphs: Record<string, {
-        point?: number;
-        shiftX?: number;
-        shiftY?: number;
-        scale?: number;
-        [key: string]: {
-            point?: number;
-            shiftX?: number;
-            shiftY?: number;
-            scale?: number;
-        } | number | undefined;
-    }>;
-}
-export interface FontGlyph {
-    xMin: number;
-    xMax: number;
-    yMin?: number;
-    yMax?: number;
-    ha: number;
-    leftSideBearing?: number;
-    advanceWidth?: number;
-    o?: string;
-    cachedOutline?: number[];
-}
 export declare enum FontWeight {
     NORMAL = "normal",
     BOLD = "bold"
@@ -65,12 +20,6 @@ export declare enum FontStyle {
     ITALIC = "italic"
 }
 export declare class Font {
-    /** Default sans-serif font family. */
-    static SANS_SERIF: string;
-    /** Default serif font family. */
-    static SERIF: string;
-    /** Default font size in `pt`. */
-    static SIZE: number;
     /** Given a length (for units: pt, px, em, %, in, mm, cm) what is the scale factor to convert it to px? */
     static scaleToPxFrom: Record<string, number>;
     /**
@@ -79,14 +28,14 @@ export declare class Font {
      * units (e.g., pt, em, %).
      * @returns the number of pixels that is equivalent to `fontSize`
      */
-    static convertSizeToPixelValue(fontSize?: string | number): number;
+    static convertSizeToPixelValue(fontSize: string | number): number;
     /**
      * @param fontSize a font size to convert. Can be specified as a CSS length string (e.g., '16pt', '1em')
      * or as a number (the unit is assumed to be 'pt'). See `Font.scaleToPxFrom` for the supported
      * units (e.g., pt, em, %).
      * @returns the number of points that is equivalent to `fontSize`
      */
-    static convertSizeToPointValue(fontSize?: string | number): number;
+    static convertSizeToPointValue(fontSize: string | number): number;
     /**
      * @param f
      * @param size
@@ -128,66 +77,19 @@ export declare class Font {
      *
      * You can also self host, and specify your own server URL here.
      */
-    static WEB_FONT_HOST: string;
+    static HOST_URL: string;
     /**
-     * These font files will be loaded from the CDN specified by `Font.WEB_FONT_HOST` when
-     * `await Font.loadWebFonts()` is called. Customize this field to specify a different
-     * set of fonts to load. See: `Font.loadWebFonts()`.
+     * These font files will be loaded from the CDN specified by `Font.HOST_URL`.
+     * `await VexFlow.loadFonts()` loads all of the fonts below. Useful during debugging.
+     * `await VexFlow.loadFonts(FontName1, FontName2)` loads only the specified fonts.
      */
-    static WEB_FONT_FILES: Record<string, string>;
+    static FILES: Record<string, string>;
     /**
-     * @param fontName
-     * @param woffURL The absolute or relative URL to the woff file.
-     * @param includeWoff2 If true, we assume that a woff2 file is in
-     * the same folder as the woff file, and will append a `2` to the url.
-     */
-    static loadWebFont(fontName: string, woffURL: string): Promise<FontFace>;
-    /**
-     * Load the web fonts that are used by your app.
-     * If fontNames is undefined, all fonts in Font.WEB_FONT_FILES will be loaded.
+  * This method is asynchronous, so you should use await or .then() to wait for the fonts to load before proceeding.
      *
-     * For example, `flow.html` calls:
-     *   `await Vex.Flow.Font.loadWebFonts();`
-     * Alternatively, you may load web fonts with a stylesheet link (e.g., from Google Fonts),
-     * and a @font-face { font-family: ... } rule in your CSS.
-     *
-     * You can customize `Font.WEB_FONT_HOST` and `Font.WEB_FONT_FILES` to load different fonts
-     * for your app.
-     */
-    static loadWebFonts(fontNames?: string[]): Promise<void>;
-    /**
      * @param fontName
-     * @param data optionally set the Font object's `.data` property.
-     *   This is usually done when setting up a font for the first time.
-     * @param metrics optionally set the Font object's `.metrics` property.
-     *   This is usually done when setting up a font for the first time.
-     * @returns a Font object with the given `fontName`.
-     *   Reuse an existing Font object if a matching one is found.
+     * @param url The absolute or relative URL to the woff2/otf file. It can also be a data URI.
+     * @param descriptors See: https://developer.mozilla.org/en-US/docs/Web/API/FontFace/FontFace#descriptors
      */
-    static load(fontName: string, data?: FontData, metrics?: FontMetrics): Font;
-    protected name: string;
-    protected data?: FontData;
-    protected metrics?: FontMetrics;
-    /**
-     * Use `Font.load(fontName)` to get a Font object.
-     * Do not call this constructor directly.
-     */
-    private constructor();
-    getName(): string;
-    getData(): FontData;
-    getMetrics(): FontMetrics;
-    setData(data: FontData): void;
-    setMetrics(metrics: FontMetrics): void;
-    hasData(): boolean;
-    getResolution(): number;
-    getGlyphs(): Record<string, FontGlyph>;
-    /**
-     * Use the provided key to look up a value in this font's metrics file (e.g., bravura_metrics.ts, petaluma_metrics.ts).
-     * @param key is a string separated by periods (e.g., stave.endPaddingMax, clef.lineCount.'5'.shiftY).
-     * @param defaultValue is returned if the lookup fails.
-     * @returns the retrieved value (or `defaultValue` if the lookup fails).
-     */
-    lookupMetric(key: string, defaultValue?: Record<string, any> | number): any;
-    /** For debugging. */
-    toString(): string;
+    static load(fontName: string, url?: string, descriptors?: Record<string, string>): Promise<FontFace>;
 }

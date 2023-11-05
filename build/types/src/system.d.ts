@@ -1,3 +1,4 @@
+import { BoundingBox } from './boundingbox';
 import { Element } from './element';
 import { Factory } from './factory';
 import { FormatParams, Formatter, FormatterOptions } from './formatter';
@@ -112,6 +113,8 @@ export declare class System extends Element {
     addVoices(voices: Voice[]): void;
     /** Format the system. */
     format(): void;
+    /** Get the boundingBox. */
+    getBoundingBox(): BoundingBox;
     /** Render the system. */
     draw(): void;
 }

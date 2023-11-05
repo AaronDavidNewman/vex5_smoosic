@@ -4,29 +4,29 @@
 
 import { getBottomY, getInitialOffset, getTopY } from './articulation';
 import { Element } from './element';
+import { Metrics } from './metrics';
 import { Modifier, ModifierPosition } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
 import { StemmableNote } from './stemmablenote';
 import { Tables } from './tables';
-import { TickContext } from './tickcontext';
 import { Category } from './typeguard';
 import { log } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (Ornament.DEBUG) log('Vex.Flow.Ornament', args);
+  if (Ornament.DEBUG) log('VexFlow.Ornament', args);
 }
 
 /**
  * Ornament implements ornaments as modifiers that can be
  * attached to notes. The complete list of ornaments is available in
- * `tables.ts` under `Vex.Flow.ornamentCodes`.
+ * `tables.ts` under `VexFlow.ornamentCodes`.
  *
  * See `tests/ornament_tests.ts` for usage examples.
  */
 export class Ornament extends Modifier {
-  /** To enable logging for this class. Set `Vex.Flow.Ornament.DEBUG` to `true`. */
+  /** To enable logging for this class. Set `VexFlow.Ornament.DEBUG` to `true`. */
   static DEBUG: boolean = false;
 
   /** Ornaments category string. */
@@ -34,7 +34,7 @@ export class Ornament extends Modifier {
     return Category.Ornament;
   }
   static get minPadding(): number {
-    return Tables.lookupMetric('NoteHead.minPadding');
+    return Metrics.get('NoteHead.minPadding');
   }
 
   protected ornamentAlignWithNoteHead: string[] | boolean;
@@ -137,7 +137,7 @@ export class Ornament extends Modifier {
 
   /**
    * Create a new ornament of type `type`, which is an entry in
-   * `Vex.Flow.ornamentCodes` in `tables.ts`.
+   * `VexFlow.ornamentCodes` in `tables.ts`.
    */
   constructor(type: string) {
     super();
@@ -169,8 +169,7 @@ export class Ornament extends Modifier {
     }
 
     this.text = Tables.ornamentCodes(this.type);
-    this.measureText();
-  }
+      }
 
   /** Set note attached to ornament. */
   setNote(note: Note): this {
@@ -198,16 +197,14 @@ export class Ornament extends Modifier {
   setUpperAccidental(accid: string): this {
     this.accidentalUpper = new Element();
     this.accidentalUpper.setText(Tables.accidentalCodes(accid));
-    this.accidentalUpper.measureText();
-    return this;
+        return this;
   }
 
   /** Set the lower accidental for the ornament. */
   setLowerAccidental(accid: string): this {
     this.accidentalLower = new Element();
     this.accidentalLower.setText(Tables.accidentalCodes(accid));
-    this.accidentalLower.measureText();
-    return this;
+        return this;
   }
 
   /** Render ornament in position next to note. */
@@ -245,11 +242,13 @@ export class Ornament extends Modifier {
       if (this.delayXShift !== undefined) {
         delayXShift = this.delayXShift;
       } else {
-        const nextContext = TickContext.getNextContext(note.getTickContext());
+        const tickables = note.getVoice().getTickables();
+        const index = tickables.indexOf(note);
+        const nextContext = index + 1 < tickables.length ? tickables[index + 1].checkTickContext() : undefined;
         if (nextContext) {
           delayXShift += (nextContext.getX() - startX) * 0.5;
         } else {
-          delayXShift += (stave.getX() + stave.getWidth() - startX) * 0.5;
+          delayXShift += (stave.getX() + stave.getWidth() - glyphX) * 0.5;
         }
         this.delayXShift = delayXShift;
       }

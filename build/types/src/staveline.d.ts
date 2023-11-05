@@ -29,7 +29,6 @@ export declare class StaveLine extends Element {
         textPositionVertical: number;
         textJustification: number;
     };
-    protected text: string;
     protected notes: StaveLineNotes;
     protected firstNote: StaveNote;
     protected firstIndexes: number[];
@@ -39,7 +38,6 @@ export declare class StaveLine extends Element {
     setText(text: string): this;
     setNotes(notes: StaveLineNotes): this;
     applyLineStyle(): void;
-    applyFontStyle(): void;
     protected drawArrowLine(ctx: RenderContext, pt1: {
         x: number;
         y: number;

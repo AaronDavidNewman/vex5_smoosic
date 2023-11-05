@@ -36,7 +36,6 @@ export interface StaveNoteStruct extends NoteStruct {
     stemDirection?: number;
     autoStem?: boolean;
     strokePx?: number;
-    glyphFontScale?: number;
     octaveShift?: number;
     clef?: string;
 }
@@ -61,7 +60,7 @@ export declare class StaveNote extends StemmableNote {
     reset(): this;
     setBeam(beam: Beam): this;
     buildStem(): this;
-    buildNoteHeads(): void;
+    buildNoteHeads(): NoteHead[];
     autoStem(): void;
     calculateOptimalStemDirection(): number;
     calculateKeyProps(): void;
@@ -133,8 +132,6 @@ export declare class StaveNote extends StemmableNote {
     drawFlag(): void;
     drawNoteHeads(): void;
     drawStem(stemOptions?: StemOptions): void;
-    /** Primarily used as the scaling factor for grace notes, GraceNote will return the required scale. */
-    getStaveNoteScale(): number;
     /**
      * Override stemmablenote stem extension to adjust for distance from middle line.
      */

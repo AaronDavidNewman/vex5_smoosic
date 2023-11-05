@@ -4,6 +4,7 @@
 // @author Greg Ristow (modifications)
 
 import { Fraction } from './fraction';
+import { Metrics } from './metrics';
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Music } from './music';
@@ -33,7 +34,7 @@ type StaveLineAccidentalLayoutMetrics = {
 
 // eslint-disable-next-line
 function L(...args: any[]) {
-  if (Accidental.DEBUG) log('Vex.Flow.Accidental', args);
+  if (Accidental.DEBUG) log('VexFlow.Accidental', args);
 }
 
 /**
@@ -47,7 +48,7 @@ function L(...args: any[]) {
 export class Accidental extends Modifier {
   /** Accidental code provided to the constructor. */
   readonly type: string;
-  /** To enable logging for this class. Set `Vex.Flow.Accidental.DEBUG` to `true`. */
+  /** To enable logging for this class. Set `VexFlow.Accidental.DEBUG` to `true`. */
   static DEBUG: boolean = false;
   protected cautionary: boolean;
 
@@ -61,10 +62,10 @@ export class Accidental extends Modifier {
     // If there are no accidentals, no need to format their positions.
     if (!accidentals || accidentals.length === 0) return;
 
-    const noteheadAccidentalPadding = Tables.lookupMetric('Accidental.noteheadAccidentalPadding');
+    const noteheadAccidentalPadding = Metrics.get('Accidental.noteheadAccidentalPadding');
     const leftShift = state.leftShift + noteheadAccidentalPadding;
-    const accidentalSpacing = Tables.lookupMetric('Accidental.accidentalSpacing');
-    const additionalPadding = Tables.lookupMetric('Accidental.leftPadding'); // padding to the left of all accidentals
+    const accidentalSpacing = Metrics.get('Accidental.accidentalSpacing');
+    const additionalPadding = Metrics.get('Accidental.leftPadding'); // padding to the left of all accidentals
 
     // A type used just in this formatting function.
     type AccidentalLinePositionsAndXSpaceNeeds = {
@@ -500,7 +501,7 @@ export class Accidental extends Modifier {
 
   /**
    * Create accidental.
-   * @param type value from `Vex.Flow.accidentalCodes.accidentals` table in `tables.ts`.
+   * @param type value from `VexFlow.accidentalCodes.accidentals` table in `tables.ts`.
    * For example: `#`, `##`, `b`, `n`, etc.
    */
   constructor(type: string) {
@@ -522,19 +523,18 @@ export class Accidental extends Modifier {
 
     if (!this.cautionary) {
       this.text += Tables.accidentalCodes(this.type);
-      this.textFont.size = Tables.lookupMetric('Accidental.fontSize');
+      this.fontInfo.size = Metrics.get('Accidental.fontSize');
     } else {
       this.text += Tables.accidentalCodes('{');
       this.text += Tables.accidentalCodes(this.type);
       this.text += Tables.accidentalCodes('}');
-      this.textFont.size = Tables.lookupMetric('Accidental.cautionary.fontSize');
+      this.fontInfo.size = Metrics.get('Accidental.cautionary.fontSize');
     }
     // Accidentals attached to grace notes are rendered smaller.
     if (isGraceNote(this.note)) {
-      this.textFont.size = Tables.lookupMetric('Accidental.grace.fontSize');
+      this.fontInfo.size = Metrics.get('Accidental.grace.fontSize');
     }
-    this.measureText();
-  }
+      }
 
   /** Attach this accidental to `note`, which must be a `StaveNote`. */
   setNote(note: Note): this {

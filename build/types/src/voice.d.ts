@@ -7,7 +7,7 @@ import { Tickable } from './tickable';
 export interface VoiceTime {
     numBeats: number;
     beatValue: number;
-    /** Defaults to `Flow.RESOLUTION` if not provided. */
+    /** Defaults to `VexFlow.RESOLUTION` if not provided. */
     resolution?: number;
 }
 export declare enum VoiceMode {
@@ -67,7 +67,7 @@ export declare class Voice extends Element {
     setStave(stave: Stave): this;
     getStave(): Stave | undefined;
     /** Get the bounding box for the voice. */
-    getBoundingBox(): BoundingBox | undefined;
+    getBoundingBox(): BoundingBox;
     /** Set the voice mode to strict or soft. */
     setStrict(strict: boolean): this;
     /** Determine if the voice is complete according to the voice mode. */

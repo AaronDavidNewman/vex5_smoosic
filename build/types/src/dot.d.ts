@@ -3,7 +3,6 @@ import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
 export declare class Dot extends Modifier {
     static get CATEGORY(): string;
-    protected radius: number;
     protected dotShiftY: number;
     /** Returns the dots associated to a Note. */
     static getDots(note: Note): Dot[];

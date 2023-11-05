@@ -16,7 +16,7 @@ export interface StemOptions {
     xBegin?: number;
 }
 export declare class Stem extends Element {
-    /** To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.Stem.DEBUG` to `true`. */
     static DEBUG: boolean;
     static get CATEGORY(): string;
     static get UP(): number;

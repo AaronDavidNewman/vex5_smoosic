@@ -4,7 +4,6 @@ import { Note, NoteStruct } from './note';
 import { Stave } from './stave';
 export interface NoteHeadStruct extends NoteStruct {
     line?: number;
-    glyphFontScale?: number;
     slashed?: boolean;
     style?: ElementStyle;
     customGlyphCode?: string;
@@ -22,7 +21,7 @@ export interface NoteHeadStruct extends NoteStruct {
  * See `tests/notehead_tests.ts` for usage examples.
  */
 export declare class NoteHead extends Note {
-    /** To enable logging for this class. Set `Vex.Flow.NoteHead.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.NoteHead.DEBUG` to `true`. */
     static DEBUG: boolean;
     static get CATEGORY(): string;
     protected customGlyph: boolean;

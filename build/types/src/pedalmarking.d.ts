@@ -8,7 +8,7 @@ import { StaveNote } from './stavenote';
  * custom text for the release/depress pedal markings.
  */
 export declare class PedalMarking extends Element {
-    /** To enable logging for this class. Set `Vex.Flow.PedalMarking.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.PedalMarking.DEBUG` to `true`. */
     static DEBUG: boolean;
     static get CATEGORY(): string;
     protected line: number;

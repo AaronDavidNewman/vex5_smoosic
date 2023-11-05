@@ -9,7 +9,7 @@ import { BarlineType } from './stavebarline';
  * See `tests/barnote_tests.ts` for usage examples.
  */
 export declare class BarNote extends Note {
-    /** To enable logging for this class. Set `Vex.Flow.BarNote.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.BarNote.DEBUG` to `true`. */
     static DEBUG: boolean;
     static get CATEGORY(): string;
     protected metrics: {

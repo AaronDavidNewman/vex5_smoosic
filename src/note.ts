@@ -4,6 +4,7 @@
 import { Beam } from './beam';
 import { Fraction } from './fraction';
 import { Glyphs } from './glyphs';
+import { Metrics } from './metrics';
 import { Modifier } from './modifier';
 import { drawDot, RenderContext } from './rendercontext';
 import { Stave } from './stave';
@@ -28,8 +29,7 @@ export interface KeyProps {
   octave: number;
   line: number;
   intValue?: number;
-  accidental?: number;
-  code?: string;
+    code?: string;
   displaced: boolean;
 }
 
@@ -129,7 +129,7 @@ export abstract class Note extends Tickable {
 
     const xWidth = xEnd - xStart;
     ctx.save();
-    ctx.setFont(Tables.lookupMetric('fontFamily'), 8);
+    ctx.setFont(Metrics.get('fontFamily'), 8);
     ctx.fillText(Math.round(xWidth) + 'px', xStart + note.getXShift(), yPos);
 
     const y = yPos + 7;
@@ -253,12 +253,8 @@ export abstract class Note extends Tickable {
     yShift: number;
     extendLeft?: number;
     extendRight?: number;
-    glyphFontScale: number;
-    annotationSpacing: number;
-    glyphFontSize?: number;
-    scale: number;
-    font: string;
-    strokePx: number;
+        annotationSpacing: number;
+        strokePx: number;
   };
   protected duration: string;
   protected leftDisplacedHeadPx: number;
@@ -333,11 +329,8 @@ export abstract class Note extends Tickable {
     // The render surface.
     this.renderOptions = {
       annotationSpacing: 5,
-      glyphFontScale: 1,
-      strokePx: 1,
-      scale: 1,
-      font: '',
-      yShift: 0,
+            strokePx: 1,
+            yShift: 0,
     };
   }
 
@@ -647,7 +640,7 @@ export abstract class Note extends Tickable {
     // Position note to left edge of tick context.
     let x = tickContext.getX();
     if (this.stave) {
-      x += this.stave.getNoteStartX() + Tables.lookupMetric('Stave.padding', 0);
+      x += this.stave.getNoteStartX() + Metrics.get('Stave.padding', 0);
     }
     if (this.isCenterAligned()) {
       x += this.getCenterXShift();

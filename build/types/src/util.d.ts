@@ -34,3 +34,8 @@ export declare function normalizeAngle(a: number): number;
  * Return the sum of an array of numbers.
  */
 export declare function sumArray(arr: number[]): number;
+/**
+ * Take `arr` and return a new array consisting of the sorted, unique'd,
+ * contents of arr. Does not modify `arr`.
+ */
+/** Benchmark. Run function `f` once and report time elapsed shifted by `s` milliseconds. */

@@ -19,7 +19,6 @@ export interface KeyProps {
     octave: number;
     line: number;
     intValue?: number;
-    accidental?: number;
     code?: string;
     displaced: boolean;
 }
@@ -92,11 +91,7 @@ export declare abstract class Note extends Tickable {
         yShift: number;
         extendLeft?: number;
         extendRight?: number;
-        glyphFontScale: number;
         annotationSpacing: number;
-        glyphFontSize?: number;
-        scale: number;
-        font: string;
         strokePx: number;
     };
     protected duration: string;

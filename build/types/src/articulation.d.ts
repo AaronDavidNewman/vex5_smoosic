@@ -25,12 +25,12 @@ export declare function getInitialOffset(note: Note, position: number): number;
 /**
  * Articulations and Accents are modifiers that can be
  * attached to notes. The complete list of articulations is available in
- * `tables.ts` under `Vex.Flow.articulationCodes`.
+ * `tables.ts` under `VexFlow.articulationCodes`.
  *
  * See `tests/articulation_tests.ts` for usage examples.
  */
 export declare class Articulation extends Modifier {
-    /** To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.Articulation.DEBUG` to `true`. */
     static DEBUG: boolean;
     /** Articulations category string. */
     static get CATEGORY(): string;
@@ -39,7 +39,6 @@ export declare class Articulation extends Modifier {
     readonly type: string;
     protected articulation: ArticulationStruct;
     protected heightShift: number;
-    protected height: number;
     /**
      * FIXME:
      * Most of the complex formatting logic (ie: snapping to space) is
@@ -64,7 +63,7 @@ export declare class Articulation extends Modifier {
     }, note: StemmableNote, builder: Builder): void;
     /**
      * Create a new articulation.
-     * @param type entry in `Vex.Flow.articulationCodes` in `tables.ts` or Glyph code.
+     * @param type entry in `VexFlow.articulationCodes` in `tables.ts` or Glyph code.
      *
      * Notes default positions (see https://w3c.github.io/smufl/latest/tables/articulation.html):
      * - Even codes will be positioned ABOVE

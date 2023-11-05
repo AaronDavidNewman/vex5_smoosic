@@ -19,7 +19,7 @@ export declare enum AnnotationVerticalJustify {
  * See `tests/annotation_tests.ts` for usage examples.
  */
 export declare class Annotation extends Modifier {
-    /** To enable logging for this class. Set `Vex.Flow.Annotation.DEBUG` to `true`. */
+    /** To enable logging for this class. Set `VexFlow.Annotation.DEBUG` to `true`. */
     static DEBUG: boolean;
     /** Annotations category string. */
     static get CATEGORY(): string;

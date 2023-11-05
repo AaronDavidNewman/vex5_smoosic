@@ -22,8 +22,6 @@ export declare abstract class StemmableNote extends Note {
     setStemDirection(direction?: number): this;
     getStemX(): number;
     getCenterGlyphX(): number;
-    /** Primarily used as the scaling factor for grace notes, GraceNote will return the required scale. */
-    getStaveNoteScale(): number;
     getStemExtension(): number;
     setStemLength(height: number): this;
     getStemExtents(): {

@@ -6,7 +6,7 @@ import { StaveModifier } from './stavemodifier';
  * See `tests/clef_tests.ts` for usage examples.
  */
 export declare class Clef extends StaveModifier {
-    /** To enable logging for this class, set `Vex.Flow.Clef.DEBUG` to `true`. */
+    /** To enable logging for this class, set `VexFlow.Clef.DEBUG` to `true`. */
     static DEBUG: boolean;
     static get CATEGORY(): string;
     /**
