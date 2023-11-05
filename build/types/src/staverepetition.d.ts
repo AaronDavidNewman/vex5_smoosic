@@ -25,6 +25,6 @@ export declare class Repetition extends StaveModifier {
     setShiftY(y: number): this;
     draw(stave: Stave, x: number): this;
     drawCodaFixed(stave: Stave, x: number): this;
-    drawSignoFixed(stave: Stave, x: number): this;
+    drawSegnoFixed(stave: Stave, x: number): this;
     drawSymbolText(stave: Stave, x: number, text: string, drawCoda: boolean): this;
 }

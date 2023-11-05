@@ -1,6 +1,7 @@
 import { Builder } from './easyscore';
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
+import { Note } from './note';
 import { StemmableNote } from './stemmablenote';
 export interface ArticulationStruct {
     code?: string;
@@ -8,6 +9,19 @@ export interface ArticulationStruct {
     belowCode?: string;
     betweenLines: boolean;
 }
+export declare function getTopY(note: Note, textLine: number): number;
+export declare function getBottomY(note: Note, textLine: number): number;
+/**
+ * Get the initial offset of the articulation from the y value of the starting position.
+ * This is required because the top/bottom text positions already have spacing applied to
+ * provide a "visually pleasant" default position. However the y values provided from
+ * the stavenote's top/bottom do *not* have any pre-applied spacing. This function
+ * normalizes this asymmetry.
+ * @param note
+ * @param position
+ * @returns
+ */
+export declare function getInitialOffset(note: Note, position: number): number;
 /**
  * Articulations and Accents are modifiers that can be
  * attached to notes. The complete list of articulations is available in

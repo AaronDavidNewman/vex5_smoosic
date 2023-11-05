@@ -1,12 +1,7 @@
-import { Glyph } from './glyph';
+import { Element } from './element';
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
-export interface OrnamentMetrics {
-    xOffset: number;
-    yOffset: number;
-    stemUpYOffset: number;
-    reportedWidth: number;
-}
+import { Note } from './note';
 /**
  * Ornament implements ornaments as modifiers that can be
  * attached to notes. The complete list of ornaments is available in
@@ -20,23 +15,16 @@ export declare class Ornament extends Modifier {
     /** Ornaments category string. */
     static get CATEGORY(): string;
     static get minPadding(): number;
-    protected ornament: {
-        code: string;
-    };
-    protected stemUpYOffset: number;
     protected ornamentAlignWithNoteHead: string[] | boolean;
     protected type: string;
     protected delayed: boolean;
-    protected reportedWidth: number;
     protected adjustForStemDirection: boolean;
     renderOptions: {
         accidentalUpperPadding: number;
         accidentalLowerPadding: number;
-        fontScale: number;
     };
-    protected glyph: Glyph;
-    protected accidentalUpper?: Glyph;
-    protected accidentalLower?: Glyph;
+    protected accidentalUpper?: Element;
+    protected accidentalLower?: Element;
     protected delayXShift?: number;
     /** Arrange ornaments inside `ModifierContext` */
     static format(ornaments: Ornament[], state: ModifierContextState): boolean;
@@ -60,18 +48,18 @@ export declare class Ornament extends Modifier {
      * note and overlapping the next beat/measure..
      */
     static get ornamentRelease(): string[];
+    static get ornamentLeft(): string[];
+    static get ornamentRight(): string[];
+    static get ornamentYShift(): string[];
     /** ornamentArticulation goes above/below the note based on space availablity */
     static get ornamentArticulation(): string[];
-    /**
-     * Legacy ornaments have hard-coded metrics.  If additional ornament types are
-     * added, get their metrics here.
-     */
-    getMetrics(): OrnamentMetrics;
     /**
      * Create a new ornament of type `type`, which is an entry in
      * `Vex.Flow.ornamentCodes` in `tables.ts`.
      */
     constructor(type: string);
+    /** Set note attached to ornament. */
+    setNote(note: Note): this;
     /** Set whether the ornament is to be delayed. */
     setDelayed(delayed: boolean): this;
     /** Set the upper accidental for the ornament. */

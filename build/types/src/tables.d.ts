@@ -56,21 +56,11 @@ export declare class Tables {
     static integerToNote(integer?: number): string;
     static textWidth(text: string): number;
     static articulationCodes(artic: string): ArticulationStruct;
-    static accidentalMap: Record<string, {
-        code: string;
-        parenRightPaddingAdjustment: number;
-    }>;
-    static accidentalCodesOld(accidental: string): {
-        code: string;
-        parenRightPaddingAdjustment: number;
-    };
     static accidentalCodes(accidental: string): string;
     static accidentalColumnsTable: Record<number, {
         [name: string]: number[];
     }>;
-    static ornamentCodes(accidental: string): {
-        code: string;
-    };
+    static ornamentCodes(ornament: string): string;
     static keySignature(spec: string): {
         type: string;
         line: number;

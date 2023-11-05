@@ -64,6 +64,8 @@ export declare class SVGContext extends RenderContext {
     create(svgElementType: string): SVGElement;
     openGroup(cls?: string, id?: string, attrs?: GroupAttributes): SVGGElement;
     closeGroup(): void;
+    openRotation(angleDegrees: number, x: number, y: number): void;
+    closeRotation(): void;
     add(elem: SVGElement): void;
     setFillStyle(style: string): this;
     /**

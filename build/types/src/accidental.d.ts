@@ -1,4 +1,3 @@
-import { Glyph } from './glyph';
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
@@ -16,19 +15,7 @@ export declare class Accidental extends Modifier {
     readonly type: string;
     /** To enable logging for this class. Set `Vex.Flow.Accidental.DEBUG` to `true`. */
     static DEBUG: boolean;
-    protected accidental: {
-        code: string;
-        parenRightPaddingAdjustment: number;
-    };
-    renderOptions: {
-        parenLeftPadding: number;
-        fontScale: number;
-        parenRightPadding: number;
-    };
     protected cautionary: boolean;
-    protected glyph: Glyph;
-    protected parenRight?: Glyph;
-    protected parenLeft?: Glyph;
     /** Accidentals category string. */
     static get CATEGORY(): string;
     /** Arrange accidentals inside a ModifierContext. */
@@ -46,8 +33,6 @@ export declare class Accidental extends Modifier {
      */
     constructor(type: string);
     protected reset(): void;
-    /** Get width in pixels. */
-    getWidth(): number;
     /** Attach this accidental to `note`, which must be a `StaveNote`. */
     setNote(note: Note): this;
     /** If called, draws parenthesis around accidental. */

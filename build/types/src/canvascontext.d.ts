@@ -14,6 +14,7 @@ interface OffscreenCanvasRenderingContext2D extends CanvasState, CanvasTransform
 export declare class CanvasContext extends RenderContext {
     /**  The 2D rendering context from the Canvas API. Forward method calls to this object. */
     context2D: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+    curTransfrom: DOMMatrix;
     /**
      * The HTMLCanvasElement or OffscreenCanvas that is associated with the above context.
      * If there was no associated `<canvas>` element, just store the default WIDTH / HEIGHT.
@@ -39,6 +40,8 @@ export declare class CanvasContext extends RenderContext {
     clear(): void;
     openGroup(cls?: string, id?: string, attrs?: GroupAttributes): any;
     closeGroup(): void;
+    openRotation(angleDegrees: number, x: number, y: number): void;
+    closeRotation(): void;
     add(child: any): void;
     setFillStyle(style: string): this;
     /** CanvasContext ignores `setBackgroundFillStyle()`. */

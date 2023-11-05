@@ -3,6 +3,7 @@
 
 import { Beam } from './beam';
 import { Fraction } from './fraction';
+import { Glyphs } from './glyphs';
 import { Modifier } from './modifier';
 import { drawDot, RenderContext } from './rendercontext';
 import { Stave } from './stave';
@@ -108,7 +109,7 @@ export abstract class Note extends Tickable {
     // Try and get the note head
     const codeNoteHead = Tables.codeNoteHead(type.toUpperCase(), duration);
     // Merge duration props for 'duration' with the note head properties.
-    if (codeNoteHead !== '\u0000') {
+    if (codeNoteHead !== Glyphs.null) {
       code = { ...code, codeHead: codeNoteHead };
     }
 
@@ -124,7 +125,7 @@ export abstract class Note extends Tickable {
     const xPost1 = note.getAbsoluteX() + metrics.notePx;
     const xPost2 = note.getAbsoluteX() + metrics.notePx + metrics.rightDisplacedHeadPx;
     const xEnd = note.getAbsoluteX() + metrics.notePx + metrics.rightDisplacedHeadPx + metrics.modRightPx;
-    const xFreedomRight = xEnd + (note.getFormatterMetrics().freedom.right || 0);
+    const xFreedomRight = xEnd + (note.getFormatterMetrics().freedom.right ?? 0);
 
     const xWidth = xEnd - xStart;
     ctx.save();
@@ -652,13 +653,6 @@ export abstract class Note extends Tickable {
       x += this.getCenterXShift();
     }
     return x;
-  }
-
-  /** Get point for notes. */
-  static getPoint(size?: string): number {
-    const fontSize = Tables.lookupMetric('fontSize');
-    // for sizes other than 'default', note is 2/3 of the default value
-    return size === 'default' ? fontSize : (fontSize * 3) / 5;
   }
 
   /** Get the direction of the stem. */

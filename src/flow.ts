@@ -23,6 +23,7 @@ import { FretHandFinger } from './frethandfinger';
 import { GhostNote } from './ghostnote';
 import { Glyph } from './glyph';
 import { GlyphNote } from './glyphnote';
+import { Glyphs } from './glyphs';
 import { GraceNote } from './gracenote';
 import { GraceNoteGroup } from './gracenotegroup';
 import { GraceTabNote } from './gracetabnote';
@@ -68,7 +69,6 @@ import { TabStave } from './tabstave';
 import { TabTie } from './tabtie';
 import { TextBracket, TextBracketPosition } from './textbracket';
 import { TextDynamics } from './textdynamics';
-import { TextFormatter } from './textformatter';
 import { TextJustification, TextNote } from './textnote';
 import { TickContext } from './tickcontext';
 import { TimeSignature } from './timesignature';
@@ -119,6 +119,7 @@ export class Flow {
   static GhostNote = GhostNote;
   static Glyph = Glyph;
   static GlyphNote = GlyphNote;
+  static Glyphs = Glyphs;
   static GraceNote = GraceNote;
   static GraceNoteGroup = GraceNoteGroup;
   static GraceTabNote = GraceTabNote;
@@ -161,7 +162,6 @@ export class Flow {
   static TabTie = TabTie;
   static TextBracket = TextBracket;
   static TextDynamics = TextDynamics;
-  static TextFormatter = TextFormatter;
   static TextNote = TextNote;
   static TickContext = TickContext;
   static TimeSignature = TimeSignature;
@@ -239,6 +239,18 @@ export class Flow {
         break;
       case 'MuseJazz':
         CommonMetrics.fontFamily = 'MuseJazz,Bravura,Academico';
+        break;
+      case 'Gootville':
+        CommonMetrics.fontFamily = 'Gootville,Bravura,Academico';
+        break;
+      case 'Finale Ash':
+        CommonMetrics.fontFamily = 'Finale Ash,Bravura,Academico';
+        break;
+      case 'Finale Maestro':
+        CommonMetrics.fontFamily = 'Finale Maestro,Bravura,Academico';
+        break;
+      case 'Finale Broadway':
+        CommonMetrics.fontFamily = 'Finale Broadway,Bravura,Academico';
         break;
       default:
         CommonMetrics.fontFamily = fontNames.join(',');
@@ -337,9 +349,6 @@ export class Flow {
   }
   static get TIME4_4(): VoiceTime {
     return Tables.TIME4_4;
-  }
-  static get accidentalMap(): Record<string, { code: string; parenRightPaddingAdjustment: number }> {
-    return Tables.accidentalMap;
   }
   static get unicode(): Record<string, string> {
     return Tables.unicode;

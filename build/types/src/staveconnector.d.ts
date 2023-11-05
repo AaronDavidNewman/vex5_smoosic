@@ -27,19 +27,11 @@ export declare class StaveConnector extends Element {
      * * "none"
      */
     static readonly typeString: Record<Exclude<StaveConnectorType, number>, Exclude<StaveConnectorType, string>>;
-    protected width: number;
-    protected texts: {
-        content: string;
-        options: {
-            shiftX: number;
-            shiftY: number;
-        };
-    }[];
+    protected texts: Element[];
     protected type: (typeof StaveConnector)['type'][keyof (typeof StaveConnector)['type']];
     readonly topStave: Stave;
     readonly bottomStave: Stave;
     readonly thickness: number;
-    protected xShift: number;
     constructor(topStave: Stave, bottomStave: Stave);
     /**
      * Set type.
@@ -56,8 +48,6 @@ export declare class StaveConnector extends Element {
         shiftX?: number;
         shiftY?: number;
     }): this;
-    setXShift(xShift: number): this;
-    getXShift(): number;
     /** Render connector and associated text. */
     draw(): void;
 }

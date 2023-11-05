@@ -23,6 +23,7 @@ import { FretHandFinger } from './frethandfinger';
 import { GhostNote } from './ghostnote';
 import { Glyph } from './glyph';
 import { GlyphNote } from './glyphnote';
+import { Glyphs } from './glyphs';
 import { GraceNote } from './gracenote';
 import { GraceNoteGroup } from './gracenotegroup';
 import { GraceTabNote } from './gracetabnote';
@@ -67,7 +68,6 @@ import { TabStave } from './tabstave';
 import { TabTie } from './tabtie';
 import { TextBracket, TextBracketPosition } from './textbracket';
 import { TextDynamics } from './textdynamics';
-import { TextFormatter } from './textformatter';
 import { TextJustification, TextNote } from './textnote';
 import { TickContext } from './tickcontext';
 import { TimeSignature } from './timesignature';
@@ -113,6 +113,7 @@ export declare class Flow {
     static GhostNote: typeof GhostNote;
     static Glyph: typeof Glyph;
     static GlyphNote: typeof GlyphNote;
+    static Glyphs: typeof Glyphs;
     static GraceNote: typeof GraceNote;
     static GraceNoteGroup: typeof GraceNoteGroup;
     static GraceTabNote: typeof GraceTabNote;
@@ -155,7 +156,6 @@ export declare class Flow {
     static TabTie: typeof TabTie;
     static TextBracket: typeof TextBracket;
     static TextDynamics: typeof TextDynamics;
-    static TextFormatter: typeof TextFormatter;
     static TextNote: typeof TextNote;
     static TickContext: typeof TickContext;
     static TimeSignature: typeof TimeSignature;
@@ -238,10 +238,6 @@ export declare class Flow {
     static get STEM_WIDTH(): number;
     static set STEM_WIDTH(value: number);
     static get TIME4_4(): VoiceTime;
-    static get accidentalMap(): Record<string, {
-        code: string;
-        parenRightPaddingAdjustment: number;
-    }>;
     static get unicode(): Record<string, string>;
     static keySignature(spec: string): {
         type: string;

@@ -222,8 +222,6 @@ export declare abstract class Note extends Tickable {
      * looking for the post-formatted x-position.
      */
     getAbsoluteX(): number;
-    /** Get point for notes. */
-    static getPoint(size?: string): number;
     /** Get the direction of the stem. */
     getStemDirection(): number;
     /** Get the top and bottom `y` values of the stem. */

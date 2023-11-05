@@ -4,7 +4,6 @@ import { Note } from './note';
 /** Parenthesis implements parenthesis modifiers for notes. */
 export declare class Parenthesis extends Modifier {
     static get CATEGORY(): string;
-    protected point: number;
     /** Add parentheses to the notes. */
     static buildAndAttach(notes: Note[]): void;
     /** Arrange parentheses inside a ModifierContext. */

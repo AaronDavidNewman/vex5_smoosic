@@ -230,6 +230,14 @@ export class SVGContext extends RenderContext {
     this.parent = this.groups[this.groups.length - 1];
   }
 
+  openRotation(angleDegrees: number, x: number, y: number) {
+    this.openGroup().setAttribute('transform', `translate(${x},${y}) rotate(${angleDegrees}) translate(-${x},-${y})`);
+  }
+
+  closeRotation() {
+    this.closeGroup();
+  }
+
   add(elem: SVGElement): void {
     this.parent.appendChild(elem);
   }
@@ -371,7 +379,7 @@ export class SVGContext extends RenderContext {
       }
       if (
         attributes[attrName] &&
-        (this.groupAttributes.length == 0 ||
+        (this.groupAttributes.length === 0 ||
           attributes[attrName] != this.groupAttributes[this.groupAttributes.length - 1][attrName])
       )
         element.setAttributeNS(null, attrName, attributes[attrName] as string);

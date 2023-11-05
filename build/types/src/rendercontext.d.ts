@@ -38,6 +38,8 @@ export declare abstract class RenderContext {
     abstract restore(): this;
     abstract openGroup(cls?: string, id?: string, attrs?: GroupAttributes): any;
     abstract closeGroup(): void;
+    abstract openRotation(angleDegrees: number, x: number, y: number): void;
+    abstract closeRotation(): void;
     abstract add(child: any): void;
     abstract measureText(text: string): TextMeasure;
     abstract set fillStyle(style: string | CanvasGradient | CanvasPattern);
@@ -48,11 +50,6 @@ export declare abstract class RenderContext {
     abstract getFont(): string;
     set font(f: string);
     get font(): string;
-    /**
-     * This is kept for backwards compatibility with 3.0.9.
-     * @deprecated use `setFont(...)` instead since it now supports CSS font shorthand.
-     */
-    setRawFont(f: string): this;
 }
 /**
  * Draw a tiny dot marker on the specified context. A great debugging aid.

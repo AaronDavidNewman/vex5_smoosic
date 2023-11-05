@@ -3,6 +3,7 @@
 // MIT License
 
 import { Builder } from './easyscore';
+import { Glyphs } from './glyphs';
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
@@ -65,7 +66,7 @@ function snapLineToStaff(canSitBetweenLines: boolean, line: number, position: nu
 // Helper function for checking if a Note object is either a StaveNote or a GraceNote.
 const isStaveOrGraceNote = (note: Note) => isStaveNote(note) || isGraceNote(note);
 
-function getTopY(note: Note, textLine: number): number {
+export function getTopY(note: Note, textLine: number): number {
   const stemDirection = note.getStemDirection();
   const { topY: stemTipY, baseY: stemBaseY } = note.getStemExtents();
 
@@ -94,7 +95,7 @@ function getTopY(note: Note, textLine: number): number {
   }
 }
 
-function getBottomY(note: Note, textLine: number): number {
+export function getBottomY(note: Note, textLine: number): number {
   const stemDirection = note.getStemDirection();
   const { topY: stemTipY, baseY: stemBaseY } = note.getStemExtents();
 
@@ -133,7 +134,7 @@ function getBottomY(note: Note, textLine: number): number {
  * @param position
  * @returns
  */
-function getInitialOffset(note: Note, position: number): number {
+export function getInitialOffset(note: Note, position: number): number {
   const isOnStemTip =
     (position === ABOVE && note.getStemDirection() === Stem.UP) ||
     (position === BELOW && note.getStemDirection() === Stem.DOWN);
@@ -301,7 +302,7 @@ export class Articulation extends Modifier {
     this.type = type;
     this.position = ABOVE;
     if (!Tables.articulationCodes(this.type)) {
-      if ((this.type.codePointAt(0) ?? 0) % 2 == 0) this.position = ABOVE;
+      if ((this.type.codePointAt(0) ?? 0) % 2 === 0) this.position = ABOVE;
       else this.position = BELOW;
     }
 
@@ -318,7 +319,7 @@ export class Articulation extends Modifier {
     const code =
       (this.position === ABOVE ? this.articulation.aboveCode : this.articulation.belowCode) ||
       this.articulation.code ||
-      '\u0000';
+      Glyphs.null;
     this.text = code;
     this.measureText();
   }

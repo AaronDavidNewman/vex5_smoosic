@@ -10,10 +10,7 @@ export declare enum VoltaType {
 export declare class Volta extends StaveModifier {
     static get CATEGORY(): string;
     static get type(): typeof VoltaType;
-    protected volta: number;
-    protected number: string;
-    protected yShift: number;
-    constructor(type: number, number: string, x: number, yShift: number);
-    setShiftY(y: number): this;
+    protected type: number;
+    constructor(type: number, label: string, x: number, yShift: number);
     draw(stave: Stave, x: number): this;
 }

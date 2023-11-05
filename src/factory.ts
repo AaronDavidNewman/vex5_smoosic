@@ -17,7 +17,6 @@ import { FontInfo } from './font';
 import { Formatter, FormatterOptions } from './formatter';
 import { FretHandFinger } from './frethandfinger';
 import { GhostNote } from './ghostnote';
-import { Glyph } from './glyph';
 import { GlyphNote, GlyphNoteOptions } from './glyphnote';
 import { GraceNote, GraceNoteStruct } from './gracenote';
 import { GraceNoteGroup } from './gracenotegroup';
@@ -140,11 +139,11 @@ export class Factory {
 
   initRenderer(): void {
     const { elementId, width, height, background } = this.options.renderer;
-    if (elementId == null) {
+    if (elementId === null) {
       return;
     }
 
-    if (elementId == '') {
+    if (elementId === '') {
       L(this);
       throw new RuntimeError('renderer.elementId not set in FactoryOptions');
     }
@@ -384,8 +383,8 @@ export class Factory {
   Articulation(params?: { betweenLines?: boolean; type?: string; position?: string | number }): Articulation {
     const articulation = new Articulation(params?.type ?? 'a.');
 
-    if (params?.position != undefined) articulation.setPosition(params.position);
-    if (params?.betweenLines != undefined) articulation.setBetweenLines(params.betweenLines);
+    if (params?.position !== undefined) articulation.setPosition(params.position);
+    if (params?.betweenLines !== undefined) articulation.setBetweenLines(params.betweenLines);
     articulation.setContext(this.context);
     return articulation;
   }
@@ -396,12 +395,13 @@ export class Factory {
   ) {
     const options = {
       type,
-      position: 0,
       accidental: '',
       ...params,
     };
     const ornament = new Ornament(type);
-    ornament.setPosition(options.position);
+    if (params?.position !== undefined) {
+      ornament.setPosition(params.position);
+    }
     if (options.upperAccidental) {
       ornament.setUpperAccidental(options.upperAccidental);
     }

@@ -126,7 +126,7 @@ export class ChordSymbol extends Modifier {
     ')': '\u0029' /*csymParensRightTall*/,
     rightParen: '\u0029' /*csymParensRightTall*/,
     leftBracket: '\ue877' /*csymBracketLeftTall*/,
-    rightBracket: '\ue878' /*csymBracketRightTall*/,
+	  rightBracket: '\ue878' /*csymBracketRightTall*/,
     leftParenTall: '\u0028' /*csymParensLeftVeryTall*/,
     rightParenTall: '\u0029' /*csymParensRightVeryTall*/,
     '/': '\ue87c' /*csymDiagonalArrangementSlash*/,
