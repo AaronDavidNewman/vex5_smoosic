@@ -47,4 +47,4 @@ Promise.allSettled(fontLoadPromises).then(() => {
 });
 
 export * from '../src/index';
-export default VexFlow;
+export * as default from '../src/index';
